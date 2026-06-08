@@ -3,232 +3,677 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>আমাদের মেস - ফাইনাল ড্যাশবোর্ড</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>আমাদের মেস - অ্যাডভান্সড ড্যাশবোর্ড (শিট ট্যাবসহ)</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
+            --primary: #4f46e5;
+            --secondary: #6366f1;
             --success: #10b981;
             --danger: #ef4444;
             --warning: #f59e0b;
-            --dark: #0f172a;
-            --gray: #64748b;
-            --card-bg: rgba(255, 255, 255, 0.95);
-            --glass-border: rgba(255, 255, 255, 0.3);
-            --shadow-sm: 0 10px 25px -5px rgba(0,0,0,0.05);
-            --shadow-md: 0 20px 25px -5px rgba(0,0,0,0.1);
-            --radius: 24px;
-            --bg-gradient: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
+            --bg-body: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --radius: 16px;
+            --shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        body { font-family: 'Inter', 'Hind Siliguri', sans-serif; background: var(--bg-gradient); color: var(--dark); padding-bottom: 90px; }
-        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
 
-        /* লগইন */
-        .login-card { max-width: 450px; margin: 80px auto; background: var(--card-bg); backdrop-filter: blur(10px); border-radius: var(--radius); padding: 40px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); border: 1px solid var(--glass-border); text-align: center; }
-        .login-card h2 { background: linear-gradient(135deg, var(--primary), #8b5cf6); -webkit-background-clip: text; background-clip: text; color: transparent; font-size: 28px; margin-bottom: 30px; }
+        body {
+            font-family: 'Hind Siliguri', 'Segoe UI', Roboto, -apple-system, sans-serif;
+            background-color: var(--bg-body);
+            margin: 0;
+            color: var(--text-main);
+            padding-bottom: 30px;
+        }
 
-        /* হেডার */
-        .header { background: var(--card-bg); backdrop-filter: blur(12px); border-radius: 28px; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--glass-border); }
-        .welcome-text { font-weight: 700; font-size: 1.2rem; background: linear-gradient(135deg, var(--primary-dark), #8b5cf6); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .logout-btn { background: rgba(239,68,68,0.15); border: none; padding: 8px 20px; border-radius: 40px; color: var(--danger); font-weight: 600; cursor: pointer; }
+        .container { 
+            width: 95%; 
+            max-width: 1100px; 
+            margin: 20px auto; 
+            box-sizing: border-box;
+        }
 
-        /* স্ট্যাটস গ্রিড */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .stat-card { background: var(--card-bg); backdrop-filter: blur(8px); border-radius: 28px; padding: 20px; display: flex; align-items: center; gap: 16px; transition: 0.3s; border: 1px solid var(--glass-border); cursor: pointer; }
-        .stat-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
-        .stat-icon { width: 56px; height: 56px; background: linear-gradient(135deg, #e0e7ff, #c7d2fe); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 26px; color: var(--primary-dark); }
-        .stat-info h4 { font-size: 13px; font-weight: 600; text-transform: uppercase; color: var(--gray); }
-        .stat-info h2 { font-size: 28px; font-weight: 700; margin-top: 6px; }
+        .login-card {
+            max-width: 400px; 
+            margin: 80px auto; 
+            background: var(--card-bg);
+            padding: 35px; 
+            border-radius: var(--radius); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            text-align: center;
+        }
 
-        /* ট্যাব */
-        .tabs { display: flex; gap: 12px; background: var(--card-bg); backdrop-filter: blur(8px); padding: 8px; border-radius: 60px; margin-bottom: 28px; overflow-x: auto; }
+        .login-card h2 { font-size: 22px; margin-bottom: 30px; color: var(--primary); font-weight: 600; }
+
+        .header {
+            display: flex; justify-content: space-between; align-items: center; 
+            background: var(--primary); padding: 15px 25px; 
+            border-radius: var(--radius); color: white; margin-bottom: 20px; box-shadow: var(--shadow);
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2); border: none; padding: 8px 15px; 
+            border-radius: 8px; color: white; cursor: pointer; font-weight: bold; font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        .stats-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+            gap: 15px; margin-bottom: 25px; 
+        }
+
+        .stat-card {
+            background: var(--card-bg); padding: 20px; border-radius: var(--radius);
+            box-shadow: var(--shadow); display: flex; align-items: center; gap: 15px; border-left: 5px solid var(--primary);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.12);
+        }
+
+        .stat-card.green { border-left-color: var(--success); }
+        .stat-card.orange { border-left-color: var(--warning); }
+        .stat-card.red { border-left-color: var(--danger); }
+        .stat-card.purple { border-left-color: #a855f7; }
+        .stat-card.blue { border-left-color: #0ea5e9; }
+
+        .stat-icon {
+            width: 50px; height: 50px; background: #f1f5f9; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--primary);
+            flex-shrink: 0; transition: transform 0.3s ease;
+        }
+        .stat-card:hover .stat-icon { transform: rotate(10deg) scale(1.1); }
+
+        .stat-info h4 { margin: 0; color: var(--text-muted); font-size: 13px; text-transform: uppercase; font-weight: 500; }
+        .stat-info h2 { margin: 5px 0 0; font-size: 24px; font-weight: 600; }
+        .stat-info .meal-breakdown { font-size: 13px; color: var(--text-muted); margin-top: 4px; font-weight: 500;}
+
+        .tabs { display: flex; background: #e2e8f0; padding: 5px; border-radius: 12px; margin-bottom: 20px; overflow-x: auto; }
+        .tab { flex: 1; padding: 10px; text-align: center; cursor: pointer; border-radius: 10px; font-weight: 600; color: var(--text-muted); transition: 0.3s; white-space: nowrap; font-family: 'Hind Siliguri', sans-serif; }
+        .tab.active { background: var(--card-bg); color: var(--primary); box-shadow: var(--shadow); }
+
+        .content-card { background: var(--card-bg); padding: 25px; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 20px; }
+        .content-card h3 { font-weight: 600; margin-top: 0; }
+
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        
+        .meal-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: #f8fafc; margin-bottom: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
+        .meal-row span { font-weight: 600; color: var(--text-main); font-size: 15px; }
+
+        .toggle-btn { border: none; padding: 8px 20px; border-radius: 20px; font-weight: bold; color: white; cursor: pointer; min-width: 80px; transition: 0.3s; font-family: 'Hind Siliguri', sans-serif; font-size: 14px; }
+        .btn-on { background: var(--success); box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); }
+        .btn-off { background: var(--danger); box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2); }
+
+        .table-container { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { background: #f8fafc; text-align: center; padding: 12px; color: var(--text-muted); font-size: 14px; border-bottom: 2px solid #e2e8f0; white-space: nowrap; font-weight: 600; }
+        td { padding: 15px 12px; text-align: center; border-bottom: 1px solid #f1f5f9; font-size: 14px; white-space: nowrap; }
+        tr:hover { background: #f1f5f9; }
+
+        input, select, textarea { width: 100%; padding: 10px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; margin-top: 5px; font-size: 14px; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; transition: 0.2s; }
+        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+
+        .btn-save { background: var(--primary); color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 15px; transition: 0.2s; font-size: 15px; font-family: 'Hind Siliguri', sans-serif; }
+        .btn-pdf { background: #dc2626; color: white; padding: 12px 20px; font-size: 15px; margin-top: 10px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; font-family: 'Hind Siliguri', sans-serif; transition: 0.2s; }
+        .btn-pdf:hover { background: #b91c1c; }
+
+        .hidden { display: none !important; }
+        .rule-box { background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px; border-radius: 10px; margin-bottom: 10px; }
+        .rule-box label { font-weight: 600; }
+        .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: center; margin-top: 8px;}
+        .duty-box { background: #e0e7ff; border-left: 5px solid #4f46e5; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;}
+        .duty-box h4 { font-weight: 600; }
+        .duty-icon { font-size: 30px; color: #4f46e5; }
+
+        .accordion-header {
+            background: #f8fafc; padding: 16px 20px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 10px; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center; transition: all 0.2s ease; font-weight: 600; font-size: 16px;
+        }
+        .accordion-header:hover { background: #edf2f7; border-color: var(--secondary); transform: translateX(4px); }
+        .accordion-header i.fa-chevron-down { transition: transform 0.3s ease; color: var(--text-muted); }
+        .accordion-section.active .accordion-header { background: #eef2ff; border-color: var(--primary); color: var(--primary); }
+        .accordion-section.active .accordion-header i.fa-chevron-down { transform: rotate(180deg); color: var(--primary); }
+        .accordion-content { padding: 20px; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 12px 12px; margin-top: -10px; margin-bottom: 15px; background: #ffffff; display: none; }
+
+        .menu-grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 10px; }
+        .menu-day-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; border-top: 4px solid var(--secondary); }
+        .menu-day-card h4 { margin: 0 0 10px 0; color: var(--text-main); font-weight: 700; text-align: center; background: #e0e7ff; padding: 5px; border-radius: 6px; font-size: 14px;}
+        .menu-time-slot { padding: 6px 10px; background: #ffffff; border-radius: 6px; border: 1px solid #f1f5f9; margin-bottom: 6px; font-size: 13px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .menu-time-slot.expired { background: #fee2e2; border-color: #fca5a5; opacity: 0.6; text-decoration: line-through; color: var(--danger); }
+
+        /* নতুন শিট টেবিলের জন্য স্টাইল (গুগল শিটের মত) */
+        .sheet-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #cbd5e1;
+            font-size: 12px;
+        }
+        .sheet-table th, .sheet-table td {
+            border: 1px solid #cbd5e1;
+            padding: 6px 4px;
+            text-align: center;
+        }
+        .sheet-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+        .day-past {
+            background-color: #dcfce7;
+        }
+        .day-today {
+            background-color: #fef08a;
+            font-weight: bold;
+            border: 2px solid #ca8a04;
+        }
+        .day-future {
+            background-color: #f3f4f6;
+            color: #9ca3af;
+        }
+        .editable-cell {
+            cursor: pointer;
+        }
+        .editable-cell:hover {
+            filter: brightness(0.96);
+        }
+        .highlight-row td {
+            background-color: #bfdbfe !important;
+            font-weight: bold;
+        }
+
         @media (max-width: 768px) {
-            .tabs { position: fixed; bottom: 0; left: 0; width: 100%; border-radius: 0; margin: 0; padding: 8px 12px; justify-content: space-around; z-index: 1000; background: white; border-top: 1px solid #e2e8f0; }
-            .tab { flex: 1; justify-content: center; padding: 8px 12px; font-size: 12px; }
-            .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-            .container { padding-bottom: 70px; }
+            body { padding-bottom: 90px; }
+            .container { width: 100%; margin: 10px auto; padding: 0 10px; }
+            .header { padding: 12px 15px; border-radius: 12px; margin-bottom: 15px; }
+            .header h2 { font-size: 16px; margin: 0; font-weight: 600; }
+            .logout-btn { padding: 6px 12px; font-size: 12px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+            #balanceCard, #myMealsCard { grid-column: span 2; }
+            .stat-card { padding: 15px; gap: 10px; border-radius: 12px; }
+            .stat-icon { width: 40px; height: 40px; font-size: 16px; }
+            .stat-info h2 { font-size: 18px; }
+            .content-card { padding: 15px; border-radius: 12px; margin-bottom: 15px; }
+            .dashboard-grid { grid-template-columns: 1fr; gap: 15px; margin-bottom: 15px;}
+            .tabs { position: fixed; bottom: 0; left: 0; width: 100%; background: #ffffff; margin: 0; padding: 8px 5px; border-radius: 0; border-top: 1px solid #e2e8f0; box-shadow: 0 -4px 15px rgba(0,0,0,0.08); z-index: 1000; display: flex; justify-content: space-around; }
+            .tab { flex-direction: column; display: flex; align-items: center; justify-content: center; padding: 5px; font-size: 11px; gap: 3px; background: transparent; border-radius: 8px; }
+            .tab.active { background: #eef2ff; color: var(--primary); box-shadow: none; }
+            .tab i { font-size: 18px; }
+            th, td { padding: 10px 8px; font-size: 13px; }
+            .sheet-table th, .sheet-table td { font-size: 10px; padding: 4px 2px; }
         }
-        .tab { padding: 10px 22px; border-radius: 40px; font-weight: 600; color: var(--gray); cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 8px; }
-        .tab.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(99,102,241,0.3); }
-
-        /* কার্ড */
-        .content-card { background: var(--card-bg); backdrop-filter: blur(8px); border-radius: 28px; padding: 24px; margin-bottom: 24px; border: 1px solid var(--glass-border); }
-        .content-card h3 { font-size: 1.3rem; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-
-        /* মিল রো */
-        .meal-row { background: rgba(248,250,252,0.8); border-radius: 20px; padding: 14px 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .toggle-btn { padding: 8px 24px; border-radius: 40px; font-weight: bold; border: none; cursor: pointer; }
-        .btn-on { background: var(--success); color: white; }
-        .btn-off { background: var(--danger); color: white; }
-
-        /* টেবিল */
-        .table-container { overflow-x: auto; border-radius: 20px; }
-        .modern-table { width: 100%; border-collapse: collapse; background: white; border-radius: 20px; }
-        .modern-table th { background: #f1f5f9; padding: 12px; font-weight: 600; border-bottom: 2px solid #e2e8f0; }
-        .modern-table td { padding: 10px; border-bottom: 1px solid #f1f5f9; }
-
-        .sheet-table { width: 100%; border-collapse: collapse; border: 1px solid #e2e8f0; border-radius: 16px; font-size: 12px; }
-        .sheet-table th, .sheet-table td { border: 1px solid #e2e8f0; padding: 8px 6px; text-align: center; }
-        .day-past { background-color: #dcfce7; color: #065f46; }
-        .day-today { background-color: #fef08a; color: #854d0e; font-weight: bold; border: 2px solid #ca8a04; }
-        .day-future { background-color: #f3f4f6; color: #9ca3af; }
-        .editable-cell { cursor: pointer; }
-        .editable-cell:hover { filter: brightness(0.96); }
-
-        /* ফর্ম */
-        input, select, textarea { width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 16px; font-family: inherit; background: white; }
-        input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
-        .btn-save { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 40px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.2s; }
-        .btn-save:hover { background: var(--primary-dark); transform: scale(0.98); }
-
-        /* অ্যাকর্ডিয়ন */
-        .accordion-header { background: rgba(248,250,252,0.9); padding: 16px 20px; border-radius: 20px; margin-bottom: 12px; cursor: pointer; display: flex; justify-content: space-between; font-weight: 600; }
-        .accordion-content { padding: 20px; background: white; border-radius: 20px; margin-top: -8px; margin-bottom: 16px; display: none; }
-        .rule-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; border-radius: 34px; transition: 0.4s; }
-        .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; border-radius: 50%; transition: 0.4s; }
-        input:checked + .slider { background-color: var(--primary); }
-        input:checked + .slider:before { transform: translateX(26px); }
-
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 20px; }
-        .menu-card { background: white; border-radius: 20px; overflow: hidden; border: 1px solid #e2e8f0; }
-        .menu-header { background: linear-gradient(120deg, var(--primary), #8b5cf6); color: white; padding: 12px; font-weight: 600; }
-        .menu-item { padding: 12px; border-bottom: 1px solid #f1f5f9; display: flex; gap: 12px; }
-
-        .detail-btn { background: #e0e7ff; border: none; border-radius: 20px; padding: 5px 12px; cursor: pointer; font-size: 12px; font-weight: 500; margin-top: 8px; }
-        .detail-btn:hover { background: var(--primary); color: white; }
-        .hidden { display: none; }
     </style>
 </head>
 <body>
+
 <div class="container">
     <div id="loginScreen" class="login-card">
         <h2><i class="fas fa-utensils"></i> মেস লগইন</h2>
-        <select id="loginUser"></select><br><br>
-        <input type="password" id="userPin" placeholder="পিন কোড" maxlength="6" style="text-align:center; letter-spacing:5px;" onkeypress="if(event.key==='Enter') document.getElementById('loginBtn').click()">
-        <button class="btn-save" id="loginBtn">প্রবেশ করুন</button>
+        <div style="text-align: left;">
+            <label style="font-weight: 500;">ইউজার সিলেক্ট করুন</label>
+            <select id="loginUser"></select><br><br>
+            <label style="font-weight: 500;">পিন কোড</label>
+            <input type="password" id="userPin" placeholder="পিন টাইপ করুন..." maxlength="4" style="text-align: center; letter-spacing: 5px; font-family: monospace; font-size: 18px;">
+        </div>
+        <button class="btn-save" id="loginBtn">লগইন করুন</button>
     </div>
 
     <div id="mainDashboard" class="hidden">
         <div class="header">
-            <span class="welcome-text" id="welcomeText"><i class="fas fa-user-circle"></i> লোডিং...</span>
-            <button class="logout-btn" onclick="location.reload()"><i class="fas fa-sign-out-alt"></i> লগআউট</button>
+            <h2 id="welcomeText"><i class="fas fa-user-circle"></i> লোডিং...</h2>
+            <button class="logout-btn" onclick="location.reload()">
+                <i class="fas fa-sign-out-alt"></i> লগআউট
+            </button>
         </div>
 
         <div class="stats-grid">
-            <div class="stat-card" id="balanceCard"><div class="stat-icon"><i class="fas fa-wallet"></i></div><div class="stat-info"><h4>আমার ব্যালেন্স</h4><h2 id="topBalance">৳ ০</h2></div></div>
-            <div class="stat-card" id="myMealsCard"><div class="stat-icon"><i class="fas fa-utensils"></i></div><div class="stat-info"><h4>আমার মোট মিল</h4><h2 id="myTotalMeals">০ টি</h2></div></div>
-            <div class="stat-card"><div class="stat-icon"><i class="fas fa-chart-line"></i></div><div class="stat-info"><h4>মেসের মোট মিল</h4><h2 id="topMeals">০ টি</h2></div></div>
-            <div class="stat-card"><div class="stat-icon"><i class="fas fa-home"></i></div><div class="stat-info"><h4>ফিক্সড খরচ</h4><h2 id="topFixedCost">৳ ০</h2></div></div>
-            <div class="stat-card" id="todayMealsCard">
+            <div class="stat-card" id="balanceCard">
+                <div class="stat-icon"><i class="fas fa-wallet"></i></div>
+                <div class="stat-info">
+                    <h4>আমার ফাইনাল ব্যালেন্স</h4>
+                    <h2 id="topBalance">৳ ০.০</h2>
+                </div>
+            </div>
+            <div class="stat-card blue" id="myMealsCard">
+                <div class="stat-icon" style="color: #0ea5e9; background: #e0f2fe;"><i class="fas fa-hamburger"></i></div>
+                <div class="stat-info">
+                    <h4>আমার মোট মিল</h4>
+                    <h2 id="myTotalMeals">০.০ টি</h2>
+                </div>
+            </div>
+            <div class="stat-card orange">
+                <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="stat-info">
+                    <h4>মেসের মোট মিল</h4>
+                    <h2 id="topMeals">০.০ টি</h2>
+                </div>
+            </div>
+            <div class="stat-card purple">
+                <div class="stat-icon"><i class="fas fa-home"></i></div>
+                <div class="stat-info">
+                    <h4>ফিক্সড খরচ</h4>
+                    <h2 id="topFixedCost">৳ ০</h2>
+                </div>
+            </div>
+            <div class="stat-card green" style="grid-column: 1 / -1;">
                 <div class="stat-icon"><i class="fas fa-users"></i></div>
                 <div class="stat-info">
                     <h4>আজকের মোট মিল</h4>
                     <h2 id="topTodayTotal">0.0 টি</h2>
-                    <div style="font-size:12px;">🌅 <span id="t-b">0</span> | 🌞 <span id="t-l">0</span> | 🌙 <span id="t-r">0</span></div>
-                    <div style="display:flex; gap:6px; justify-content:center; margin-top:5px;">
-                        <button class="detail-btn" onclick="showMealDetail('breakfast')">সকাল</button>
-                        <button class="detail-btn" onclick="showMealDetail('lunch')">দুপুর</button>
-                        <button class="detail-btn" onclick="showMealDetail('dinner')">রাত</button>
+                    <div class="meal-breakdown">
+                        <span style="cursor:pointer; text-decoration:underline;" onclick="viewMealDetails('breakfast', 'সকাল')">🌅 সকাল: <span id="t-b">0</span></span> | 
+                        <span style="cursor:pointer; text-decoration:underline;" onclick="viewMealDetails('lunch', 'দুপুর')">🌞 দুপুর: <span id="t-l">0</span></span> | 
+                        <span style="cursor:pointer; text-decoration:underline;" onclick="viewMealDetails('dinner', 'রাত')">🌙 রাত: <span id="t-r">0</span></span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="tabs">
+        <div class="tabs" id="mainTabs">
             <div class="tab active" onclick="switchTab('dashboard')"><i class="fas fa-home"></i> হোম</div>
-            <div class="tab" onclick="switchTab('menu')"><i class="fas fa-utensils"></i> মেনু</div>
             <div class="tab" onclick="switchTab('sheet')"><i class="fas fa-table"></i> শিট</div>
-            <div class="tab" onclick="switchTab('ledger')"><i class="fas fa-chart-bar"></i> লেজার</div>
-            <div class="tab" onclick="switchTab('statement')"><i class="fas fa-receipt"></i> হিসাব</div>
+            <div class="tab" onclick="switchTab('statement')"><i class="fas fa-receipt"></i> আমার হিসাব</div>
+            <div class="tab" onclick="switchTab('dutylist')"><i class="fas fa-calendar-alt"></i> বাজার লিস্ট</div>
             <div class="tab" onclick="switchTab('history')"><i class="fas fa-history"></i> ইতিহাস</div>
-            <div id="managerTab" class="tab hidden" onclick="switchTab('manager')"><i class="fas fa-tasks"></i> ম্যানেজ</div>
-            <div id="settingsTab" class="tab hidden" onclick="switchTab('settings')"><i class="fas fa-cog"></i> সেটিং</div>
+            <div id="managerTabBtn" class="tab hidden" onclick="switchTab('manager')"><i class="fas fa-tasks"></i> ম্যানেজমেন্ট</div>
+            <div id="settingsTabBtn" class="tab hidden" onclick="switchTab('settings')"><i class="fas fa-cog"></i> সেটিংস</div>
         </div>
 
-        <!-- হোম -->
         <div id="sec-dashboard">
-            <div id="dutyBox" class="content-card" style="background:#e0e7ff; display:none;"><h4><i class="fas fa-shopping-basket"></i> আজকের বাজারের দায়িত্ব</h4><p id="dutyText"></p></div>
-            <div class="content-card" style="background:#fffbeb;"><h4><i class="fas fa-bullhorn"></i> নোটিশ</h4><p id="noticeText">লোড হচ্ছে...</p></div>
-            <div class="content-card"><h3><i class="fas fa-calendar-check"></i> মিল শিডিউলার</h3>
-                <input type="date" id="mealDate" onchange="loadMeals()">
-                <div class="meal-row"><span>🌅 সকাল <small>(লক: আগের দিন <span id="lockB">--:--</span>)</small></span><button id="btnB" class="toggle-btn btn-on" onclick="toggleMeal('breakfast')">ON</button></div>
-                <div class="meal-row"><span>🌞 দুপুর <small>(লক: <span id="lockL">--:--</span>)</small></span><button id="btnL" class="toggle-btn btn-on" onclick="toggleMeal('lunch')">ON</button></div>
-                <div class="meal-row"><span>🌙 রাত <small>(লক: <span id="lockD">--:--</span>)</small></span><button id="btnD" class="toggle-btn btn-on" onclick="toggleMeal('dinner')">ON</button></div>
-                <div style="margin-top:15px;"><select id="guestTime"><option value="breakfast">সকাল</option><option value="lunch">দুপুর</option><option value="dinner">রাত</option></select>
-                <div style="display:flex; gap:8px; margin-top:8px;"><input type="number" id="guestCount" placeholder="সংখ্যা" value="0"><button class="btn-save" style="width:auto;" onclick="saveGuest()">গেস্ট সেভ</button></div></div>
+            <div class="duty-box" id="dutyDisplayBox" style="display:none; margin-bottom: 15px;">
+                <div class="duty-icon"><i class="fas fa-shopping-basket"></i></div>
+                <div>
+                    <h4 style="margin:0; color:#1e293b; font-size:15px;">আজকের বাজারের দায়িত্ব</h4>
+                    <p id="dutyText" style="margin:2px 0 0; color:#4f46e5; font-weight:bold; font-size:14px;"></p>
+                </div>
             </div>
-            <div class="content-card" id="pinChangeBox"><h3><i class="fas fa-key"></i> নিজের পিন পরিবর্তন</h3><div style="display:flex; gap:8px;"><input type="password" id="oldPin" placeholder="পুরাতন পিন"><input type="password" id="newPin" placeholder="নতুন পিন"><button class="btn-save" style="width:auto;" onclick="changeOwnPin()">আপডেট</button></div></div>
+
+            <div style="background: #fffbeb; border: 1px solid #fde68a; border-left: 5px solid var(--warning); padding: 12px 15px; border-radius: 10px; margin-bottom: 20px; display: flex; gap: 12px; align-items: center;">
+                <i class="fas fa-bullhorn" style="color: #d97706; font-size: 20px;"></i>
+                <div>
+                    <h4 style="margin: 0; color: #b45309; font-size: 13px; text-transform: uppercase;">মেস নোটিশ</h4>
+                    <p id="noticeText" style="margin: 2px 0 0; font-size: 14px; color: #451a03; font-weight: 500;">নোটিশ লোড হচ্ছে...</p>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="content-card" style="margin-bottom: 0; display: flex; flex-direction: column;">
+                    <h3 style="margin-top:0; color: var(--primary); font-size: 17px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;"><i class="fas fa-calendar-check"></i> আমার মিল শিডিউলার</h3>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <input type="date" id="mealScheduleDate" onchange="loadTargetDateMeals()" style="background:#f8fafc; border:1px solid #cbd5e1; font-weight:bold; color:var(--primary);">
+                    </div>
+                    
+                    <div class="meal-row">
+                        <span>🌅 সকাল <br><small style="font-size:11px; color:var(--text-muted); font-weight:normal;">লক: আগের দিন <span id="lbl-lock-b">--:--</span></small></span>
+                        <button id="btn-breakfast" onclick="toggleMeal('breakfast')" class="toggle-btn btn-on">ON</button>
+                    </div>
+                    <div class="meal-row">
+                        <span>🌞 দুপুর <br><small style="font-size:11px; color:var(--text-muted); font-weight:normal;">লক: সেই দিন <span id="lbl-lock-l">--:--</span></small></span>
+                        <button id="btn-lunch" onclick="toggleMeal('lunch')" class="toggle-btn btn-on">ON</button>
+                    </div>
+                    <div class="meal-row">
+                        <span>🌙 রাত <br><small style="font-size:11px; color:var(--text-muted); font-weight:normal;">লক: সেই দিন <span id="lbl-lock-d">--:--</span></small></span>
+                        <button id="btn-dinner" onclick="toggleMeal('dinner')" class="toggle-btn btn-on">ON</button>
+                    </div>
+                    
+                    <div style="margin-top: auto; padding-top: 15px; border-top: 1px dashed #cbd5e1;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: var(--text-main);"><i class="fas fa-user-plus" style="color:var(--success);"></i> গেস্ট মিল যোগ করুন</h4>
+                        <div style="display:flex; gap:8px;">
+                            <select id="guestTime" style="flex: 1.2; margin:0;"><option value="breakfast">সকাল</option><option value="lunch" selected>দুপুর</option><option value="dinner">রাত</option></select>
+                            <input type="number" id="guestCountInput" placeholder="জন" min="0" value="0" style="flex: 0.8; margin:0; text-align:center;">
+                            <button onclick="saveAdvancedGuest()" class="btn-save" style="margin:0; width:auto; padding: 10px 15px; background:var(--success);"><i class="fas fa-check"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    
+                    <div class="content-card" style="margin-bottom: 0;">
+                        <h3 style="margin-top:0; font-size: 16px;"><i class="fas fa-chart-pie" style="color: #0ea5e9;"></i> খরচের গ্রাফিক্স</h3>
+                        <div style="max-width: 200px; margin: 0 auto;">
+                            <canvas id="expenseChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="content-card" id="foodMenuCard" style="margin-bottom: 0; border-left: 5px solid var(--secondary); flex-grow: 1;">
+                        <h3 style="margin-top:0; font-size: 16px;"><i class="fas fa-utensils"></i> আপকামিং ফুড মেনু</h3>
+                        <div class="menu-grid-container" id="liveFoodMenuContainer" style="grid-template-columns: 1fr;">
+                            <p style="font-size: 14px; color: gray;">কোনো ফুড মেনু রুটিন সেট করা নেই।</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="content-card" id="ledgerPrintArea" style="margin-bottom: 10px;">
+                <h2 style="text-align:center; color:var(--primary); margin-bottom:5px; display:none;" id="pdfTitle">আমাদের মেস - মাসিক রিপোর্ট</h2>
+                <p style="text-align:center; font-size:13px; color:gray; display:none; margin-top:0;" id="pdfDate"></p>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 15px;">
+                    <h3 style="margin:0;"><i class="fas fa-list-alt"></i> মেস লেজার রিপোর্ট</h3>
+                    <button class="btn-pdf" onclick="downloadPDF()" style="margin:0; width:auto; padding: 8px 12px; font-size: 13px;">
+                        <i class="fas fa-download"></i> PDF
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>নাম</th><th>মোট মিল<br><small>(প্রকৃত/বিল)</small></th><th>মিল খরচ</th><th>ফিক্সড খরচ</th><th>মোট জমা</th><th>অবস্থা</th></tr>
+                        </thead>
+                        <tbody id="ledgerTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
-        <!-- মেনু -->
-        <div id="sec-menu" class="hidden"><div class="content-card"><h3>৩ দিনের ফুড মেনু</h3><div id="menuContainer" class="menu-grid"></div></div></div>
-
-        <!-- শিট ট্যাব (মাস নির্বাচন + রানিং টোটাল + PDF) -->
         <div id="sec-sheet" class="hidden">
             <div class="content-card">
-                <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:15px;">
-                    <h3><i class="fas fa-table"></i> মাসিক মিল শিট</h3>
-                    <div style="display:flex; gap:8px;">
-                        <input type="month" id="sheetMonth">
-                        <button class="btn-save" style="width:auto; background:#dc2626;" onclick="downloadSheetPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
-                    </div>
+                <h3><i class="fas fa-table"></i> মাসিক মিল শিট</h3>
+                <div style="margin-bottom: 10px;">
+                    <label>মাস নির্বাচন করুন: </label>
+                    <input type="month" id="sheetMonthSelector" style="width: auto; display: inline-block;">
                 </div>
-                <p style="font-size:12px;">সেল ক্লিক করে এডিট (শুধু ম্যানেজার)</p>
+                <p style="font-size:12px; margin-bottom:10px;">নাম ক্লিক করে সারি হাইলাইট | সেল ক্লিক করে এডিট (ম্যানেজার)</p>
                 <div class="table-container">
-                    <table id="sheetTable" class="sheet-table"><thead id="sheetHead"></thead><tbody id="sheetBody"></tbody></table>
+                    <table id="mealSheetTable" class="sheet-table">
+                        <thead id="sheetHeaderRow">
+                            <tr><th>নাম</th></tr>
+                        </thead>
+                        <tbody id="sheetBody">
+                            <tr><td>লোড হচ্ছে...</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
-        <!-- লেজার (মাস নির্বাচন) -->
-        <div id="sec-ledger" class="hidden">
+        <div id="sec-statement" class="hidden">
             <div class="content-card">
-                <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:15px;">
-                    <h3>মেস লেজার রিপোর্ট</h3>
-                    <div style="display:flex; gap:8px;">
-                        <input type="month" id="ledgerMonth">
-                        <button class="btn-save" style="width:auto; background:#dc2626;" onclick="downloadLedgerPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
+                <h3><i class="fas fa-receipt"></i> বিস্তারিত মাসিক হিসাব</h3>
+                <div id="managerStatementSelector" class="hidden" style="margin-bottom:15px; background:#f8fafc; padding:10px; border-radius:8px;">
+                    <label style="font-size:13px; font-weight:bold;">মেম্বার সিলেক্ট করুন:</label>
+                    <select id="statementMemSelect" onchange="renderStatementTable()"></select>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>তারিখ</th><th>সকাল</th><th>দুপুর</th><th>রাত</th><th>গেস্ট</th><th>জমা (৳)</th></tr></thead>
+                        <tbody id="statementTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="sec-dutylist" class="hidden">
+            <div class="content-card" style="border-top: 4px solid var(--secondary);">
+                <h3><i class="fas fa-calendar-alt"></i> মেসের আপকামিং বাজার ডিউটি রুটিন</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>ডিউটির তারিখ</th><th>প্রধান বাজারী (১)</th><th>সহকারী বাজারী (২)</th></tr>
+                        </thead>
+                        <tbody id="bazaarDutyRoutineTableBody">
+                            <tr><td colspan="3" style="text-align:center; color:gray;">কোনো ডিউটি রুটিন পাওয়া যায়নি</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="sec-history" class="hidden">
+            <div class="content-card">
+                <h3 style="color: var(--success);"><i class="fas fa-shopping-cart"></i> বাজার ইতিহাস</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>তারিখ</th>
+                                <th>বাজারী</th>
+                                <th>টাকা</th>
+                            </tr>
+                        </thead>
+                        <tbody id="histBazaar"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="content-card">
+                <h3 style="color: #b45309;"><i class="fas fa-seedling"></i> চালের ইতিহাস</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>তারিখ</th>
+                                <th>বিবরণ</th>
+                                <th>টাকা</th>
+                            </tr>
+                        </thead>
+                        <tbody id="histRice"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="content-card">
+                <h3 style="color: #6b21a8;"><i class="fas fa-home"></i> অতিরিক্ত/ফিক্সড খরচ ইতিহাস</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>তারিখ</th>
+                                <th>বিবরণ</th>
+                                <th>টাকা</th>
+                            </tr>
+                        </thead>
+                        <tbody id="histFixed"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="sec-manager" class="hidden">
+            <div class="content-card">
+                <h3 style="margin-bottom: 20px; color: var(--primary); border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;">
+                    <i class="fas fa-sliders-h"></i> ম্যানেজার কন্ট্রোল প্যানেল
+                </h3>
+
+                <div class="accordion-section" id="acc-locktime">
+                    <div class="accordion-header" onclick="toggleAccordion('acc-locktime')">
+                        <span><i class="fas fa-clock" style="color:var(--warning); margin-right:8px;"></i> ১. কাস্টম মিল বন্ধের সময় নির্ধারণ (Time-Lock)</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                            <div><label style="font-size:12px; font-weight:600;">সকাল (আগের দিন)</label><input type="time" id="lockTimeBreakfast" value="22:00"></div>
+                            <div><label style="font-size:12px; font-weight:600;">দুপুর (সেই দিন)</label><input type="time" id="lockTimeLunch" value="10:00"></div>
+                            <div><label style="font-size:12px; font-weight:600;">রাত (সেই দিন)</label><input type="time" id="lockTimeDinner" value="14:00"></div>
+                        </div>
+                        <button class="btn-save" style="background:var(--warning); color:#1e293b;" onclick="saveCustomLockTimes()"><i class="fas fa-save"></i> কাস্টম টাইম-লক সেভ করুন</button>
                     </div>
                 </div>
-                <div class="table-container"><table class="modern-table"><thead><tr><th>নাম</th><th>মোট মিল</th><th>মিল খরচ</th><th>ফিক্সড</th><th>জমা</th><th>ব্যালেন্স</th></tr></thead><tbody id="ledgerBody"></tbody></table></div>
+
+                <div class="accordion-section" id="acc-duty">
+                    <div class="accordion-header" onclick="toggleAccordion('acc-duty')">
+                        <span><i class="fas fa-calendar-alt" style="color:#0ea5e9; margin-right:8px;"></i> ২. বাজারের ডিউটি সেট করুন</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <label style="font-weight: 500;">ডিউটির তারিখ নির্ধারণ করুন</label>
+                        <input type="date" id="dutyDate">
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+                            <div><label style="font-size:12px; font-weight: 600;">প্রধান বাজারী (১)</label><select id="dutyMem1"></select></div>
+                            <div><label style="font-size:12px; font-weight: 600;">সহকারী বাজারী (২)</label><select id="dutyMem2"><option value="">-- কেউ না --</option></select></div>
+                        </div>
+                        <button class="btn-save" style="background:#0ea5e9" onclick="saveBazaarDuty()"><i class="fas fa-check"></i> ডিউটি সেভ করুন</button>
+                    </div>
+                </div>
+
+                <div class="accordion-section" id="acc-rules">
+                    <div class="accordion-header" onclick="toggleAccordion('acc-rules')">
+                        <span><i class="fas fa-balance-scale" style="color:var(--primary); margin-right:8px;"></i> ৩. এই মাসের মিল নিয়ম (Rules & Penalty)</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="rule-box"><label>শর্ত ১: লো-মিল পেনাল্টি</label><div class="rule-grid"><div><input type="number" id="ruleT1" placeholder="উদা: ৫" min="0"><small>এর কম খেলে</small></div><div><input type="number" id="ruleP1" placeholder="উদা: ২০" min="0"><small>টি বিল হবে</small></div></div></div>
+                        <div class="rule-box"><label>শর্ত ২: বেস মিল চার্জ</label><div class="rule-grid"><div><input type="number" id="ruleT2" placeholder="উদা: ৫০" min="0"><small>এর কম খেলে</small></div><div><input type="number" id="ruleP2" placeholder="উদা: ৫০" min="0"><small>টি বিল হবে</small></div></div></div>
+                        <button class="btn-save" onclick="saveRules()"><i class="fas fa-save"></i> नियम সেভ করুন</button>
+                    </div>
+                </div>
+
+                <div class="accordion-section" id="acc-entry">
+                    <div class="accordion-header" onclick="toggleAccordion('acc-entry')">
+                        <span><i class="fas fa-money-check-alt" style="color:var(--success); margin-right:8px;"></i> ৪. খরচ ও জমা এন্ট্রি (বাজার, চাল, ফিক্সড, জমা)</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <select id="entryType" onchange="toggleEntryFields()"><option value="deposit">📥 মেম্বার জমা</option><option value="bazaar">🛒 তরকারি বাজার</option><option value="rice">🌾 চালের খরচ</option><option value="fixed">🏠 ফিক্সড খরচ</option></select>
+                        <div id="div-deposit" class="entry-fields"><select id="depMember"></select><input type="number" id="depAmount" placeholder="জমার পরিমাণ..."></div>
+                        <div id="div-bazaar" class="entry-fields hidden"><select id="shopper1"></select><select id="shopper2"><option value="">-- কেউ না --</option></select><input type="number" id="bazAmount" placeholder="বাজার খরচ..."></div>
+                        <div id="div-rice" class="entry-fields hidden"><input type="text" id="riceNote" placeholder="বিবরণ..."><input type="number" id="riceAmount" placeholder="চালের দাম..."></div>
+                        <div id="div-fixed" class="entry-fields hidden"><input type="text" id="fixedNote" placeholder="বিবরণ..."><input type="number" id="fixedAmount" placeholder="মোট টাকার পরিমাণ..."></div>
+                        <button class="btn-save" onclick="saveEntry()"><i class="fas fa-save"></i> ডেটা সেভ করুন</button>
+                    </div>
+                </div>
+
+                <div class="accordion-section" id="acc-notice">
+                    <div class="accordion-header" onclick="toggleAccordion('acc-notice')">
+                        <span><i class="fas fa-utensils" style="color:#a855f7; margin-right:8px;"></i> ৫. নোটিশ ও ৩ দিনের ফুড মেনু আপডেট</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <label style="font-weight:600;">মেস জেনারেল নোটিশ</label>
+                        <textarea id="mgrNotice" rows="2" placeholder="মেসের সাধারণ নোটিশ এখানে লিখুন..."></textarea>
+                        
+                        <h4 style="margin:15px 0 5px 0; border-top:1px dashed #e2e8f0; padding-top:10px; color:var(--primary);"><i class="fas fa-hamburger"></i> ৩ দিনের মিল মেনু রুটিন এন্ট্রি করুন:</h4>
+                        
+                        <div style="display:grid; grid-template-columns:1fr; gap:10px; background:#f8fafc; padding:10px; border-radius:8px;">
+                            <div>
+                                <label style="font-size:13px; font-weight:600;">১ম দিন (তারিখ সিলেক্ট করুন):</label>
+                                <input type="date" id="menuDay1Date">
+                                <input type="text" id="menuDay1B" placeholder="সকালের খাবার মেনু">
+                                <input type="text" id="menuDay1L" placeholder="দুপুরের খাবার মেনু">
+                                <input type="text" id="menuDay1D" placeholder="রাতের খাবার মেনু">
+                            </div>
+                            <div style="border-top:1px solid #e2e8f0; padding-top:10px;">
+                                <label style="font-size:13px; font-weight:600;">২য় দিন (তারিখ সিলেক্ট করুন):</label>
+                                <input type="date" id="menuDay2Date">
+                                <input type="text" id="menuDay2B" placeholder="সকালের খাবার মেনু">
+                                <input type="text" id="menuDay2L" placeholder="দুপুরের খাবার মেনু">
+                                <input type="text" id="menuDay2D" placeholder="রাতের খাবার মেনু">
+                            </div>
+                            <div style="border-top:1px solid #e2e8f0; padding-top:10px;">
+                                <label style="font-size:13px; font-weight:600;">৩য় দিন (তারিখ সিলেক্ট করুন):</label>
+                                <input type="date" id="menuDay3Date">
+                                <input type="text" id="menuDay3B" placeholder="সকালের খাবার মেনু">
+                                <input type="text" id="menuDay3L" placeholder="দুপুরের খাবার মেনু">
+                                <input type="text" id="menuDay3D" placeholder="রাতের খাবার মেনু">
+                            </div>
+                        </div>
+
+                        <button class="btn-save" style="background:#a855f7" onclick="updateNoticeAndMenu()">
+                            <i class="fas fa-save"></i> নোটিশ ও ফুড মেনু সেভ করুন
+                        </button>
+                    </div>
+                </div>
+
+                <div class="accordion-section" id="acc-super">
+                    <div class="accordion-header" onclick="toggleAccordion('acc-super')">
+                        <span><i class="fas fa-bolt" style="color:var(--danger); margin-right:8px;"></i> ৬. সুপার অ্যাডমিন পাওয়ার (Data Edit & Reset)</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content" style="background: #fef2f2; border-radius: 8px; padding: 15px;">
+                        <select id="superEditType" onchange="toggleSuperEdit()">
+                            <option value="">-- অপশন নির্বাচন করুন --</option>
+                            <option value="edit-cost">১. মেসের মোট খরচ এডিট</option>
+                            <option value="edit-deposit">২. মেম্বারের মোট জমার পরিমাণ এডিট</option>
+                            <option value="edit-meal">৩. যেকোনো দিনের মিল/গেস্ট মিল এডিট</option>
+                            <option value="edit-reset" style="color:red; font-weight:bold;">৪. চলতি মাসের সব ডাটা রিসেট করুন</option>
+                        </select>
+                        
+                        <div id="se-cost" class="super-edit-fields hidden" style="margin-top:15px; border-top:1px solid #fca5a5; padding-top:15px;">
+                            <input type="number" id="newBazTot" placeholder="সঠিক বাজার খরচ..."><input type="number" id="newRicTot" placeholder="সঠিক চালের খরচ..."><input type="number" id="newFixTot" placeholder="সঠিক ফিক্সড খরচ...">
+                            <button class="btn-save" style="background:var(--danger)" onclick="saveSuperCost()">আপডেট</button>
+                        </div>
+                        
+                        <div id="se-deposit" class="super-edit-fields hidden" style="margin-top:15px; border-top:1px solid #fca5a5; padding-top:15px;">
+                            <select id="superEditMem" onchange="loadCurrentDeposit()"></select>
+                            <p style="font-size:14px; margin:8px 0; color:var(--text-main)">বর্তমান জমা: <b style="color:var(--danger);">৳<span id="curDep">0</span></b></p>
+                            <input type="number" id="newDepTot" placeholder="সঠিক জমা বসান">
+                            <button class="btn-save" style="background:var(--danger)" onclick="saveSuperDeposit()">আপডেট</button>
+                        </div>
+                        
+                        <div id="se-meal" class="super-edit-fields hidden" style="margin-top:15px; border-top:1px solid #fca5a5; padding-top:15px;">
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"><input type="date" id="superEditDate"><select id="superEditMealMem"></select></div>
+                            <button class="btn-save" style="background:var(--warning); color:#000;" onclick="loadPastMeal()">লোড করুন</button>
+                            <div id="pastMealData" class="hidden" style="margin-top:10px; background:#fff; padding:10px;">
+                                <div class="rule-grid">
+                                    <div><label>সকাল</label><select id="se-brk"><option value="ON">ON</option><option value="OFF">OFF</option></select></div><div><label>গেস্ট</label><input type="number" id="se-g-brk"></div>
+                                    <div><label>দুপুর</label><select id="se-lun"><option value="ON">ON</option><option value="OFF">OFF</option></select></div><div><label>গেস্ট</label><input type="number" id="se-g-lun"></div>
+                                    <div><label>রাত</label><select id="se-din"><option value="ON">ON</option><option value="OFF">OFF</option></select></div><div><label>গেস্ট</label><input type="number" id="se-g-din"></div>
+                                </div>
+                                <button class="btn-save" style="background:var(--danger)" onclick="saveSuperMeal()">আপডেট</button>
+                            </div>
+                        </div>
+
+                        <div id="se-reset" class="super-edit-fields hidden" style="margin-top:15px; border-top: 1px solid #fca5a5; padding-top: 15px;">
+                            <p style="color:var(--danger); font-size:14px; font-weight:bold;">সতর্কতা: চলতি মাসের সমস্ত জমা, খরচ, মিল এবং ইতিহাস চিরতরে মুছে যাবে!</p>
+                            <button class="btn-save" style="background:#b91c1c" onclick="resetMonthlyData()"><i class="fas fa-trash-alt"></i> হ্যাঁ, সব হিসাব শূন্য করুন</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-section" id="acc-mgrpin">
+                    <div class="accordion-header" onclick="toggleAccordion('acc-mgrpin')">
+                        <span><i class="fas fa-user-lock" style="color:var(--text-main); margin-right:8px;"></i> ৭. ম্যানেজার মাস্টার পিন (Password) পরিবর্তন</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <input type="password" id="oldMgrPin" placeholder="পুরাতন মাস্টার পিন" maxlength="6" style="text-align:center;">
+                            <input type="password" id="newMgrPin" placeholder="নতুন মাস্টার পিন" maxlength="6" style="text-align:center;">
+                        </div>
+                        <button onclick="changeManagerMasterPin()" class="btn-save" style="background:var(--text-main); color:white; margin-top:10px;">
+                            <i class="fas fa-shield-alt"></i> মাস্টার পিন আপডেট করুন
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <!-- স্টেটমেন্ট -->
-        <div id="sec-statement" class="hidden"><div class="content-card"><h3>বিস্তারিত মাসিক হিসাব</h3><div id="statementSelectDiv" class="hidden"><select id="statementUser"></select></div><div class="table-container"><table class="modern-table"><thead><tr><th>তারিখ</th><th>সকাল</th><th>দুপুর</th><th>রাত</th><th>গেস্ট</th><th>জমা</th></tr></thead><tbody id="statementBody"></tbody></table></div></div></div>
+        <div id="sec-settings" class="hidden">
 
-        <!-- ইতিহাস -->
-        <div id="sec-history" class="hidden">
-            <div class="content-card"><h3>বাজার ইতিহাস</h3><div class="table-container"><table class="modern-table"><thead><tr><th>তারিখ</th><th>বিবরণ</th><th>টাকা</th></tr></thead><tbody id="histB"></tbody></table></div></div>
-            <div class="content-card"><h3>চালের ইতিহাস</h3><div class="table-container"><table class="modern-table"><thead><tr><th>তারিখ</th><th>বিবরণ</th><th>টাকা</th></tr></thead><tbody id="histR"></tbody></table></div></div>
-            <div class="content-card"><h3>ফিক্সড ইতিহাস</h3><div class="table-container"><table class="modern-table"><thead><tr><th>তারিখ</th><th>বিবরণ</th><th>টাকা</th></tr></thead><tbody id="histF"></tbody></table></div></div>
+            <div class="content-card" id="memberPinChangeBox" style="border-left: 5px solid var(--warning); margin-bottom: 25px;">
+                <h3><i class="fas fa-key"></i> নিজের লগইন পিন পরিবর্তন করুন</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                    <input type="password" id="oldUserPin" placeholder="পুরাতন পিন (৪ সংখ্যা)" maxlength="4" style="text-align:center;">
+                    <input type="password" id="newUserPin" placeholder="নতুন পিন (৪ সংখ্যা)" maxlength="4" style="text-align:center;">
+                </div>
+                <button onclick="changeOwnPin()" class="btn-save" style="margin-top:10px; background:var(--warning); color:#1e293b;"><i class="fas fa-save"></i> পিন কোড আপডেট করুন</button>
+            </div>
+
+            <div class="content-card">
+                <h3><i class="fas fa-user-plus"></i> নতুন মেম্বার যুক্ত করুন</h3>
+                <input type="text" id="newMemName" placeholder="নতুন মেম্বারের নাম...">
+                <button class="btn-save" onclick="addNewMember()">যোগ করুন</button>
+            </div>
+            
+            <div class="content-card">
+                <h3><i class="fas fa-user-edit"></i> মেম্বার সিকিউরিটি ও প্রোফাইল এডিট</h3>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 15px;">মেম্বারের নামের ওপর ক্লিক করে তার পিন ও তথ্য পরিবর্তন করুন:</p>
+                <div id="editMemList"></div>
+                <button class="btn-save" onclick="saveMemberEdits()">সব সেটিংস সেভ করুন</button>
+            </div>
         </div>
 
-        <!-- ম্যানেজার প্যানেল -->
-        <div id="sec-manager" class="hidden"><div class="content-card"><h3>ম্যানেজার কন্ট্রোল প্যানেল</h3>
-            <div class="accordion-section"><div class="accordion-header" onclick="toggleAccordion(this)">⏰ ১. কাস্টম টাইম-লক <i class="fas fa-chevron-down"></i></div><div class="accordion-content"><div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;"><div><label>সকাল</label><input type="time" id="lockTimeB" value="22:00"></div><div><label>দুপুর</label><input type="time" id="lockTimeL" value="10:00"></div><div><label>রাত</label><input type="time" id="lockTimeD" value="14:00"></div></div><button class="btn-save" onclick="saveLockTimes()">সেভ করুন</button></div></div>
-            <div class="accordion-section"><div class="accordion-header" onclick="toggleAccordion(this)">📅 ২. বাজার ডিউটি <i class="fas fa-chevron-down"></i></div><div class="accordion-content"><input type="date" id="dutyDate"><div style="display:grid; gap:10px; margin-top:10px;"><select id="dutyMem1"></select><select id="dutyMem2"><option value="">-- কেউ না --</option></select></div><button class="btn-save" onclick="saveDuty()">সেভ করুন</button></div></div>
-            <div class="accordion-section"><div class="accordion-header" onclick="toggleAccordion(this)">⚖️ ৩. মিল নিয়ম <i class="fas fa-chevron-down"></i></div><div class="accordion-content"><div class="rule-item"><span>লো-মিল পেনাল্টি (৫ এর কম খেলে ২০ বিল)</span><label class="switch"><input type="checkbox" id="rule1Toggle" checked><span class="slider"></span></label></div><div class="rule-item"><span>বেস মিল চার্জ (৫০ এর কম খেলে ৫০ বিল)</span><label class="switch"><input type="checkbox" id="rule2Toggle" checked><span class="slider"></span></label></div><button class="btn-save" onclick="saveRulesToggle()">সেভ করুন</button></div></div>
-            <div class="accordion-section"><div class="accordion-header" onclick="toggleAccordion(this)">💰 ৪. খরচ ও জমা <i class="fas fa-chevron-down"></i></div><div class="accordion-content"><select id="entryType" onchange="toggleEntryFields()"><option value="deposit">মেম্বার জমা</option><option value="bazaar">তরকারি বাজার</option><option value="rice">চালের খরচ</option><option value="fixed">ফিক্সড খরচ</option></select><div id="div-deposit"><select id="depMember"></select><input type="number" id="depAmount" placeholder="জমার পরিমাণ"></div><div id="div-bazaar" class="hidden"><select id="shopper1"></select><select id="shopper2"><option value="">-- কেউ না --</option></select><input type="number" id="bazAmount" placeholder="বাজার খরচ"></div><div id="div-rice" class="hidden"><input type="text" id="riceNote" placeholder="বিবরণ"><input type="number" id="riceAmount" placeholder="চালের দাম"></div><div id="div-fixed" class="hidden"><input type="text" id="fixedNote" placeholder="বিবরণ"><input type="number" id="fixedAmount" placeholder="টাকার পরিমাণ"></div><button class="btn-save" onclick="saveEntry()">সেভ করুন</button></div></div>
-            <div class="accordion-section"><div class="accordion-header" onclick="toggleAccordion(this)">📢 ৫. নোটিশ ও মেনু <i class="fas fa-chevron-down"></i></div><div class="accordion-content"><textarea id="mgrNotice" rows="2" placeholder="নোটিশ লিখুন"></textarea><div id="menuInputs"></div><button class="btn-save" onclick="saveNoticeAndMenu()">সেভ করুন</button></div></div>
-            <div class="accordion-section"><div class="accordion-header" onclick="toggleAccordion(this)">⚡ ৬. সুপার অ্যাডমিন <i class="fas fa-chevron-down"></i></div><div class="accordion-content"><select id="superType" onchange="toggleSuperEdit()"><option value="">-- নির্বাচন --</option><option value="cost">মোট খরচ এডিট</option><option value="deposit">মেম্বার জমা এডিট</option><option value="meal">মিল এডিট</option><option value="reset">সব ডাটা রিসেট</option></select><div id="costDiv" class="hidden"><input type="number" id="editBaz" placeholder="বাজার"><input type="number" id="editRice" placeholder="চাল"><input type="number" id="editFix" placeholder="ফিক্সড"><button class="btn-save" style="background:var(--danger);" onclick="editCost()">আপডেট</button></div><div id="depositDiv" class="hidden"><select id="editMemDeposit"></select><p>বর্তমান জমা: ৳<span id="curDep">0</span></p><input type="number" id="newDeposit" placeholder="সঠিক জমা"><button class="btn-save" style="background:var(--danger);" onclick="editDeposit()">আপডেট</button></div><div id="mealDiv" class="hidden"><input type="date" id="editMealDate"><select id="editMealMem"></select><button class="btn-save" onclick="loadMealEdit()">লোড</button><div id="mealEditPanel"></div></div><div id="resetDiv" class="hidden"><p style="color:red;">সতর্ক: সব ডাটা মুছে যাবে!</p><button class="btn-save" style="background:var(--danger);" onclick="resetMonth()">রিসেট করুন</button></div></div></div>
-            <div class="accordion-section"><div class="accordion-header" onclick="toggleAccordion(this)">🔐 ৭. ম্যানেজার মাস্টার পিন <i class="fas fa-chevron-down"></i></div><div class="accordion-content"><div style="display:grid; gap:10px;"><input type="password" id="oldMasterPin" placeholder="পুরাতন পিন"><input type="password" id="newMasterPin" placeholder="নতুন পিন"></div><button class="btn-save" onclick="changeMasterPin()">আপডেট করুন</button></div></div>
-            <button class="btn-save" style="background:var(--warning); color:#1e293b; margin-top:20px;" onclick="loadTestData()"><i class="fas fa-database"></i> টেস্ট ডাটা লোড করুন</button>
-        </div></div>
-
-        <!-- সেটিংস -->
-        <div id="sec-settings" class="hidden"><div class="content-card"><h3>নতুন মেম্বার</h3><input type="text" id="newMemberName"><button class="btn-save" onclick="addMember()">যোগ করুন</button></div><div class="content-card"><h3>মেম্বার এডিট</h3><div id="memberEditList"></div><button class="btn-save" onclick="saveAllMembers()">সব সেভ করুন</button></div></div>
-
-        <div class="content-card" style="background: linear-gradient(135deg, var(--primary), #8b5cf6); color:white; display: flex; justify-content: space-around;">
+        <div class="content-card" style="background: var(--primary); color: white; display: flex; justify-content: space-around; text-align: center; margin-bottom: 30px;">
             <div><small>মিল রেট</small><br><strong id="liveRate">০.০০</strong></div>
             <div><small>মোট মিল খরচ</small><br><strong id="liveTotalCost">০</strong></div>
             <div><small>ক্যাশ ইন হ্যান্ড</small><br><strong id="liveCash">০</strong></div>
@@ -237,299 +682,924 @@
 </div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, set, update, get, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 
+    // Firebase কনফিগারেশন
     const firebaseConfig = {
         apiKey: "AIzaSyBedhJXBSoxLvdweMlRcZ30Vt3dUPYpw20",
         authDomain: "mess-new.firebaseapp.com",
         databaseURL: "https://mess-new-default-rtdb.asia-southeast1.firebasedatabase.app",
         projectId: "mess-new"
     };
+
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    let members = [], memberNames = {}, memberPins = {}, memberExceptions = {};
-    let isManager = false, currentUser = "";
-    let customLock = { breakfast: "22:00", lunch: "10:00", dinner: "14:00" };
+    let members = [];
+    let memberNames = {};
+    let memberExceptions = {};
+    let memberPins = {}; 
     let messRules = { t1: 5, p1: 20, t2: 50, p2: 50 };
-    let monthData = {};
-    let selectedSheetMonth = "", selectedLedgerMonth = "";
+    let customLockTimes = { breakfast: "22:00", lunch: "10:00", dinner: "14:00" }; 
+    let currentUser = "";
+    let isManager = false;
+    let monthRawData = {};
+    let globalDeposits = {};
+
     const today = new Date();
-    const currentMonthKey = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}`;
     const dateKey = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-    if(document.getElementById('mealDate')) document.getElementById('mealDate').value = dateKey;
-    if(document.getElementById('dutyDate')) document.getElementById('dutyDate').value = dateKey;
-    if(document.getElementById('sheetMonth')) document.getElementById('sheetMonth').value = currentMonthKey;
-    if(document.getElementById('ledgerMonth')) document.getElementById('ledgerMonth').value = currentMonthKey;
-    selectedSheetMonth = currentMonthKey;
-    selectedLedgerMonth = currentMonthKey;
+    const monthKey = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}`;
+    
+    document.getElementById('mealScheduleDate').value = dateKey;
 
-    function showMsg(msg, type='success') { Swal.fire({ text: msg, icon: type, timer: 1500, showConfirmButton: false }); }
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    document.getElementById('dutyDate').value = tomorrow.toISOString().split('T')[0];
 
-    // লগইন
-    document.getElementById('loginBtn').onclick = () => {
+    // শিট মাস নির্বাচনের জন্য ডিফল্ট মান
+    if(document.getElementById('sheetMonthSelector')) {
+        document.getElementById('sheetMonthSelector').value = monthKey;
+    }
+
+    const showSuccess = (msg) => Swal.fire({ title: "সফল!", text: msg, icon: "success", confirmButtonColor: "#4f46e5", timer: 2000, showConfirmButton: false });
+    const showError = (msg) => Swal.fire({ title: "ত্রুটি!", text: msg, icon: "error", confirmButtonColor: "#ef4444" });
+    const showWarning = (msg) => Swal.fire({ title: "সতর্কতা!", text: msg, icon: "warning", confirmButtonColor: "#f59e0b" });
+
+    // আজকের নির্দিষ্ট বেলার মিল লিস্ট দেখার ফাংশন
+    window.viewMealDetails = (mealType, label) => {
+        const todayData = monthRawData[dateKey] || {};
+        let activeMembers = [];
+        
+        members.forEach(m => {
+            const u = todayData[m] || {};
+            let details = [];
+            
+            if (u[mealType] === "ON") details.push("নিজস্ব");
+            const gCount = parseFloat(u[`guest_${mealType}`]) || 0;
+            if (gCount > 0) details.push(`গেস্ট: ${gCount} জন`);
+            
+            if (details.length > 0) {
+                activeMembers.push(`<li style="margin-bottom:8px; border-bottom:1px solid #f1f5f9; padding-bottom:5px;"><b>${memberNames[m]}</b> <span style="color:var(--primary); font-size:12px;">(${details.join(' + ')})</span></li>`);
+            }
+        });
+        
+        if(activeMembers.length === 0) activeMembers.push("<li>কারো মিল চালু নেই</li>");
+        
+        Swal.fire({
+            title: `আজ ${label} যাদের মিল আছে`,
+            html: `<ul style="text-align:left; font-size:15px; max-height:250px; overflow-y:auto; padding-left:20px; list-style-type:circle;">${activeMembers.join('')}</ul>`,
+            confirmButtonText: 'ঠিক আছে',
+            confirmButtonColor: '#4f46e5'
+        });
+    }
+
+    window.toggleAccordion = (sectionId) => {
+        const targetSection = document.getElementById(sectionId);
+        const targetContent = targetSection.querySelector('.accordion-content');
+        const isActive = targetSection.classList.contains('active');
+        document.querySelectorAll('.accordion-section').forEach(sec => {
+            sec.classList.remove('active');
+            if(sec.querySelector('.accordion-content')) sec.querySelector('.accordion-content').style.display = 'none';
+        });
+        if (!isActive) {
+            targetSection.classList.add('active');
+            targetContent.style.display = 'block';
+        }
+    }
+
+    window.toggleMemberAccordion = (memId) => {
+        const contentEl = document.getElementById('mem-content-' + memId);
+        const iconEl = document.getElementById('mem-icon-' + memId);
+        const isHidden = contentEl.style.display === 'none' || contentEl.style.display === '';
+        document.querySelectorAll('.mem-accordion-content').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.mem-toggle-icon').forEach(el => el.style.transform = 'rotate(0deg)');
+        if(isHidden) {
+            contentEl.style.display = 'block';
+            iconEl.style.transform = 'rotate(180deg)';
+        }
+    }
+
+    document.getElementById('userPin').addEventListener('keypress', (e) => { if(e.key === 'Enter') login(); });
+    document.getElementById('loginBtn').onclick = login;
+
+    function login() {
         const user = document.getElementById('loginUser').value;
         const pin = document.getElementById('userPin').value;
-        get(ref(db, 'records/managerPin')).then(snap => {
-            if(pin === (snap.val() || "0000")) { isManager = true; startApp(); }
-            else {
-                get(ref(db, `records/memberPins/${user}`)).then(s => {
-                    if(pin === (s.val() || "1234")) { currentUser = user; isManager = false; startApp(); }
-                    else showMsg("ভুল পিন!", "error");
+        
+        get(ref(db, `records/managerPin`)).then(snap => {
+            const masterPin = snap.val() || "0000";
+            
+            if (pin === masterPin) { 
+                isManager = true; 
+                showDashboard(); 
+            } else {
+                get(ref(db, `records/memberPins/${user}`)).then(mSnap => {
+                    const savedPin = mSnap.val() || "1234";
+                    if (pin === savedPin) { currentUser = user; isManager = false; showDashboard(); } 
+                    else { showError("ভুল পিন দিয়েছেন!"); }
                 });
             }
         });
-    };
+    }
 
-    function startApp() {
+    function showDashboard() {
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('mainDashboard').classList.remove('hidden');
-        if(isManager) {
-            document.getElementById('managerTab').classList.remove('hidden');
-            document.getElementById('settingsTab').classList.remove('hidden');
-            document.getElementById('statementSelectDiv').classList.remove('hidden');
-            document.getElementById('welcomeText').innerHTML = '<i class="fas fa-user-shield"></i> ম্যানেজার';
+        if (isManager) {
+            document.getElementById('managerTabBtn').classList.remove('hidden');
+            document.getElementById('settingsTabBtn').classList.remove('hidden');
+            document.getElementById('managerStatementSelector').classList.remove('hidden');
+            document.getElementById('welcomeText').innerHTML = `<i class="fas fa-user-shield"></i> মেস ম্যানেজার প্যানেল`;
             document.getElementById('myMealsCard').style.display = 'none';
-            document.getElementById('pinChangeBox').style.display = 'none';
+            document.getElementById('memberPinChangeBox').classList.add('hidden'); 
         } else {
-            document.getElementById('welcomeText').innerHTML = `<i class="fas fa-user"></i> ${memberNames[currentUser] || 'মেম্বার'}`;
+            document.getElementById('welcomeText').innerHTML = `<i class="fas fa-user"></i> ${memberNames[currentUser]}`;
             document.getElementById('myMealsCard').style.display = 'flex';
-            document.getElementById('statementSelectDiv').classList.add('hidden');
+            document.getElementById('statementMemSelect').value = currentUser;
+            document.getElementById('memberPinChangeBox').classList.remove('hidden');
         }
-        loadData();
+        startRealtimeSync();
     }
 
-    function loadData() {
-        onValue(ref(db, 'records/memberConfig'), snap => { memberNames = snap.val() || {}; members = Object.keys(memberNames); updateDropdowns(); renderMemberList(); renderAll(); });
-        onValue(ref(db, 'records/memberPins'), snap => { memberPins = snap.val() || {}; });
-        onValue(ref(db, 'records/memberExceptions'), snap => { memberExceptions = snap.val() || {}; renderAll(); });
-        onValue(ref(db, 'records/customLockTimes'), snap => { if(snap.val()) customLock = snap.val(); updateLockUI(); });
-        onValue(ref(db, `records/${currentMonthKey}/messRules`), snap => { if(snap.val()) messRules = snap.val(); updateRuleUI(); renderAll(); });
-        onValue(ref(db, `records/${currentMonthKey}/noticeBoard`), snap => { if(document.getElementById('noticeText')) document.getElementById('noticeText').innerText = snap.val() || "নোটিশ নেই"; if(isManager && document.getElementById('mgrNotice')) document.getElementById('mgrNotice').value = snap.val() || ""; });
-        onValue(ref(db, 'records/threeDayMenuRoutine'), snap => renderMenu(snap.val()));
-        onValue(ref(db, `records/${currentMonthKey}`), snap => { monthData = snap.val() || {}; renderAll(); });
-        onValue(ref(db, `records/bazaarDuty/${dateKey}`), snap => {
-            let d = snap.val();
-            if(d?.s1 && document.getElementById('dutyBox')) { document.getElementById('dutyText').innerHTML = `${memberNames[d.s1]} ${d.s2?'ও '+memberNames[d.s2]:''}`; document.getElementById('dutyBox').style.display = 'block'; }
-            else if(document.getElementById('dutyBox')) document.getElementById('dutyBox').style.display = 'none';
+    window.switchTab = (tabId) => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        ['sec-dashboard', 'sec-sheet', 'sec-statement', 'sec-dutylist', 'sec-history', 'sec-manager', 'sec-settings'].forEach(id => {
+            if(document.getElementById(id)) document.getElementById(id).classList.add('hidden');
         });
-        onValue(ref(db, 'records/bazaarDuty'), snap => {
-            let duties = snap.val() || {};
-            let html = '';
-            Object.keys(duties).sort((a,b)=>b.localeCompare(a)).forEach(date => {
-                let d = duties[date];
-                if(d?.s1) html += `<tr><td>${date.split('-').reverse().join('/')}</td><td>${memberNames[d.s1]}</td><td>${d.s2?memberNames[d.s2]:'-'}</td></tr>`;
+        document.getElementById('sec-' + tabId).classList.remove('hidden');
+        if (tabId === 'statement') renderStatementTable();
+        if (tabId === 'sheet') renderSheet();
+        window.scrollTo(0,0); 
+    }
+
+    window.toggleEntryFields = () => {
+        const type = document.getElementById('entryType').value;
+        document.querySelectorAll('.entry-fields').forEach(d => d.classList.add('hidden'));
+        document.getElementById('div-' + type).classList.remove('hidden');
+    }
+
+    function renderChart(baz, ric, fix) {
+        const ctx = document.getElementById('expenseChart').getContext('2d');
+        if (window.expensePieChart) window.expensePieChart.destroy();
+        window.expensePieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: { labels: ['তরকারি বাজার', 'চালের খরচ', 'ফিক্সড খরচ'], datasets: [{ data: [baz, ric, fix], backgroundColor: ['#10b981', '#f59e0b', '#a855f7'], borderWidth: 2 }] },
+            options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+        });
+    }
+
+    window.downloadPDF = () => {
+        document.getElementById('pdfTitle').style.display = 'block';
+        document.getElementById('pdfDate').innerText = `মাসের হিসাব: ${monthKey}`;
+        document.getElementById('pdfDate').style.display = 'block';
+        const element = document.getElementById('ledgerPrintArea');
+        const tblContainer = element.querySelector('.table-container');
+        const originalOverflow = tblContainer ? tblContainer.style.overflowX : '';
+        if (tblContainer) tblContainer.style.overflowX = 'visible';
+        window.scrollTo(0, 0);
+
+        const opt = {
+            margin: 0.3, filename: `Mess-Ledger-${monthKey}.pdf`, image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, scrollY: 0 }, jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+        };
+        setTimeout(() => {
+            html2pdf().set(opt).from(element).save().then(() => {
+                document.getElementById('pdfTitle').style.display = 'none';
+                document.getElementById('pdfDate').style.display = 'none';
+                if (tblContainer) tblContainer.style.overflowX = originalOverflow;
             });
-            document.getElementById('bazaarDutyRoutineTableBody')?.setHTML(html);
-        });
-        if(document.getElementById('sheetMonth')) document.getElementById('sheetMonth').addEventListener('change', (e) => { selectedSheetMonth = e.target.value; renderSheetForMonth(selectedSheetMonth); });
-        if(document.getElementById('ledgerMonth')) document.getElementById('ledgerMonth').addEventListener('change', (e) => { selectedLedgerMonth = e.target.value; renderLedgerForMonth(selectedLedgerMonth); });
+        }, 100);
     }
 
-    // শিট রেন্ডার (মাস নির্বাচন + রানিং টোটাল কলাম)
-    async function renderSheetForMonth(monthKeyVal) {
-        if(!monthKeyVal) return;
-        const snap = await get(ref(db, `records/${monthKeyVal}`));
+    window.renderStatementTable = () => {
+        const targetUser = isManager ? document.getElementById('statementMemSelect').value : currentUser;
+        if (!targetUser) return;
+        const sortedDays = Object.keys(monthRawData).filter(d => d.includes('-') && d.length > 8).sort();
+        let html = "";
+        sortedDays.forEach(day => {
+            const dData = monthRawData[day][targetUser] || {};
+            const brk = dData.breakfast || "ON"; const lun = dData.lunch || "ON"; const din = dData.dinner || "ON";
+            const gMeals = (parseFloat(dData.guest_breakfast)||0)*0.5 + (parseFloat(dData.guest_lunch)||0) + (parseFloat(dData.guest_dinner)||0);
+            const dep = parseFloat(dData.deposit) || 0;
+            const bHtml = brk==="OFF" ? `<span style="color:var(--danger)">OFF</span>` : `0.5`;
+            const lHtml = lun==="OFF" ? `<span style="color:var(--danger)">OFF</span>` : `1.0`;
+            const dHtml = din==="OFF" ? `<span style="color:var(--danger)">OFF</span>` : `1.0`;
+            html += `<tr><td style="font-weight:bold; font-size:12px;">${day.split('-').reverse().join('/')}</td>
+                     <td>${bHtml}</td><td>${lHtml}</td><td>${dHtml}</td>
+                     <td style="color:var(--warning); font-weight:bold">${gMeals > 0 ? '+'+gMeals : '-'}</td>
+                     <td style="color:var(--success); font-weight:bold">${dep > 0 ? '৳'+dep : '-'}</td></tr>`;
+        });
+        document.getElementById('statementTableBody').innerHTML = html || "<tr><td colspan='6'>কোনো হিসাব নেই</td></tr>";
+    }
+
+    // শিট রেন্ডার ফাংশন
+    async function renderSheet() {
+        const selectedMonth = document.getElementById('sheetMonthSelector').value;
+        if (!selectedMonth) return;
+        const snap = await get(ref(db, `records/${selectedMonth}`));
         const data = snap.val() || {};
-        let year = monthKeyVal.split('-')[0];
-        let month = monthKeyVal.split('-')[1];
-        let lastDate = new Date(year, month, 0).getDate();
-        let allDays = [];
-        for(let d=1; d<=lastDate; d++) allDays.push(`${year}-${month}-${String(d).padStart(2,'0')}`);
-
-        // রানিং টোটাল (ওই মাসের সব দিনের মোট)
-        let running = {};
-        members.forEach(m => running[m] = 0);
+        const year = selectedMonth.split('-')[0];
+        const month = selectedMonth.split('-')[1];
+        const lastDate = new Date(year, month, 0).getDate();
+        const allDays = [];
+        for (let d = 1; d <= lastDate; d++) {
+            allDays.push(`${year}-${month}-${String(d).padStart(2,'0')}`);
+        }
+        // হেডার তৈরি
+        let headerHtml = '<th>নাম</th>';
         allDays.forEach(day => {
-            members.forEach(m => {
-                let u = data[day]?.[m] || {};
-                if(u.breakfast === "ON") running[m] += 0.5;
-                if(u.lunch === "ON") running[m] += 1.0;
-                if(u.dinner === "ON") running[m] += 1.0;
-            });
+            headerHtml += `<th>${day.split('-')[2]}</th>`;
         });
-
-        let headHtml = '<th>নাম</th>';
-        allDays.forEach(day => headHtml += `<th>${day.split('-')[2]}</th>`);
-        headHtml += '<th>মোট মিল<br><small>(এতদিন)</small></th>';
-        document.getElementById('sheetHead').innerHTML = headHtml;
-
+        document.getElementById('sheetHeaderRow').innerHTML = headerHtml;
+        // বডি তৈরি
         let bodyHtml = '';
         members.forEach(m => {
-            bodyHtml += `<tr><td style="font-weight:bold;">${memberNames[m]}</td>`;
+            bodyHtml += `<tr><td style="font-weight:bold; cursor:pointer;" onclick="highlightRow(this)">${memberNames[m]}</td>`;
             allDays.forEach(day => {
-                let u = data[day]?.[m] || {};
-                let count = 0;
-                if(u.breakfast === "ON") count += 0.5;
-                if(u.lunch === "ON") count += 1.0;
-                if(u.dinner === "ON") count += 1.0;
+                const u = data[day]?.[m] || {};
+                let mainMeal = 0;
+                if (u.breakfast === "ON") mainMeal += 0.5;
+                if (u.lunch === "ON") mainMeal += 1.0;
+                if (u.dinner === "ON") mainMeal += 1.0;
+                let guestMeal = (parseFloat(u.guest_breakfast)||0)*0.5 + (parseFloat(u.guest_lunch)||0) + (parseFloat(u.guest_dinner)||0);
+                let display = mainMeal.toFixed(1);
+                if (guestMeal > 0) {
+                    display += `<span style="color: red; font-weight: bold;"> + ${guestMeal.toFixed(1)}</span>`;
+                }
                 let cls = "day-future";
-                let todayDate = new Date(dateKey);
-                let cellDate = new Date(day);
-                if(cellDate < todayDate) cls = "day-past";
-                else if(cellDate.toDateString() === todayDate.toDateString()) cls = "day-today";
-                else cls = "day-future";
-                bodyHtml += `<td class="${cls} ${isManager ? 'editable-cell' : ''}" onclick="${isManager ? `editMealFromSheet('${m}','${day}')` : ''}">${count.toFixed(1)}</td>`;
+                const todayDate = new Date(dateKey);
+                const cellDate = new Date(day);
+                if (cellDate < todayDate) cls = "day-past";
+                else if (cellDate.toDateString() === todayDate.toDateString()) cls = "day-today";
+                bodyHtml += `<td class="${cls} ${isManager ? 'editable-cell' : ''}" onclick="${isManager ? `editSheetCell('${m}','${day}')` : ''}">${display}</td>`;
             });
-            bodyHtml += `<td><strong>${running[m].toFixed(1)}</strong></td>`;
             bodyHtml += '</tr>';
         });
         document.getElementById('sheetBody').innerHTML = bodyHtml;
     }
 
-    window.editMealFromSheet = async (m, day) => {
-        if(!isManager) return;
-        let cur = monthData[day]?.[m] || {};
-        let { value: v } = await Swal.fire({
-            title: `${memberNames[m]} - ${day}`,
-            html: `<select id="eb"><option ${cur.breakfast==="ON"?'selected':''}>ON</option><option ${cur.breakfast!=="ON"?'selected':''}>OFF</option></select><br>
-                   <select id="el"><option ${cur.lunch==="ON"?'selected':''}>ON</option><option ${cur.lunch!=="ON"?'selected':''}>OFF</option></select><br>
-                   <select id="ed"><option ${cur.dinner==="ON"?'selected':''}>ON</option><option ${cur.dinner!=="ON"?'selected':''}>OFF</option></select>`,
-            preConfirm: () => ({ breakfast: document.getElementById('eb').value, lunch: document.getElementById('el').value, dinner: document.getElementById('ed').value })
-        });
-        if(v) await update(ref(db, `records/${day.substring(0,7)}/${day}/${m}`), v);
+    window.highlightRow = (cell) => {
+        const row = cell.parentElement;
+        const table = row.parentElement;
+        Array.from(table.querySelectorAll('tr')).forEach(r => r.classList.remove('highlight-row'));
+        row.classList.add('highlight-row');
     };
 
-    // লেজার রেন্ডার (মাস নির্বাচন)
-    async function renderLedgerForMonth(monthKeyVal) {
-        if(!monthKeyVal) return;
-        const snap = await get(ref(db, `records/${monthKeyVal}`));
-        let data = snap.val() || {};
-        let bazaar = parseFloat(data.totalBazaarCost) || 0;
-        let rice = parseFloat(data.totalRiceCost) || 0;
-        let fixed = parseFloat(data.totalFixedCost) || 0;
-        let mealCost = bazaar + rice;
-        let own = {}, guest = {}, deposit = {};
-        members.forEach(m => { own[m]=0; guest[m]=0; deposit[m]=0; });
-        Object.keys(data).forEach(day => {
-            if(day.includes('-') && day.length>8) {
-                members.forEach(m => {
-                    let u = data[day][m] || {};
-                    deposit[m] += parseFloat(u.deposit) || 0;
-                    if(day <= dateKey) {
-                        if(u.breakfast === "ON") own[m] += 0.5;
-                        if(u.lunch === "ON") own[m] += 1.0;
-                        if(u.dinner === "ON") own[m] += 1.0;
-                        let gb = parseFloat(u.guest_breakfast)||0, gl = parseFloat(u.guest_lunch)||0, gd = parseFloat(u.guest_dinner)||0;
-                        guest[m] += (gb*0.5 + gl + gd);
-                    }
+    window.editSheetCell = async (memberId, date) => {
+        if (!isManager) return;
+        const cur = monthRawData[date]?.[memberId] || {};
+        const { value: form } = await Swal.fire({
+            title: `${memberNames[memberId]} - ${date}`,
+            html: `
+                <div style="text-align:left;">
+                    <label>🌅 সকাল: <select id="eb"><option ${cur.breakfast==="ON"?'selected':''}>ON</option><option ${cur.breakfast!=="ON"?'selected':''}>OFF</option></select></label><br>
+                    <label>🌞 দুপুর: <select id="el"><option ${cur.lunch==="ON"?'selected':''}>ON</option><option ${cur.lunch!=="ON"?'selected':''}>OFF</option></select></label><br>
+                    <label>🌙 রাত: <select id="ed"><option ${cur.dinner==="ON"?'selected':''}>ON</option><option ${cur.dinner!=="ON"?'selected':''}>OFF</option></select></label><hr>
+                    <label>👥 গেস্ট সকাল (সংখ্যা): <input type="number" id="gb" value="${cur.guest_breakfast||0}"></label><br>
+                    <label>👥 গেস্ট দুপুর (সংখ্যা): <input type="number" id="gl" value="${cur.guest_lunch||0}"></label><br>
+                    <label>👥 গেস্ট রাত (সংখ্যা): <input type="number" id="gd" value="${cur.guest_dinner||0}"></label>
+                </div>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'আপডেট',
+            preConfirm: () => ({
+                breakfast: document.getElementById('eb').value,
+                lunch: document.getElementById('el').value,
+                dinner: document.getElementById('ed').value,
+                guest_breakfast: parseInt(document.getElementById('gb').value)||0,
+                guest_lunch: parseInt(document.getElementById('gl').value)||0,
+                guest_dinner: parseInt(document.getElementById('gd').value)||0
+            })
+        });
+        if (form) {
+            await update(ref(db, `records/${date.substring(0,7)}/${date}/${memberId}`), form);
+            showSuccess("মিল ও গেস্ট আপডেট হয়েছে");
+            renderSheet();
+        }
+    };
+
+    window.changeOwnPin = () => {
+        const oldPin = document.getElementById('oldUserPin').value;
+        const newPin = document.getElementById('newUserPin').value;
+        if(oldPin.length !== 4 || newPin.length !== 4) return showError("পিন অবশ্যই ৪ সংখ্যার হতে হবে!");
+        get(ref(db, `records/memberPins/${currentUser}`)).then(snap => {
+            const currentPin = snap.val() || "1234";
+            if(oldPin !== currentPin) return showError("পুরাতন পিন কোডটি সঠিক নয়!");
+            set(ref(db, `records/memberPins/${currentUser}`), newPin).then(() => {
+                document.getElementById('oldUserPin').value = "";
+                document.getElementById('newUserPin').value = "";
+                showSuccess("আপনার লগইন পিন সফলভাবে পরিবর্তিত হয়েছে!");
+            });
+        });
+    }
+
+    window.changeManagerMasterPin = () => {
+        const oldPin = document.getElementById('oldMgrPin').value;
+        const newPin = document.getElementById('newMgrPin').value;
+        if(!oldPin || !newPin) return showError("উভয় ফিল্ড পূরণ করুন!");
+        get(ref(db, `records/managerPin`)).then(snap => {
+            const currentMasterPin = snap.val() || "0000";
+            if(oldPin !== currentMasterPin) return showError("পুরাতন মাস্টার পিন কোডটি ভুল!");
+            set(ref(db, `records/managerPin`), newPin).then(() => {
+                document.getElementById('oldMgrPin').value = "";
+                document.getElementById('newMgrPin').value = "";
+                showSuccess("ম্যানেজার মাস্টার পিন কোড সফলভাবে পরিবর্তিত হয়েছে!");
+            });
+        });
+    }
+
+    window.loadTargetDateMeals = () => {
+        if(isManager) return;
+        const selectedDate = document.getElementById('mealScheduleDate').value;
+        if(!selectedDate) return;
+        const targetMonthKey = selectedDate.substring(0, 7);
+        get(ref(db, `records/${targetMonthKey}/${selectedDate}/${currentUser}`)).then(snap => {
+            const tData = snap.val() || {};
+            ['breakfast', 'lunch', 'dinner'].forEach(type => {
+                const btn = document.getElementById('btn-' + type);
+                const state = tData[type] || "OFF"; 
+                btn.innerText = state;
+                btn.className = `toggle-btn ${state === "ON" ? "btn-on" : "btn-off"}`;
+            });
+            document.getElementById('guestCountInput').value = tData["guest_" + document.getElementById('guestTime').value] || 0;
+            checkTimeLock();
+        });
+    }
+
+    window.saveCustomLockTimes = () => {
+        const bTime = document.getElementById('lockTimeBreakfast').value;
+        const lTime = document.getElementById('lockTimeLunch').value;
+        const dTime = document.getElementById('lockTimeDinner').value;
+        set(ref(db, `records/customLockTimes`), { breakfast: bTime, lunch: lTime, dinner: dTime })
+            .then(() => showSuccess("টাইম-লক সেটিংস সফলভাবে আপডেট হয়েছে!"));
+    }
+
+    function isMealLocked(mealType, targetDateStr) {
+        const now = new Date();
+        const targetDate = new Date(targetDateStr);
+        const todayNoon = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const targetNoon = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
+        if(targetNoon < todayNoon) return true;
+        if(targetNoon > todayNoon && mealType !== 'breakfast') return false;
+
+        if(mealType === 'breakfast') {
+            const [bHour, bMin] = customLockTimes.breakfast.split(':').map(Number);
+            const prevDayDeadline = new Date(targetDate);
+            prevDayDeadline.setDate(prevDayDeadline.getDate() - 1);
+            prevDayDeadline.setHours(bHour, bMin, 0, 0);
+            return now >= prevDayDeadline;
+        }
+        if(mealType === 'lunch') {
+            const [lHour, lMin] = customLockTimes.lunch.split(':').map(Number);
+            const lunchDeadline = new Date(targetDate);
+            lunchDeadline.setHours(lHour, lMin, 0, 0);
+            return now >= lunchDeadline;
+        }
+        if(mealType === 'dinner') {
+            const [dHour, dMin] = customLockTimes.dinner.split(':').map(Number);
+            const dinnerDeadline = new Date(targetDate);
+            dinnerDeadline.setHours(dHour, dMin, 0, 0);
+            return now >= dinnerDeadline;
+        }
+        return false;
+    }
+
+    window.updateNoticeAndMenu = () => {
+        const noticeVal = document.getElementById('mgrNotice').value;
+        const mData = {
+            day1Date: document.getElementById('menuDay1Date').value,
+            day1B: document.getElementById('menuDay1B').value,
+            day1L: document.getElementById('menuDay1L').value,
+            day1D: document.getElementById('menuDay1D').value,
+            day2Date: document.getElementById('menuDay2Date').value,
+            day2B: document.getElementById('menuDay2B').value,
+            day2L: document.getElementById('menuDay2L').value,
+            day2D: document.getElementById('menuDay2D').value,
+            day3Date: document.getElementById('menuDay3Date').value,
+            day3B: document.getElementById('menuDay3B').value,
+            day3L: document.getElementById('menuDay3L').value,
+            day3D: document.getElementById('menuDay3D').value
+        };
+        set(ref(db, `records/${monthKey}/noticeBoard`), noticeVal);
+        set(ref(db, `records/threeDayMenuRoutine`), mData).then(() => {
+            showSuccess("নোটিশ এবং ফুড মেনু রুটিন সফলভাবে লাইভ করা হয়েছে!");
+        });
+    }
+
+    function renderDynamicFoodMenu(menu) {
+        if(!menu || !menu.day1Date) {
+            document.getElementById('liveFoodMenuContainer').innerHTML = `<p style="color:gray; font-size:14px;">কোনো মিল মেনু রুটিন সেভ করা নেই।</p>`;
+            return;
+        }
+        const now = new Date();
+        let html = "";
+        for(let i=1; i<=3; i++) {
+            const dDateStr = menu[`day${i}Date`];
+            if(!dDateStr) continue;
+            const tDate = new Date(dDateStr);
+            const formattedDate = dDateStr.split('-').reverse().join('/');
+            const todayNoon = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const targetNoon = new Date(tDate.getFullYear(), tDate.getMonth(), tDate.getDate());
+            if (targetNoon < todayNoon) continue;
+            let bClass = "", lClass = "", dClass = "";
+            if (targetNoon.getTime() === todayNoon.getTime()) {
+                const [bHour, bMin] = customLockTimes.breakfast.split(':').map(Number);
+                const [lHour, lMin] = customLockTimes.lunch.split(':').map(Number);
+                const [dHour, dMin] = customLockTimes.dinner.split(':').map(Number);
+                const bDeadline = new Date(todayNoon); bDeadline.setHours(lHour, 0, 0, 0); 
+                const lDeadline = new Date(todayNoon); lDeadline.setHours(dHour, 0, 0, 0);
+                const dDeadline = new Date(todayNoon); dDeadline.setHours(22, 0, 0, 0);
+                if(now >= bDeadline) bClass = "expired";
+                if(now >= lDeadline) lClass = "expired";
+                if(now >= dDeadline) dClass = "expired";
+            }
+            html += `
+                <div class="menu-day-card">
+                    <h4>তারিখ: ${formattedDate}</h4>
+                    <div class="menu-time-slot ${bClass}">🌅 সকাল: <b>${menu[`day${i}B`] || 'মেনু সেট নেই'}</b></div>
+                    <div class="menu-time-slot ${lClass}">🌞 দুপুর: <b>${menu[`day${i}L`] || 'মেনু সেট নেই'}</b></div>
+                    <div class="menu-time-slot ${dClass}">🌙 রাত: <b>${menu[`day${i}D`] || 'মেনু সেট নেই'}</b></div>
+                </div>
+            `;
+        }
+        document.getElementById('liveFoodMenuContainer').innerHTML = html || `<p style="color:gray; font-size:14px;">সব আপকামিং মেনুর মেয়াদ শেষ হয়ে গেছে। নতুন মেনু দিন।</p>`;
+    }
+
+    function startRealtimeSync() {
+        onValue(ref(db, `records/memberConfig`), (snap) => { memberNames = snap.val() || {}; members = Object.keys(memberNames); updateDropdowns(); renderSettingsList(); });
+        onValue(ref(db, `records/memberExceptions`), snap => { memberExceptions = snap.val() || {}; renderSettingsList(); });
+        onValue(ref(db, `records/memberPins`), snap => { memberPins = snap.val() || {}; renderSettingsList(); }); 
+        
+        onValue(ref(db, `records/customLockTimes`), snap => {
+            if(snap.val()) {
+                customLockTimes = snap.val();
+                document.getElementById('lbl-lock-b').innerText = customLockTimes.breakfast;
+                document.getElementById('lbl-lock-l').innerText = customLockTimes.lunch;
+                document.getElementById('lbl-lock-d').innerText = customLockTimes.dinner;
+                if(isManager) {
+                    document.getElementById('lockTimeBreakfast').value = customLockTimes.breakfast;
+                    document.getElementById('lockTimeLunch').value = customLockTimes.lunch;
+                    document.getElementById('lockTimeDinner').value = customLockTimes.dinner;
+                }
+            }
+        });
+
+        onValue(ref(db, `records/threeDayMenuRoutine`), snap => {
+            const menuData = snap.val() || {};
+            renderDynamicFoodMenu(menuData);
+            if(isManager) {
+                document.getElementById('menuDay1Date').value = menuData.day1Date || '';
+                document.getElementById('menuDay1B').value = menuData.day1B || '';
+                document.getElementById('menuDay1L').value = menuData.day1L || '';
+                document.getElementById('menuDay1D').value = menuData.day1D || '';
+                document.getElementById('menuDay2Date').value = menuData.day2Date || '';
+                document.getElementById('menuDay2B').value = menuData.day2B || '';
+                document.getElementById('menuDay2L').value = menuData.day2L || '';
+                document.getElementById('menuDay2D').value = menuData.day2D || '';
+                document.getElementById('menuDay3Date').value = menuData.day3Date || '';
+                document.getElementById('menuDay3B').value = menuData.day3B || '';
+                document.getElementById('menuDay3L').value = menuData.day3L || '';
+                document.getElementById('menuDay3D').value = menuData.day3D || '';
+            }
+        });
+
+        onValue(ref(db, `records/${monthKey}/messRules`), snap => { 
+            if (snap.val()) messRules = snap.val(); 
+            if (isManager) { document.getElementById('ruleT1').value = messRules.t1; document.getElementById('ruleP1').value = messRules.p1; document.getElementById('ruleT2').value = messRules.t2; document.getElementById('ruleP2').value = messRules.p2; } 
+        });
+        onValue(ref(db, `records/${monthKey}/noticeBoard`), snap => {
+            const notice = snap.val() || "কোনো নোটিশ নেই।";
+            document.getElementById('noticeText').innerText = notice;
+            if(isManager) document.getElementById('mgrNotice').value = notice;
+        });
+        
+        onValue(ref(db, `records/bazaarDuty/${dateKey}`), (snap) => {
+            const duty = snap.val();
+            if (duty && duty.s1) {
+                let txt = memberNames[duty.s1] || ''; 
+                if (duty.s2) txt += ` এবং ${memberNames[duty.s2] || ''}`;
+                document.getElementById('dutyText').innerText = txt; 
+                document.getElementById('dutyDisplayBox').style.display = 'flex';
+            } else { 
+                document.getElementById('dutyDisplayBox').style.display = 'none'; 
+            }
+        });
+
+        onValue(ref(db, `records/bazaarDuty`), (snap) => {
+            const allDuties = snap.val() || {};
+            let html = "";
+            const sortedDates = Object.keys(allDuties).sort((a, b) => b.localeCompare(a));
+            sortedDates.forEach(date => {
+                const duty = allDuties[date];
+                if (duty && duty.s1) {
+                    const formattedDate = date.split('-').reverse().join('/');
+                    const primaryShopper = memberNames[duty.s1] || 'অজানা';
+                    const secondaryShopper = duty.s2 ? (memberNames[duty.s2] || 'কেউ না') : 'কেউ না';
+                    html += `<tr><td style="font-weight:bold; color:var(--primary);">${formattedDate}</td>
+                             <td><i class="fas fa-user" style="color:var(--success); margin-right:5px;"></i>${primaryShopper}</td>
+                             <td><i class="fas fa-user-friends" style="color:var(--text-muted); margin-right:5px;"></i>${secondaryShopper}</td></tr>`;
+                }
+            });
+            document.getElementById('bazaarDutyRoutineTableBody').innerHTML = html || `<tr><td colspan="3" style="text-align:center; color:gray;">কোনো ডিউটি রুটিন পাওয়া যায়নি</td></tr>`;
+        });
+
+        syncLedger();
+    }
+
+    function syncLedger() {
+        onValue(ref(db, `records/${monthKey}`), (snap) => {
+            const data = snap.val() || {}; 
+            monthRawData = data; 
+            
+            let regBazaar = parseFloat(data.totalBazaarCost) || 0; 
+            let riceBazaar = parseFloat(data.totalRiceCost) || 0; 
+            let fixedBazaar = parseFloat(data.totalFixedCost) || 0; 
+            let mealOnlyExpenses = regBazaar + riceBazaar;
+            
+            renderChart(regBazaar, riceBazaar, fixedBazaar); 
+            
+            let mOwnMeals = {}, mGuest = {}, mDeposit = {}; 
+            members.forEach(m => { mOwnMeals[m] = 0; mGuest[m] = 0; mDeposit[m] = 0; });
+            let tb = 0, tl = 0, tr = 0;
+
+            Object.keys(data).forEach(day => {
+                if (day.length > 8 && day.includes('-')) { 
+                    members.forEach(m => {
+                        const userDay = data[day][m] || {}; 
+                        mDeposit[m] += parseFloat(userDay.deposit) || 0;
+                        if (day <= dateKey) {
+                            let ownDayMeals = 0;
+                            if (userDay.breakfast === "ON") ownDayMeals += 0.5; 
+                            if (userDay.lunch === "ON") ownDayMeals += 1.0; 
+                            if (userDay.dinner === "ON") ownDayMeals += 1.0;
+                            mOwnMeals[m] += ownDayMeals;
+                            
+                            let guestBreakfast = parseFloat(userDay.guest_breakfast) || 0; 
+                            let guestLunch = parseFloat(userDay.guest_lunch) || 0; 
+                            let guestDinner = parseFloat(userDay.guest_dinner) || 0;
+                            let totalDayGuestMeals = (guestBreakfast * 0.5) + (guestLunch * 1.0) + (guestDinner * 1.0);
+                            mGuest[m] += totalDayGuestMeals; 
+                            
+                            if (day === dateKey) {
+                                if (userDay.breakfast === "ON") tb += 0.5; 
+                                if (userDay.lunch === "ON") tl += 1.0; 
+                                if (userDay.dinner === "ON") tr += 1.0;
+                                tb += (guestBreakfast * 0.5); 
+                                tl += (guestLunch * 1.0); 
+                                tr += (guestDinner * 1.0);
+                            }
+                        }
+                    });
+                }
+            });
+
+            let totalBilledMealsAll = 0; 
+            let mBilledMeals = {}; 
+            
+            members.forEach(m => {
+                globalDeposits[m] = mDeposit[m]; 
+                let actualOwn = mOwnMeals[m]; 
+                let billedOwn = actualOwn;
+                if (!memberExceptions[m]) { 
+                    if (actualOwn < messRules.t1) billedOwn = messRules.p1; 
+                    else if (actualOwn < messRules.t2) billedOwn = messRules.p2; 
+                }
+                let totalUserBilled = billedOwn + mGuest[m]; 
+                mBilledMeals[m] = totalUserBilled; 
+                totalBilledMealsAll += totalUserBilled;
+            });
+
+            const rate = totalBilledMealsAll > 0 ? (mealOnlyExpenses / totalBilledMealsAll) : 0;
+            const perMemberFixedShare = members.length > 0 ? (fixedBazaar / members.length) : 0;
+
+            document.getElementById('topMeals').innerText = totalBilledMealsAll.toFixed(1) + " টি"; 
+            document.getElementById('topFixedCost').innerText = "৳ " + fixedBazaar;
+            document.getElementById('liveRate').innerText = rate.toFixed(2); 
+            document.getElementById('liveTotalCost').innerText = mealOnlyExpenses;
+            document.getElementById('topTodayTotal').innerText = (tb + tl + tr).toFixed(1) + " টি"; 
+            document.getElementById('t-b').innerText = tb.toFixed(1); 
+            document.getElementById('t-l').innerText = tl.toFixed(1); 
+            document.getElementById('t-r').innerText = tr.toFixed(1);
+
+            let ledgerHtml = ""; 
+            let totalAllDeposit = 0;
+            
+            members.forEach(m => {
+                let actualTotal = mOwnMeals[m] + mGuest[m]; 
+                let billedTotal = mBilledMeals[m];
+                const mealCost = billedTotal * rate; 
+                const finalTotalCost = mealCost + perMemberFixedShare; 
+                const bal = mDeposit[m] - finalTotalCost; 
+                totalAllDeposit += mDeposit[m];
+                
+                let displayMeals = actualTotal === billedTotal ? `<b>${actualTotal.toFixed(1)}</b>` : `${actualTotal.toFixed(1)}<br><small style="color:var(--danger); font-weight:bold">(বিল: ${billedTotal.toFixed(1)})</small>`;
+                ledgerHtml += `<tr><td><strong>${memberNames[m]}</strong>${memberExceptions[m] ? '<br><small style="color:var(--success)">[ছাড়প্রাপ্ত]</small>' : ''}</td>
+                             <td>${displayMeals}</td>
+                             <td>৳ ${mealCost.toFixed(1)}</td>
+                             <td style="color:#a855f7; font-weight:bold">৳ ${perMemberFixedShare.toFixed(1)}</td>
+                             <td>৳ ${mDeposit[m]}</td>
+                             <td style="color:${bal >= 0 ? '#10b981' : '#ef4444'}"><b>${bal.toFixed(1)}</b></td></tr>`;
+            });
+            
+            document.getElementById('ledgerTableBody').innerHTML = ledgerHtml; 
+            document.getElementById('liveCash').innerText = totalAllDeposit - (mealOnlyExpenses + fixedBazaar);
+
+            if (!isManager) {
+                let myActual = mOwnMeals[currentUser] + mGuest[currentUser]; 
+                let myBilled = mBilledMeals[currentUser];
+                const myFinalTotalCost = (myBilled * rate) + perMemberFixedShare; 
+                const myBal = mDeposit[currentUser] - myFinalTotalCost;
+                document.getElementById('myTotalMeals').innerHTML = myActual === myBilled ? `${myActual.toFixed(1)} টি` : `${myActual.toFixed(1)} টি <br><span style="font-size:14px; color:var(--primary); font-weight:bold;">বিল হবে: ${myBilled.toFixed(1)}</span>`;
+                document.getElementById('topBalance').innerText = "৳ " + myBal.toFixed(1); 
+                document.getElementById('balanceCard').className = `stat-card ${myBal >= 0 ? 'green' : 'red'}`;
+                loadTargetDateMeals();
+            }
+            if (document.getElementById('sec-statement').classList.contains('active')) renderStatementTable();
+            if (document.getElementById('sec-sheet').classList.contains('active')) renderSheet();
+
+            // ইতিহাস রেন্ডার এবং ডিলিট আইকন যুক্ত করা
+            let histBazHtml = "", histRiceHtml = "", histFixedHtml = "";
+            if (data.bazaarHistory) {
+                Object.entries(data.bazaarHistory)
+                    .sort((a, b) => new Date(b[1].date) - new Date(a[1].date))
+                    .forEach(([hKey, h]) => {
+                        const formattedDate = h.date.split('-').reverse().join('/');
+                        
+                        // ডিলিট বাটন (শুধুমাত্র ম্যানেজারের জন্য)
+                        const delBtn = isManager ? `<button onclick="deleteHistory('${hKey}', '${h.type}', ${h.amount})" style="background:transparent; border:none; color:var(--danger); cursor:pointer; margin-left:10px;" title="হিসাব ডিলিট করুন"><i class="fas fa-trash-alt"></i></button>` : '';
+                        
+                        if (h.type === 'rice') {
+                            histRiceHtml += `<tr><td>${formattedDate}</td><td>${h.details}</td><td style="color:#b45309; font-weight:bold;">৳ ${h.amount} ${delBtn}</td></tr>`;
+                        }
+                        else if (h.type === 'fixed') {
+                            histFixedHtml += `<tr><td>${formattedDate}</td><td>${h.details}</td><td style="color:#6b21a8; font-weight:bold;">৳ ${h.amount} ${delBtn}</td></tr>`;
+                        }
+                        else { 
+                            let shoppers = memberNames[h.shopper1] || 'অজানা'; 
+                            if (h.shopper2) shoppers += ' ও ' + memberNames[h.shopper2]; 
+                            histBazHtml += `<tr><td>${formattedDate}</td><td>${shoppers}</td><td style="color:#10b981; font-weight:bold;">৳ ${h.amount} ${delBtn}</td></tr>`; 
+                        }
+                    });
+            }
+            
+            document.getElementById('histBazaar').innerHTML = histBazHtml || "<tr><td colspan='3' style='text-align:center; color:gray;'>কোনো এন্ট্রি নেই</td></tr>"; 
+            document.getElementById('histRice').innerHTML = histRiceHtml || "<tr><td colspan='3' style='text-align:center; color:gray;'>কোনো এন্ট্রি নেই</td></tr>"; 
+            document.getElementById('histFixed').innerHTML = histFixedHtml || "<tr><td colspan='3' style='text-align:center; color:gray;'>কোনো এন্ট্রি নেই</td></tr>";
+        });
+    }
+
+    // ভুল ইতিহাস এন্ট্রি ডিলিট করার লজিক
+    window.deleteHistory = (hKey, type, amount) => {
+        Swal.fire({
+            title: 'হিসাবটি ডিলিট করবেন?',
+            text: 'এই ডাটা ডিলিট করলে মেসের মোট খরচ থেকেও টাকা কমে যাবে!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'হ্যাঁ, ডিলিট করুন',
+            cancelButtonText: 'না',
+            confirmButtonColor: '#d33'
+        }).then(res => {
+            if(res.isConfirmed) {
+                let updates = {};
+                // ইতিহাস থেকে মুছে ফেলা
+                updates[`records/${monthKey}/bazaarHistory/${hKey}`] = null;
+                // মোট খরচ থেকে টাকা মাইনাস করা
+                if (type === 'rice') {
+                    updates[`records/${monthKey}/totalRiceCost`] = Math.max(0, (parseFloat(monthRawData.totalRiceCost) || 0) - amount);
+                } else if (type === 'fixed') {
+                    updates[`records/${monthKey}/totalFixedCost`] = Math.max(0, (parseFloat(monthRawData.totalFixedCost) || 0) - amount);
+                } else {
+                    updates[`records/${monthKey}/totalBazaarCost`] = Math.max(0, (parseFloat(monthRawData.totalBazaarCost) || 0) - amount);
+                }
+                update(ref(db), updates).then(() => showSuccess("হিসাব মুছে ফেলা হয়েছে!"));
+            }
+        });
+    }
+
+    window.toggleMeal = (type) => { 
+        const selectedDate = document.getElementById('mealScheduleDate').value;
+        if(!selectedDate) return showWarning("অনুগ্রহ করে একটি সঠিক তারিখ নির্বাচন করুন!");
+        if(isMealLocked(type, selectedDate)) {
+            return showError("দুঃখিত! এই মিল পরিবর্তনের সুনির্দিষ্ট সময় (Deadline) পার হয়ে গেছে।");
+        }
+        const btn = document.getElementById('btn-' + type); 
+        const newState = btn.innerText === "ON" ? "OFF" : "ON";
+        const parts = selectedDate.split('-');
+        const year = parseInt(parts[0]);
+        const month = parseInt(parts[1]) - 1;
+        const startDay = parseInt(parts[2]);
+        const lastDay = new Date(year, month + 1, 0).getDate();
+        let updates = {};
+        for(let d = startDay; d <= lastDay; d++) {
+            const dStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+            const mKey = dStr.substring(0, 7);
+            updates[`records/${mKey}/${dStr}/${currentUser}/${type}`] = newState;
+        }
+        update(ref(db), updates).then(() => {
+            btn.innerText = newState;
+            btn.className = `toggle-btn ${newState === "ON" ? "btn-on" : "btn-off"}`;
+            if (newState === "OFF") {
+                showSuccess("মিল অফ করা হয়েছে (অন না করা পর্যন্ত বন্ধ থাকবে)!");
+            } else {
+                showSuccess("মিল অন করা হয়েছে (অফ না করা পর্যন্ত চালু থাকবে)!");
+            }
+        });
+    }
+    
+    window.saveAdvancedGuest = () => {
+        const selectedDate = document.getElementById('mealScheduleDate').value;
+        const timeSlot = "guest_" + document.getElementById('guestTime').value;
+        const count = parseInt(document.getElementById('guestCountInput').value) || 0;
+        const shortType = document.getElementById('guestTime').value;
+        if(isMealLocked(shortType, selectedDate)) {
+            return showError("দুঃখিত! এই গেস্ট মিল পরিবর্তনের সময় পার হয়ে গেছে।");
+        }
+        const targetMonthKey = selectedDate.substring(0, 7);
+        update(ref(db, `records/${targetMonthKey}/${selectedDate}/${currentUser}`), { [timeSlot]: count }).then(() => showSuccess("গেস্ট মিল আপডেট হয়েছে!"));
+    }
+    
+    window.saveRules = () => {
+        update(ref(db, `records/${monthKey}/messRules`), { 
+            t1: parseFloat(document.getElementById('ruleT1').value)||0, p1: parseFloat(document.getElementById('ruleP1').value)||0, 
+            t2: parseFloat(document.getElementById('ruleT2').value)||0, p2: parseFloat(document.getElementById('ruleP2').value)||0 
+        }).then(() => showSuccess("মিলের নিয়ম সেভ হয়েছে!"));
+    }
+    
+    window.saveBazaarDuty = () => { 
+        const d = document.getElementById('dutyDate').value; const s1 = document.getElementById('dutyMem1').value; const s2 = document.getElementById('dutyMem2').value; 
+        if (!d || !s1) return showWarning("তারিখ এবং অন্তত একজন বাজারী সিলেক্ট করুন!"); 
+        set(ref(db, `records/bazaarDuty/${d}`), { s1, s2 }).then(() => showSuccess("বাজারের ডিউটি সফলভাবে সেট করা হয়েছে!")); 
+    }
+    
+    window.saveEntry = () => {
+        const type = document.getElementById('entryType').value;
+        if (type === 'deposit') {
+            const m = document.getElementById('depMember').value; const amt = parseFloat(document.getElementById('depAmount').value); if (!amt) return showWarning("সঠিক জমার পরিমাণ বসান!");
+            get(ref(db, `records/${monthKey}/${dateKey}/${m}/deposit`)).then(snap => { update(ref(db, `records/${monthKey}/${dateKey}/${m}`), { deposit: (parseFloat(snap.val())||0) + amt }).then(() => { document.getElementById('depAmount').value = ""; showSuccess("জমা সফলভাবে এন্ট্রি হয়েছে!"); }); });
+        } else if (type === 'bazaar') {
+            const s1 = document.getElementById('shopper1').value; const s2 = document.getElementById('shopper2').value; const amt = parseFloat(document.getElementById('bazAmount').value); if (!amt) return showWarning("সঠিক ডাটা দিন!");
+            get(ref(db, `records/${monthKey}/totalBazaarCost`)).then(snap => { update(ref(db, `records/${monthKey}`), { totalBazaarCost: (parseFloat(snap.val())||0) + amt }); set(ref(db, `records/${monthKey}/bazaarHistory/${Date.now()}`), { date: dateKey, type: 'regular', shopper1: s1, shopper2: s2, amount: amt }).then(() => { document.getElementById('bazAmount').value = ""; showSuccess("বাজার সেভ হয়েছে!"); }); });
+        } else if (type === 'rice') {
+            const note = document.getElementById('riceNote').value; const amt = parseFloat(document.getElementById('riceAmount').value); if (!amt) return showWarning("সঠিক ডাটা দিন!");
+            get(ref(db, `records/${monthKey}/totalRiceCost`)).then(snap => { update(ref(db, `records/${monthKey}`), { totalRiceCost: (parseFloat(snap.val())||0) + amt }); set(ref(db, `records/${monthKey}/bazaarHistory/${Date.now()}`), { date: dateKey, type: 'rice', details: note, amount: amt }).then(() => { document.getElementById('riceAmount').value = ""; showSuccess("চালের খরচ সেভ হয়েছে!"); }); });
+        } else if (type === 'fixed') {
+            const note = document.getElementById('fixedNote').value || "ফিক্সড খরচ"; const amt = parseFloat(document.getElementById('fixedAmount').value); if (!amt) return showWarning("সঠিক ডাটা দিন!");
+            get(ref(db, `records/${monthKey}/totalFixedCost`)).then(snap => { update(ref(db, `records/${monthKey}`), { totalFixedCost: (parseFloat(snap.val())||0) + amt }); set(ref(db, `records/${monthKey}/bazaarHistory/${Date.now()}`), { date: dateKey, type: 'fixed', details: note, amount: amt }).then(() => { document.getElementById('fixedAmount').value = ""; showSuccess("ফিক্সড খরচ এন্ট্রি করা হয়েছে!"); }); });
+        }
+    }
+    
+    window.toggleSuperEdit = () => { 
+        const type = document.getElementById('superEditType').value; 
+        document.querySelectorAll('.super-edit-fields').forEach(el => el.classList.add('hidden')); 
+        if (type) { document.getElementById('se-' + type.split('-')[1]).classList.remove('hidden'); if (type === 'edit-deposit') loadCurrentDeposit(); } 
+    }
+    
+    window.loadCurrentDeposit = () => document.getElementById('curDep').innerText = globalDeposits[document.getElementById('superEditMem').value] || 0;
+    
+    window.saveSuperCost = () => { 
+        let u = {}; 
+        if (document.getElementById('newBazTot').value) u.totalBazaarCost = parseFloat(document.getElementById('newBazTot').value); 
+        if (document.getElementById('newRicTot').value) u.totalRiceCost = parseFloat(document.getElementById('newRicTot').value); 
+        if (document.getElementById('newFixTot').value) u.totalFixedCost = parseFloat(document.getElementById('newFixTot').value); 
+        if (Object.keys(u).length > 0) { update(ref(db, `records/${monthKey}`), u).then(() => { showSuccess("খরচ আপডেট হয়েছে!"); toggleSuperEdit(); }); }
+    }
+    
+    window.saveSuperDeposit = () => { 
+        const m = document.getElementById('superEditMem').value; const n = parseFloat(document.getElementById('newDepTot').value); 
+        if (isNaN(n)) return showWarning("সঠিক জমার পরিমাণ বসান!"); 
+        const d = n - (globalDeposits[m] || 0); 
+        if (d !== 0) { get(ref(db, `records/${monthKey}/${dateKey}/${m}/deposit`)).then(snap => { update(ref(db, `records/${monthKey}/${dateKey}/${m}`), { deposit: (parseFloat(snap.val())||0) + d }).then(() => { showSuccess("জমা আপডেট হয়েছে!"); setTimeout(loadCurrentDeposit, 500); }); }); }
+        else { showWarning("নতুন জমা বর্তমান জমার সমান!"); }
+    }
+    
+    window.loadPastMeal = () => { 
+        const dt = document.getElementById('superEditDate').value; if (!dt) return showWarning("তারিখ নির্বাচন করুন!"); 
+        const m = document.getElementById('superEditMealMem').value; 
+        get(ref(db, `records/${dt.substring(0, 7)}/${dt}/${m}`)).then(snap => { 
+            const data = snap.val() || {}; document.getElementById('se-brk').value = data.breakfast || "OFF"; document.getElementById('se-lun').value = data.lunch || "OFF"; document.getElementById('se-din').value = data.dinner || "OFF"; document.getElementById('se-g-brk').value = data.guest_breakfast || 0; document.getElementById('se-g-lun').value = data.guest_lunch || 0; document.getElementById('se-g-din').value = data.guest_dinner || 0; document.getElementById('pastMealData').classList.remove('hidden'); 
+        }); 
+    }
+    
+    window.saveSuperMeal = () => { 
+        const dt = document.getElementById('superEditDate').value; 
+        update(ref(db, `records/${dt.substring(0, 7)}/${dt}/${document.getElementById('superEditMealMem').value}`), { breakfast: document.getElementById('se-brk').value, lunch: document.getElementById('se-lun').value, dinner: document.getElementById('se-din').value, guest_breakfast: parseInt(document.getElementById('se-g-brk').value)||0, guest_lunch: parseInt(document.getElementById('se-g-lun').value)||0, guest_dinner: parseInt(document.getElementById('se-g-din').value)||0 }).then(() => { showSuccess("মিল ডাটা আপডেট হয়েছে!"); document.getElementById('pastMealData').classList.add('hidden'); }); 
+    }
+    
+    window.resetMonthlyData = () => {
+        Swal.fire({
+            title: 'আপনি কি নিশ্চিত?',
+            text: "এই মাসের সমস্ত হিসাব (জমা, খরচ, মিল) মুছে যাবে!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'হ্যাঁ, সব মুছে ফেলুন!',
+            cancelButtonText: 'না, বাতিল করুন'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                remove(ref(db, `records/${monthKey}`)).then(() => {
+                    Swal.fire('রিসেট সম্পন্ন!', 'চলতি মাসের সব হিসাব শূন্য করা হয়েছে।', 'success');
+                    document.getElementById('superEditType').value = ""; toggleSuperEdit();
+                }).catch((error) => {
+                    showError("রিসেট করতে সমস্যা হয়েছে: " + error.message);
                 });
             }
         });
-        let billed = {}, totalBilled = 0;
-        members.forEach(m => {
-            let actual = own[m];
-            let bill = actual;
-            if(!memberExceptions[m]) {
-                if(actual < messRules.t1) bill = messRules.p1;
-                else if(actual < messRules.t2) bill = messRules.p2;
+    }
+    
+    window.addNewMember = () => { 
+        const n = document.getElementById('newMemName').value; 
+        if (n) { set(ref(db, `records/memberConfig`), { ...memberNames, ["Member"+(Date.now())]: n }).then(() => { showSuccess("নতুন মেম্বার যুক্ত হয়েছে!"); document.getElementById('newMemName').value = ""; }); }
+    }
+
+    // মেম্বার রিমুভ করার ফাংশন
+    window.deleteMember = (mId, mName) => {
+        Swal.fire({
+            title: `${mName}-কে রিমুভ করবেন?`,
+            text: "এই মেম্বারের নাম লিস্ট থেকে মুছে যাবে! তবে তার পুরোনো হিসাব ডাটাবেসে সেভ থাকবে।",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'হ্যাঁ, রিমুভ করুন',
+            cancelButtonText: 'না'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let updates = {};
+                updates[`records/memberConfig/${mId}`] = null;
+                updates[`records/memberExceptions/${mId}`] = null;
+                updates[`records/memberPins/${mId}`] = null;
+                
+                update(ref(db), updates).then(() => {
+                    showSuccess("মেম্বারকে মেস থেকে রিমুভ করা হয়েছে!");
+                });
             }
-            let total = bill + guest[m];
-            billed[m] = total;
-            totalBilled += total;
         });
-        let rate = totalBilled > 0 ? mealCost / totalBilled : 0;
-        let fixedShare = members.length ? fixed / members.length : 0;
-        let ledgerHtml = '';
-        members.forEach(m => {
-            let actualTotal = own[m] + guest[m];
-            let billTotal = billed[m];
-            let cost = billTotal * rate;
-            let totalCost = cost + fixedShare;
-            let bal = deposit[m] - totalCost;
-            ledgerHtml += `<tr><td><strong>${memberNames[m]}</strong>${memberExceptions[m]?' <small>[ছাড়]</small>':''}</td><td>${actualTotal.toFixed(1)}<br><small>বিল: ${billTotal.toFixed(1)}</small></td><td>৳ ${cost.toFixed(1)}</td><td>৳ ${fixedShare.toFixed(1)}</td><td>৳ ${deposit[m]}</td><td style="color:${bal>=0?'green':'red'}">${bal.toFixed(1)}</td></tr>`;
-        });
-        document.getElementById('ledgerBody').innerHTML = ledgerHtml;
+    }
+    
+    function updateDropdowns() { 
+        let html = members.map(m => `<option value="${m}">${memberNames[m]}</option>`).join(''); 
+        ['loginUser', 'depMember', 'shopper1', 'superEditMem', 'superEditMealMem', 'dutyMem1', 'statementMemSelect'].forEach(id => { if (document.getElementById(id)) document.getElementById(id).innerHTML = html; }); 
+        if (document.getElementById('shopper2')) document.getElementById('shopper2').innerHTML = `<option value="">-- কেউ না --</option>` + html; 
+        if (document.getElementById('dutyMem2')) document.getElementById('dutyMem2').innerHTML = `<option value="">-- কেউ না --</option>` + html; 
+    }
+    
+    function renderSettingsList() { 
+        if (!document.getElementById('editMemList')) return; 
+        document.getElementById('editMemList').innerHTML = members.map(m => `
+            <div class="mem-accordion-section" style="margin-bottom:10px;">
+                <div class="mem-accordion-header" onclick="toggleMemberAccordion('${m}')" style="background:#f8fafc; padding:12px 15px; border:1px solid #e2e8f0; border-radius:10px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-weight:600;">
+                    <span><i class="fas fa-user-circle" style="color:var(--primary); margin-right:8px;"></i> ${memberNames[m]}</span>
+                    <i class="fas fa-chevron-down mem-toggle-icon" id="mem-icon-${m}" style="transition:transform 0.3s ease; color:gray;"></i>
+                </div>
+                <div class="mem-accordion-content" id="mem-content-${m}" style="display:none; padding:15px; border:1px solid #e2e8f0; border-top:none; background:#ffffff; border-radius:0 0 10px 10px; margin-top:-2px;">
+                    <label style="font-size:12px; font-weight:600; color:var(--text-muted);">মেম্বার নাম এডিট</label>
+                    <input type="text" id="edit-${m}" value="${memberNames[m]}" style="margin-bottom:10px; padding:8px;">
+                    
+                    <label style="font-size:12px; font-weight:600; color:var(--text-muted);">লগইন পিন (৪ সংখ্যার)</label>
+                    <input type="password" id="pin-${m}" value="${memberPins[m] || '1234'}" maxlength="4" placeholder="পিন কোড" style="margin-bottom:10px; padding:8px; font-family:monospace; text-align:center; letter-spacing:3px;">
+                    
+                    <label style="font-size:14px; font-weight:600; color:var(--text-main); display:flex; align-items:center; gap:5px; cursor:pointer; margin-top:5px;">
+                        <input type="checkbox" id="exempt-${m}" ${memberExceptions[m] ? 'checked' : ''} style="width:16px; height:16px; margin:0; cursor:pointer;"> नियम ছাড়া (পেনাল্টি মুক্ত)
+                    </label>
+
+                    <div style="margin-top: 15px; border-top: 1px dashed #ef4444; padding-top: 10px;">
+                        <button onclick="deleteMember('${m}', '${memberNames[m]}')" style="background:var(--danger); color:white; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; font-size:13px; font-weight:bold; width: 100%;"><i class="fas fa-user-minus"></i> মেম্বার ডিলিট করুন</button>
+                    </div>
+                </div>
+            </div>
+        `).join(''); 
+    }
+    
+    window.saveMemberEdits = () => { 
+        let c = {}, e = {}, p = {}; members.forEach(m => { c[m] = document.getElementById('edit-' + m).value; e[m] = document.getElementById('exempt-' + m).checked; p[m] = document.getElementById('pin-' + m).value || "1234"; }); 
+        update(ref(db, `records`), { 'memberConfig': c, 'memberExceptions': e, 'memberPins': p }).then(() => showSuccess("সেটিংস সফলভাবে সেভ হয়েছে!")); 
+    }
+    
+    function checkTimeLock() { 
+        const selectedDate = document.getElementById('mealScheduleDate').value;
+        if(!selectedDate || isManager) return;
+        document.getElementById("btn-breakfast").disabled = isMealLocked('breakfast', selectedDate); 
+        document.getElementById("btn-lunch").disabled = isMealLocked('lunch', selectedDate); 
+        document.getElementById("btn-dinner").disabled = isMealLocked('dinner', selectedDate); 
+    }
+    
+    setInterval(checkTimeLock, 60000);
+
+    // শিট মাস পরিবর্তনে রেন্ডার
+    if(document.getElementById('sheetMonthSelector')) {
+        document.getElementById('sheetMonthSelector').addEventListener('change', () => renderSheet());
     }
 
-    // PDF ডাউনলোড ফাংশন
-    window.downloadSheetPDF = () => {
-        const element = document.getElementById('sec-sheet').querySelector('.content-card');
-        html2pdf().from(element).save();
-    };
-    window.downloadLedgerPDF = () => {
-        const element = document.getElementById('sec-ledger').querySelector('.content-card');
-        html2pdf().from(element).save();
-    };
-
-    // আজকের মিল বিস্তারিত দেখানো
-    window.showMealDetail = (mealType) => {
-        let names = [];
-        members.forEach(m => {
-            let u = monthData[dateKey]?.[m] || {};
-            if(u[mealType] === "ON") names.push(memberNames[m]);
-        });
-        if(names.length === 0) showMsg("কেউ মিল অন করেনি", "info");
-        else Swal.fire({ title: `${mealType==='breakfast'?'সকাল':mealType==='lunch'?'দুপুর':'রাত'} এর মিল`, html: names.join("<br>"), icon: "info" });
-    };
-
-    // বাকি ফাংশন (আগের মতই)
-    function updateLockUI() {
-        document.getElementById('lockB').innerText = customLock.breakfast;
-        document.getElementById('lockL').innerText = customLock.lunch;
-        document.getElementById('lockD').innerText = customLock.dinner;
-        if(isManager) {
-            document.getElementById('lockTimeB').value = customLock.breakfast;
-            document.getElementById('lockTimeL').value = customLock.lunch;
-            document.getElementById('lockTimeD').value = customLock.dinner;
-        }
-    }
-    function updateRuleUI() {
-        if(isManager) {
-            document.getElementById('rule1Toggle').checked = messRules.t1===5 && messRules.p1===20;
-            document.getElementById('rule2Toggle').checked = messRules.t2===50 && messRules.p2===50;
-        }
-    }
-    window.saveLockTimes = () => { set(ref(db, 'records/customLockTimes'), { breakfast: document.getElementById('lockTimeB').value, lunch: document.getElementById('lockTimeL').value, dinner: document.getElementById('lockTimeD').value }).then(()=>showMsg("টাইম-লক সেভ হয়েছে")); };
-    window.saveDuty = () => { let d=document.getElementById('dutyDate').value, s1=document.getElementById('dutyMem1').value, s2=document.getElementById('dutyMem2').value; if(!s1) return showMsg("প্রধান বাজারী দিন","error"); set(ref(db,`records/bazaarDuty/${d}`),{s1,s2}).then(()=>showMsg("ডিউটি সেভ হয়েছে")); };
-    window.saveRulesToggle = () => { let newRules = { t1: 5, p1: 20, t2: 50, p2: 50 }; if(!document.getElementById('rule1Toggle').checked) { newRules.t1=0; newRules.p1=0; } if(!document.getElementById('rule2Toggle').checked) { newRules.t2=0; newRules.p2=0; } set(ref(db, `records/${currentMonthKey}/messRules`), newRules).then(()=>showMsg("নিয়ম আপডেট হয়েছে")); };
-    window.toggleEntryFields = () => { let t=document.getElementById('entryType').value; document.querySelectorAll('[id^="div-"]').forEach(d=>d.classList.add('hidden')); document.getElementById('div-'+t).classList.remove('hidden'); };
-    window.saveEntry = async () => { let type=document.getElementById('entryType').value;
-        if(type==='deposit'){ let m=document.getElementById('depMember').value, amt=parseFloat(document.getElementById('depAmount').value); if(!amt) return; let snap=await get(ref(db,`records/${currentMonthKey}/${dateKey}/${m}/deposit`)); let old=parseFloat(snap.val())||0; await set(ref(db,`records/${currentMonthKey}/${dateKey}/${m}/deposit`),old+amt); showMsg("জমা হয়েছে"); }
-        else if(type==='bazaar'){ let s1=document.getElementById('shopper1').value, s2=document.getElementById('shopper2').value, amt=parseFloat(document.getElementById('bazAmount').value); if(!amt) return; let snap=await get(ref(db,`records/${currentMonthKey}/totalBazaarCost`)); let old=parseFloat(snap.val())||0; await set(ref(db,`records/${currentMonthKey}/totalBazaarCost`),old+amt); await set(ref(db,`records/${currentMonthKey}/bazaarHistory/${Date.now()}`),{date:dateKey,type:'regular',shopper1:s1,shopper2:s2,amount:amt}); showMsg("বাজার সেভ হয়েছে"); }
-        else if(type==='rice'){ let note=document.getElementById('riceNote').value, amt=parseFloat(document.getElementById('riceAmount').value); if(!amt) return; let snap=await get(ref(db,`records/${currentMonthKey}/totalRiceCost`)); let old=parseFloat(snap.val())||0; await set(ref(db,`records/${currentMonthKey}/totalRiceCost`),old+amt); await set(ref(db,`records/${currentMonthKey}/bazaarHistory/${Date.now()}`),{date:dateKey,type:'rice',details:note,amount:amt}); showMsg("চালের খরচ সেভ হয়েছে"); }
-        else if(type==='fixed'){ let note=document.getElementById('fixedNote').value, amt=parseFloat(document.getElementById('fixedAmount').value); if(!amt) return; let snap=await get(ref(db,`records/${currentMonthKey}/totalFixedCost`)); let old=parseFloat(snap.val())||0; await set(ref(db,`records/${currentMonthKey}/totalFixedCost`),old+amt); await set(ref(db,`records/${currentMonthKey}/bazaarHistory/${Date.now()}`),{date:dateKey,type:'fixed',details:note,amount:amt}); showMsg("ফিক্সড খরচ সেভ হয়েছে"); }
-        document.getElementById('depAmount').value=''; document.getElementById('bazAmount').value=''; document.getElementById('riceAmount').value=''; document.getElementById('fixedAmount').value='';
-    };
-    window.saveNoticeAndMenu = () => { let notice=document.getElementById('mgrNotice').value; let menu={ day1Date:document.getElementById('menuDay1Date').value, day1B:document.getElementById('menuDay1B').value, day1L:document.getElementById('menuDay1L').value, day1D:document.getElementById('menuDay1D').value, day2Date:document.getElementById('menuDay2Date').value, day2B:document.getElementById('menuDay2B').value, day2L:document.getElementById('menuDay2L').value, day2D:document.getElementById('menuDay2D').value, day3Date:document.getElementById('menuDay3Date').value, day3B:document.getElementById('menuDay3B').value, day3L:document.getElementById('menuDay3L').value, day3D:document.getElementById('menuDay3D').value }; set(ref(db,`records/${currentMonthKey}/noticeBoard`),notice); set(ref(db,'records/threeDayMenuRoutine'),menu).then(()=>showMsg("নোটিশ ও মেনু সেভ হয়েছে")); };
-    window.toggleSuperEdit = () => { let t=document.getElementById('superType').value; document.querySelectorAll('[id$="Div"]').forEach(d=>d.classList.add('hidden')); if(t==='cost') document.getElementById('costDiv').classList.remove('hidden'); else if(t==='deposit'){ document.getElementById('depositDiv').classList.remove('hidden'); loadCurDeposit(); } else if(t==='meal') document.getElementById('mealDiv').classList.remove('hidden'); else if(t==='reset') document.getElementById('resetDiv').classList.remove('hidden'); };
-    window.loadCurDeposit = () => { let m=document.getElementById('editMemDeposit').value; document.getElementById('curDep').innerText = monthData[dateKey]?.[m]?.deposit || 0; };
-    window.editCost = async () => { let u={}; let b=document.getElementById('editBaz').value; if(b) u.totalBazaarCost=parseFloat(b); let r=document.getElementById('editRice').value; if(r) u.totalRiceCost=parseFloat(r); let f=document.getElementById('editFix').value; if(f) u.totalFixedCost=parseFloat(f); await update(ref(db,`records/${currentMonthKey}`),u); showMsg("খরচ আপডেট হয়েছে"); };
-    window.editDeposit = async () => { let m=document.getElementById('editMemDeposit').value, nd=parseFloat(document.getElementById('newDeposit').value); if(isNaN(nd)) return; await set(ref(db,`records/${currentMonthKey}/${dateKey}/${m}/deposit`),nd); showMsg("জমা আপডেট হয়েছে"); };
-    window.loadMealEdit = async () => { let date=document.getElementById('editMealDate').value, m=document.getElementById('editMealMem').value; let snap=await get(ref(db,`records/${date.substring(0,7)}/${date}/${m}`)); let d=snap.val()||{}; document.getElementById('mealEditPanel').innerHTML=`<div><label>সকাল</label><select id="seB"><option ${d.breakfast==="ON"?'selected':''}>ON</option><option ${d.breakfast!=="ON"?'selected':''}>OFF</option></select></div><div><label>দুপুর</label><select id="seL"><option ${d.lunch==="ON"?'selected':''}>ON</option><option ${d.lunch!=="ON"?'selected':''}>OFF</option></select></div><div><label>রাত</label><select id="seD"><option ${d.dinner==="ON"?'selected':''}>ON</option><option ${d.dinner!=="ON"?'selected':''}>OFF</option></select></div><div><label>গেস্ট সকাল</label><input id="seGB" value="${d.guest_breakfast||0}"></div><div><label>গেস্ট দুপুর</label><input id="seGL" value="${d.guest_lunch||0}"></div><div><label>গেস্ট রাত</label><input id="seGD" value="${d.guest_dinner||0}"></div><button class="btn-save" onclick="saveMealEdit()">আপডেট</button>`; };
-    window.saveMealEdit = async () => { let date=document.getElementById('editMealDate').value, m=document.getElementById('editMealMem').value; await update(ref(db,`records/${date.substring(0,7)}/${date}/${m}`),{ breakfast:document.getElementById('seB').value, lunch:document.getElementById('seL').value, dinner:document.getElementById('seD').value, guest_breakfast:parseInt(document.getElementById('seGB').value)||0, guest_lunch:parseInt(document.getElementById('seGL').value)||0, guest_dinner:parseInt(document.getElementById('seGD').value)||0 }); showMsg("মিল আপডেট হয়েছে"); };
-    window.resetMonth = () => { Swal.fire({ title:"নিশ্চিত?", text:"সব ডাটা মুছে যাবে!", icon:"warning", showCancelButton:true, confirmButtonColor:"#d33", confirmButtonText:"হ্যাঁ, রিসেট" }).then(res=>{ if(res.isConfirmed) remove(ref(db,`records/${currentMonthKey}`)).then(()=>showMsg("রিসেট সম্পন্ন")); }); };
-    window.changeMasterPin = async () => { let old=document.getElementById('oldMasterPin').value, newp=document.getElementById('newMasterPin').value; let snap=await get(ref(db,'records/managerPin')); if(old!==(snap.val()||"0000")) return showMsg("পুরাতন পিন ভুল","error"); await set(ref(db,'records/managerPin'),newp); showMsg("মাস্টার পিন পরিবর্তিত হয়েছে"); };
-    window.addMember = async () => { let name=document.getElementById('newMemberName').value; if(!name) return; let newId="Member"+(members.length+1); await update(ref(db,'records/memberConfig'),{[newId]:name}); await set(ref(db,`records/memberPins/${newId}`),"1234"); showMsg("নতুন মেম্বার যোগ হয়েছে"); document.getElementById('newMemberName').value=''; };
-    window.loadTestData = async () => {
-        if(!isManager) { showMsg("শুধু ম্যানেজার টেস্ট ডাটা লোড করতে পারেন", "error"); return; }
-        await set(ref(db, `records/${currentMonthKey}/totalBazaarCost`), 5000);
-        await set(ref(db, `records/${currentMonthKey}/totalRiceCost`), 3000);
-        await set(ref(db, `records/${currentMonthKey}/totalFixedCost`), 2000);
-        await set(ref(db, `records/${currentMonthKey}/${dateKey}/Member1/deposit`), 5000);
-        await set(ref(db, `records/${currentMonthKey}/${dateKey}/Member1/breakfast`), "ON");
-        await set(ref(db, `records/${currentMonthKey}/${dateKey}/Member1/lunch`), "ON");
-        await set(ref(db, `records/${currentMonthKey}/${dateKey}/Member1/dinner`), "ON");
-        showMsg("টেস্ট ডাটা লোড হয়েছে (বাজার ৫০০০, চাল ৩০০০, ফিক্সড ২০০০, মেম্বার জমা ৫০০০)");
-    };
-    function renderMemberList() { let html=''; members.forEach(m=>{ html+=`<div class="mem-item" style="margin-bottom:15px; border:1px solid #e2e8f0; border-radius:20px; padding:12px;"><div onclick="toggleMemberAccordion('${m}')" style="cursor:pointer; display:flex; justify-content:space-between;"><span><i class="fas fa-user"></i> ${memberNames[m]}</span><i class="fas fa-chevron-down" id="icon-${m}"></i></div><div id="mem-${m}" style="display:none; margin-top:10px;"><input type="text" id="name-${m}" value="${memberNames[m]}"><input type="password" id="pin-${m}" value="${memberPins[m]||'1234'}" maxlength="4"><label><input type="checkbox" id="exempt-${m}" ${memberExceptions[m]?'checked':''}> পেনাল্টি মুক্ত</label></div></div>`; }); document.getElementById('memberEditList').innerHTML=html; }
-    window.toggleMemberAccordion = (id) => { let div=document.getElementById('mem-'+id), icon=document.getElementById('icon-'+id); if(div.style.display==='none'){ div.style.display='block'; icon.style.transform='rotate(180deg)'; } else { div.style.display='none'; icon.style.transform='rotate(0deg)'; } };
-    window.saveAllMembers = async () => { let c={}, e={}, p={}; members.forEach(m=>{ c[m]=document.getElementById('name-'+m).value; e[m]=document.getElementById('exempt-'+m).checked; p[m]=document.getElementById('pin-'+m).value||"1234"; }); await update(ref(db,'records'),{memberConfig:c,memberExceptions:e,memberPins:p}); showMsg("মেম্বার তথ্য সেভ হয়েছে"); };
-    function updateDropdowns() { let opt=members.map(m=>`<option value="${m}">${memberNames[m]}</option>`).join(''); document.getElementById('loginUser').innerHTML=opt; document.getElementById('depMember').innerHTML=opt; document.getElementById('shopper1').innerHTML=opt; document.getElementById('shopper2').innerHTML='<option value="">-- কেউ না --</option>'+opt; document.getElementById('dutyMem1').innerHTML=opt; document.getElementById('dutyMem2').innerHTML='<option value="">-- কেউ না --</option>'+opt; document.getElementById('statementUser').innerHTML=opt; document.getElementById('editMemDeposit').innerHTML=opt; document.getElementById('editMealMem').innerHTML=opt; let mHtml=`<div><label>১ম দিন</label><input type="date" id="menuDay1Date"><input type="text" id="menuDay1B" placeholder="সকাল"><input type="text" id="menuDay1L" placeholder="দুপুর"><input type="text" id="menuDay1D" placeholder="রাত"></div><div><label>২য় দিন</label><input type="date" id="menuDay2Date"><input type="text" id="menuDay2B" placeholder="সকাল"><input type="text" id="menuDay2L" placeholder="দুপুর"><input type="text" id="menuDay2D" placeholder="রাত"></div><div><label>৩য় দিন</label><input type="date" id="menuDay3Date"><input type="text" id="menuDay3B" placeholder="সকাল"><input type="text" id="menuDay3L" placeholder="দুপুর"><input type="text" id="menuDay3D" placeholder="রাত"></div>`; document.getElementById('menuInputs').innerHTML=mHtml; }
-    window.switchTab = (id) => { document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); event.currentTarget.classList.add('active'); document.querySelectorAll('[id^="sec-"]').forEach(s=>s.classList.add('hidden')); document.getElementById('sec-'+id).classList.remove('hidden'); if(id==='sheet') renderSheetForMonth(selectedSheetMonth); if(id==='ledger') renderLedgerForMonth(selectedLedgerMonth); if(id==='statement') renderStatementTable(); window.scrollTo(0,0); };
-    function renderStatementTable() { let target = isManager ? document.getElementById('statementUser').value : currentUser; if(!target) return; let days = Object.keys(monthData).filter(d=>d.includes('-')&&d.length>8).sort(); let html=''; days.forEach(day=>{ let d=monthData[day][target]||{}; html+=`<tr><td>${day.split('-')[2]}</td><td>${d.breakfast==="ON"?'0.5':'OFF'}</td><td>${d.lunch==="ON"?'1.0':'OFF'}</td><td>${d.dinner==="ON"?'1.0':'OFF'}</td><td>${(parseFloat(d.guest_breakfast)||0)+(parseFloat(d.guest_lunch)||0)+(parseFloat(d.guest_dinner)||0)}</td><td>${parseFloat(d.deposit)||0}</td></tr>`; }); document.getElementById('statementBody').innerHTML=html; }
-    function renderMenu(menu) { let cont=document.getElementById('menuContainer'); if(!cont) return; if(!menu||!menu.day1Date){ cont.innerHTML='<p>কোনো মেনু নেই</p>'; return; } let html=''; for(let i=1;i<=3;i++){ if(menu[`day${i}Date`]){ html+=`<div class="menu-card"><div class="menu-header">${menu[`day${i}Date`]}</div><div class="menu-item">🌅 ${menu[`day${i}B`]||'-'}</div><div class="menu-item">🌞 ${menu[`day${i}L`]||'-'}</div><div class="menu-item">🌙 ${menu[`day${i}D`]||'-'}</div></div>`; } } cont.innerHTML=html; if(isManager){ document.getElementById('menuDay1Date').value=menu.day1Date||''; document.getElementById('menuDay1B').value=menu.day1B||''; document.getElementById('menuDay1L').value=menu.day1L||''; document.getElementById('menuDay1D').value=menu.day1D||''; document.getElementById('menuDay2Date').value=menu.day2Date||''; document.getElementById('menuDay2B').value=menu.day2B||''; document.getElementById('menuDay2L').value=menu.day2L||''; document.getElementById('menuDay2D').value=menu.day2D||''; document.getElementById('menuDay3Date').value=menu.day3Date||''; document.getElementById('menuDay3B').value=menu.day3B||''; document.getElementById('menuDay3L').value=menu.day3L||''; document.getElementById('menuDay3D').value=menu.day3D||''; } }
-    function isMealLocked(type, date) { let now=new Date(), target=new Date(date); let todayDate=new Date(now.getFullYear(),now.getMonth(),now.getDate()); let targetDate=new Date(target.getFullYear(),target.getMonth(),target.getDate()); if(targetDate<todayDate) return true; if(type==='breakfast'){ let [h,m]=customLock.breakfast.split(':'); let deadline=new Date(target); deadline.setDate(deadline.getDate()-1); deadline.setHours(h,m,0,0); return now>=deadline; } if(type==='lunch'){ let [h,m]=customLock.lunch.split(':'); let deadline=new Date(target); deadline.setHours(h,m,0,0); return now>=deadline; } if(type==='dinner'){ let [h,m]=customLock.dinner.split(':'); let deadline=new Date(target); deadline.setHours(h,m,0,0); return now>=deadline; } return false; }
-    window.loadMeals = async () => { if(isManager||!currentUser) return; let date=document.getElementById('mealDate').value; if(!date) return; let snap=await get(ref(db,`records/${date.substring(0,7)}/${date}/${currentUser}`)); let d=snap.val()||{}; document.getElementById('btnB').innerText=d.breakfast==="ON"?"ON":"OFF"; document.getElementById('btnL').innerText=d.lunch==="ON"?"ON":"OFF"; document.getElementById('btnD').innerText=d.dinner==="ON"?"ON":"OFF"; document.getElementById('btnB').className=`toggle-btn ${d.breakfast==="ON"?"btn-on":"btn-off"}`; document.getElementById('btnL').className=`toggle-btn ${d.lunch==="ON"?"btn-on":"btn-off"}`; document.getElementById('btnD').className=`toggle-btn ${d.dinner==="ON"?"btn-on":"btn-off"}`; document.getElementById('guestCount').value=d["guest_"+document.getElementById('guestTime').value]||0; checkButtons(); };
-    function checkButtons() { let date=document.getElementById('mealDate')?.value; if(!date||isManager) return; document.getElementById('btnB').disabled=isMealLocked('breakfast',date); document.getElementById('btnL').disabled=isMealLocked('lunch',date); document.getElementById('btnD').disabled=isMealLocked('dinner',date); }
-    window.toggleMeal = async (type) => { if(isManager||!currentUser) return; let date=document.getElementById('mealDate').value; if(isMealLocked(type,date)){ showMsg("সময় পার হয়েছে!","error"); return; } let btn=document.getElementById('btn-'+(type==='breakfast'?'B':type==='lunch'?'L':'D')); let newState=btn.innerText==="ON"?"OFF":"ON"; const confirm=await Swal.fire({title:"নিশ্চিত?",text:`মিল ${newState==="ON"?"অন":"অফ"} করতে চান?`,icon:"question",showCancelButton:true,confirmButtonText:"হ্যাঁ",cancelButtonText:"না"}); if(!confirm.isConfirmed) return; let [y,m,start]=date.split('-'); let last=new Date(parseInt(y),parseInt(m),0).getDate(); let updates={}; for(let d=parseInt(start);d<=last;d++){ let dStr=`${y}-${m}-${String(d).padStart(2,'0')}`; updates[`records/${dStr.substring(0,7)}/${dStr}/${currentUser}/${type}`]=newState; } await update(ref(db),updates); btn.innerText=newState; btn.className=`toggle-btn ${newState==="ON"?"btn-on":"btn-off"}`; showMsg(newState==="ON"?"মিল অন হয়েছে":"মিল অফ হয়েছে"); };
-    window.saveGuest = async () => { if(isManager||!currentUser) return; let date=document.getElementById('mealDate').value; let slot="guest_"+document.getElementById('guestTime').value; let count=parseInt(document.getElementById('guestCount').value)||0; let type=document.getElementById('guestTime').value; if(isMealLocked(type,date)){ showMsg("সময় পার হয়েছে!","error"); return; } await update(ref(db,`records/${date.substring(0,7)}/${date}/${currentUser}`),{[slot]:count}); showMsg("গেস্ট মিল সেভ হয়েছে"); };
-    window.changeOwnPin = async () => { let old=document.getElementById('oldPin').value, newp=document.getElementById('newPin').value; let snap=await get(ref(db,`records/memberPins/${currentUser}`)); if(old!==(snap.val()||"1234")) return showMsg("পুরাতন পিন ভুল","error"); await set(ref(db,`records/memberPins/${currentUser}`),newp); showMsg("পিন পরিবর্তিত হয়েছে"); document.getElementById('oldPin').value=''; document.getElementById('newPin').value=''; };
-    window.toggleAccordion = (header) => { let content=header.nextElementSibling; if(content.style.display==='block') content.style.display='none'; else content.style.display='block'; };
-    function renderAll() { if(!monthData||!members.length) return; let bazaar=parseFloat(monthData.totalBazaarCost)||0, rice=parseFloat(monthData.totalRiceCost)||0, fixed=parseFloat(monthData.totalFixedCost)||0, mealCost=bazaar+rice; let own={},guest={},deposit={}; members.forEach(m=>{ own[m]=0; guest[m]=0; deposit[m]=0; }); let tb=0,tl=0,tr=0; Object.keys(monthData).forEach(day=>{ if(day.includes('-')&&day.length>8){ members.forEach(m=>{ let u=monthData[day][m]||{}; deposit[m]+=parseFloat(u.deposit)||0; if(day<=dateKey){ if(u.breakfast==="ON") own[m]+=0.5; if(u.lunch==="ON") own[m]+=1.0; if(u.dinner==="ON") own[m]+=1.0; let gb=parseFloat(u.guest_breakfast)||0, gl=parseFloat(u.guest_lunch)||0, gd=parseFloat(u.guest_dinner)||0; guest[m]+=(gb*0.5+gl+gd); if(day===dateKey){ if(u.breakfast==="ON") tb+=0.5; if(u.lunch==="ON") tl+=1.0; if(u.dinner==="ON") tr+=1.0; tb+=gb*0.5; tl+=gl; tr+=gd; } } }); } }); let billed={}, totalBilled=0; members.forEach(m=>{ let actual=own[m]; let bill=actual; if(!memberExceptions[m]){ if(actual<messRules.t1) bill=messRules.p1; else if(actual<messRules.t2) bill=messRules.p2; } let total=bill+guest[m]; billed[m]=total; totalBilled+=total; }); let rate=totalBilled>0?mealCost/totalBilled:0; let fixedShare=members.length?fixed/members.length:0; document.getElementById('topMeals').innerText=totalBilled.toFixed(1)+" টি"; document.getElementById('topFixedCost').innerText="৳ "+fixed; document.getElementById('liveRate').innerText=rate.toFixed(2); document.getElementById('liveTotalCost').innerText=mealCost; document.getElementById('topTodayTotal').innerText=(tb+tl+tr).toFixed(1)+" টি"; document.getElementById('t-b').innerText=tb.toFixed(1); document.getElementById('t-l').innerText=tl.toFixed(1); document.getElementById('t-r').innerText=tr.toFixed(1); let ledger='', totalDep=0; members.forEach(m=>{ let actualTotal=own[m]+guest[m]; let billTotal=billed[m]; let cost=billTotal*rate; let totalCost=cost+fixedShare; let bal=deposit[m]-totalCost; totalDep+=deposit[m]; let display=actualTotal===billTotal?`<b>${actualTotal.toFixed(1)}</b>`:`${actualTotal.toFixed(1)}<br><small>(বিল: ${billTotal.toFixed(1)})</small>`; ledger+=`<tr><td><strong>${memberNames[m]}</strong>${memberExceptions[m]?' <small>[ছাড়]</small>':''}</td><td>${display}</td><td>৳ ${cost.toFixed(1)}</td><td>৳ ${fixedShare.toFixed(1)}</td><td>৳ ${deposit[m]}</td><td style="color:${bal>=0?'green':'red'}">${bal.toFixed(1)}</td></tr>`; }); document.getElementById('ledgerBody').innerHTML=ledger; document.getElementById('liveCash').innerText=(totalDep-(mealCost+fixed)).toFixed(2); if(!isManager&&currentUser){ let myTotal=own[currentUser]+guest[currentUser]; let myBill=billed[currentUser]; let myBal=deposit[currentUser]-((myBill*rate)+fixedShare); document.getElementById('myTotalMeals').innerHTML=myTotal.toFixed(1)+" টি"; document.getElementById('topBalance').innerHTML="৳ "+myBal.toFixed(1); document.getElementById('balanceCard').className=`stat-card ${myBal>=0?'green':'red'}`; } renderSheetForMonth(selectedSheetMonth); renderLedgerForMonth(selectedLedgerMonth); renderStatementTable(); let histB='',histR='',histF=''; if(monthData.bazaarHistory){ Object.values(monthData.bazaarHistory).forEach(h=>{ if(h.type==='rice') histR+=`<tr><td>${h.date}</td><td>${h.details}</td><td>${h.amount}</td></tr>`; else if(h.type==='fixed') histF+=`<tr><td>${h.date}</td><td>${h.details}</td><td>${h.amount}</td></tr>`; else histB+=`<tr><td>${h.date}</td><td>${memberNames[h.shopper1]}${h.shopper2?' ও '+memberNames[h.shopper2]:''}</td><td>${h.amount}</td></tr>`; }); } document.getElementById('histB').innerHTML=histB||'<tr><td colspan="3">কোনো এন্ট্রি নেই</td></tr>'; document.getElementById('histR').innerHTML=histR||'<tr><td colspan="3">কোনো এন্ট্রি নেই</td></tr>'; document.getElementById('histF').innerHTML=histF||'<tr><td colspan="3">কোনো এন্ট্রি নেই</td></tr>'; }
-    setInterval(()=>{ if(document.getElementById('mealDate')) checkButtons(); },1000);
-    get(ref(db,'records/memberConfig')).then(s=>{ memberNames=s.val()||{Member1:"প্রশাসক"}; members=Object.keys(memberNames); updateDropdowns(); });
+    get(ref(db, `records/memberConfig`)).then(snap => { 
+        const data = snap.val() || { "Member1": "অ্যাডমিন" }; 
+        memberNames = data; 
+        members = Object.keys(data); 
+        updateDropdowns(); 
+    });
 </script>
+
 </body>
 </html>

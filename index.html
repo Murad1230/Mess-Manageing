@@ -13,6 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
     <style>
+        /* আপনার আগের CSS ঠিক থাকবে, আমি শুধু নিশ্চিত করছি */
         :root {
             --primary: #4f46e5;
             --secondary: #6366f1;
@@ -34,14 +35,11 @@
             margin: 0;
             color: var(--text-main);
             padding-bottom: 30px;
-            transition: background var(--transition), color var(--transition);
         }
 
         .container { width: 95%; max-width: 1100px; margin: 20px auto; box-sizing: border-box; }
-
         .login-card { max-width: 400px; margin: 80px auto; background: var(--card-bg); padding: 35px; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
         .login-card h2 { font-size: 22px; margin-bottom: 30px; color: var(--primary); font-weight: 600; }
-
         .header { display: flex; justify-content: space-between; align-items: center; background: var(--primary); padding: 15px 25px; border-radius: var(--radius); color: white; margin-bottom: 20px; box-shadow: var(--shadow); flex-wrap: wrap; gap: 10px; }
         .header-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -97,7 +95,6 @@
         input:checked + .slider { background-color: var(--success); }
         input:checked + .slider:before { transform: translateX(24px); }
         input:disabled + .slider { opacity: 0.5; cursor: not-allowed; }
-        .switch-label { font-weight: 500; font-size: 14px; }
 
         .meal-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: #f8fafc; margin-bottom: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
         .meal-row span { font-weight: 600; font-size: 15px; }
@@ -184,6 +181,21 @@
         .rule-box { background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px; border-radius: 10px; margin-bottom: 10px; }
         .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: center; margin-top: 8px; }
 
+        .action-btn {
+            border: none;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+            color: white;
+        }
+        .action-btn:hover { transform: scale(1.05); opacity: 0.9; }
+        .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .action-btn.pay { background: var(--success); }
+        .action-btn.refund { background: var(--warning); color: #1e293b; }
+
         @media (max-width: 768px) {
             .backup-actions { flex-direction: column; }
             .ledger-filter { flex-direction: column; align-items: stretch; }
@@ -227,7 +239,7 @@
                 <div class="stat-icon"><i class="fas fa-wallet"></i></div>
                 <div class="stat-info">
                     <h4 id="balanceCardTitle">আমার ফাইনাল ব্যালেন্স</h4>
-                    <h2 id="topBalance">৳ ০.০</h2>
+                    <h2 id="topBalance">৳ ০.০০</h2>
                 </div>
             </div>
             <div class="stat-card blue" id="myMealsCard">
@@ -248,7 +260,7 @@
                 <div class="stat-icon"><i class="fas fa-home"></i></div>
                 <div class="stat-info">
                     <h4>ফিক্সড খরচ</h4>
-                    <h2 id="topFixedCost">৳ ০</h2>
+                    <h2 id="topFixedCost">৳ ০.০০</h2>
                 </div>
             </div>
             <div class="stat-card green" style="grid-column: 1 / -1;">
@@ -351,7 +363,7 @@
                 </div>
                 <div class="table-container">
                     <table>
-                        <thead><tr><th>নাম</th><th>মোট মিল<br><small>(প্রকৃত/বিল)</small></th><th>মিল খরচ</th><th>ফিক্সড খরচ</th><th>মোট জমা</th><th>অবস্থা</th></tr></thead>
+                        <thead><tr><th>নাম</th><th>মোট মিল<br><small>(প্রকৃত/বিল)</small></th><th>মিল খরচ</th><th>ফিক্সড খরচ</th><th>মোট জমা</th><th>ব্যালেন্স</th><th style="min-width:100px;">অ্যাকশন</th></tr></thead>
                         <tbody id="ledgerTableBody"></tbody>
                     </table>
                 </div>
@@ -424,7 +436,7 @@
                 </div>
                 <div class="table-container">
                     <table>
-                        <thead><tr><th>নাম</th><th>মোট মিল<br><small>(প্রকৃত/বিল)</small></th><th>মিল খরচ</th><th>ফিক্সড খরচ</th><th>মোট জমা</th><th>ব্যালেন্স</th></tr></thead>
+                        <thead><tr><th>নাম</th><th>মোট মিল<br><small>(প্রকৃত/বিল)</small></th><th>মিল খরচ</th><th>ফিক্সড খরচ</th><th>মোট জমা</th><th>ব্যালেন্স</th><th>অ্যাকশন</th></tr></thead>
                         <tbody id="ledgerTableBodyFiltered"></tbody>
                     </table>
                 </div>
@@ -436,6 +448,7 @@
             <div class="content-card"><h3 style="color:var(--success);"><i class="fas fa-shopping-cart"></i> বাজার ইতিহাস</h3><div class="table-container"><table><thead><tr><th>তারিখ</th><th>বাজারী</th><th>টাকা</th></tr></thead><tbody id="histBazaar"></tbody></table></div></div>
             <div class="content-card"><h3 style="color:#b45309;"><i class="fas fa-seedling"></i> চালের ইতিহাস (Due/Paid)</h3><div class="table-container"><table><thead><tr><th>তারিখ</th><th>বিবরণ</th><th>টাকা</th></tr></thead><tbody id="histRice"></tbody></table></div></div>
             <div class="content-card"><h3 style="color:#6b21a8;"><i class="fas fa-home"></i> ফিক্সড খরচ ইতিহাস (Due/Paid)</h3><div class="table-container"><table><thead><tr><th>তারিখ</th><th>বিবরণ</th><th>টাকা</th></tr></thead><tbody id="histFixed"></tbody></table></div></div>
+            <div class="content-card"><h3 style="color:var(--warning);"><i class="fas fa-undo-alt"></i> ফেরত / রিফান্ড ইতিহাস</h3><div class="table-container"><table><thead><tr><th>তারিখ</th><th>মেম্বার</th><th>পরিমাণ</th></tr></thead><tbody id="histRefund"></tbody></table></div></div>
         </div>
 
         <!-- MANAGER TAB -->
@@ -600,8 +613,8 @@
         <!-- FOOTER -->
         <div class="content-card" style="background:var(--primary); color:white; display:flex; justify-content:space-around; text-align:center; margin-bottom:30px;">
             <div><small>মিল রেট</small><br><strong id="liveRate">০.০০</strong></div>
-            <div><small>মোট খরচ</small><br><strong id="liveTotalCost">০</strong></div>
-            <div><small>ম্যানেজার ক্যাশ</small><br><strong id="liveCash">০</strong></div>
+            <div><small>মোট খরচ</small><br><strong id="liveTotalCost">০.০০</strong></div>
+            <div><small>ম্যানেজার ক্যাশ</small><br><strong id="liveCash">০.০০</strong></div>
         </div>
     </div>
 </div>
@@ -630,7 +643,7 @@
     let isManager = false;
     let monthRawData = {};
     let globalDeposits = {};
-    let currentSessionMonth = ""; // মাস ট্র্যাক করতে
+    let currentSessionMonth = "";
 
     const today = new Date();
     const defaultMonth = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}`;
@@ -646,7 +659,6 @@
         document.getElementById('sheetMonthSelector').value = defaultMonth;
     }
 
-    // ===== মাস সিলেক্টর পপুলেট =====
     function populateMonthSelector(selectElement, selectedValue) {
         if (!selectElement) return;
         const currentYear = today.getFullYear();
@@ -667,14 +679,10 @@
         selectElement.innerHTML = html;
     }
 
-    // লগইন স্ক্রিনে মাস সিলেক্টর
     const loginMonthSelect = document.getElementById('loginMonth');
     populateMonthSelector(loginMonthSelect, defaultMonth);
-
-    // হেডারে মাস সিলেক্টর (শুরুতে খালি থাকবে, পরে পপুলেট হবে)
     const headerMonthSelect = document.getElementById('headerMonthSelect');
 
-    // ===== টোস্ট সিস্টেম =====
     function showToast(message, type = 'success', duration = 3000) {
         const container = document.getElementById('toastContainer');
         const toast = document.createElement('div');
@@ -708,13 +716,55 @@
         });
     }
 
-    // ===== মাস পরিবর্তন ফাংশন =====
+    // ========== অ্যাকর্ডিয়ন ফাংশন ==========
+    window.toggleAccordion = function(sectionId) {
+        const targetSection = document.getElementById(sectionId);
+        if (!targetSection) return;
+        const isActive = targetSection.classList.contains('active');
+        document.querySelectorAll('.accordion-section').forEach(sec => {
+            sec.classList.remove('active');
+            const content = sec.querySelector('.accordion-content');
+            if (content) {
+                content.style.maxHeight = '0';
+                content.style.padding = '0 20px';
+            }
+        });
+        if (!isActive) {
+            targetSection.classList.add('active');
+            const content = targetSection.querySelector('.accordion-content');
+            if (content) {
+                content.style.maxHeight = '800px';
+                content.style.padding = '20px';
+            }
+        }
+    };
+
+    window.toggleMemberAccordion = function(memId) {
+        const content = document.getElementById('mem-content-' + memId);
+        const icon = document.getElementById('mem-icon-' + memId);
+        if (!content || !icon) return;
+        document.querySelectorAll('.mem-accordion-content').forEach(el => {
+            if (el.id !== 'mem-content-' + memId) {
+                el.style.display = 'none';
+                const otherIcon = document.getElementById('mem-icon-' + el.id.replace('mem-content-', ''));
+                if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+            }
+        });
+        const isHidden = content.style.display === 'none' || content.style.display === '';
+        if (isHidden) {
+            content.style.display = 'block';
+            icon.style.transform = 'rotate(180deg)';
+        } else {
+            content.style.display = 'none';
+            icon.style.transform = 'rotate(0deg)';
+        }
+    };
+
+    // ===== মাস পরিবর্তন =====
     window.changeSessionMonth = (newMonth) => {
         if (!newMonth) return;
         currentSessionMonth = newMonth;
-        // হেডার সিলেক্টর আপডেট
         if (headerMonthSelect) headerMonthSelect.value = newMonth;
-        // সব ডাটা রিলোড
         syncLedger();
         if (document.getElementById('sec-sheet') && !document.getElementById('sec-sheet').classList.contains('hidden')) {
             renderSheet();
@@ -756,9 +806,7 @@
     function showDashboard() {
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('mainDashboard').classList.remove('hidden');
-        // হেডারের মাস সিলেক্টর পপুলেট করুন
         populateMonthSelector(headerMonthSelect, currentSessionMonth);
-        // হেডার সিলেক্টরের ভ্যালু সেট করুন
         headerMonthSelect.value = currentSessionMonth;
 
         if (isManager) {
@@ -784,7 +832,6 @@
         if (event && event.currentTarget) {
             event.currentTarget.classList.add('active');
         } else {
-            // যদি event না আসে, তাহলে প্রথম ট্যাব অ্যাকটিভ করি
             const tabs = document.querySelectorAll('.tab');
             tabs.forEach(t => {
                 if (t.textContent.trim().includes(tabId) || t.dataset.tab === tabId) {
@@ -1071,17 +1118,96 @@
         });
     }
 
-    // ===== লেজার মাস ফিল্টার =====
-    window.renderLedgerForMonth = async (month) => {
-        if (!month) return;
-        const snap = await get(ref(db, `records/${month}`));
-        const data = snap.val() || {};
+    // ===== নতুন রিফান্ড ফাংশন (ডেটাবেজ থেকে সরাসরি ডিপোজিট ক্যালকুলেট) =====
+    window.refundMoney = async (memberId, amount) => {
+        if (!isManager) return showError("শুধু ম্যানেজার পারেন!");
+        if (!amount || amount <= 0) return showWarning("ফেরত দেওয়ার মতো টাকা নেই!");
+
+        try {
+            const monthKey = currentSessionMonth || defaultMonth;
+            const snapshot = await get(ref(db, `records/${monthKey}`));
+            const data = snapshot.val() || {};
+            let totalDeposit = 0;
+            Object.keys(data).forEach(day => {
+                if (day.includes('-') && day.length > 8) {
+                    const userData = data[day]?.[memberId];
+                    if (userData) {
+                        totalDeposit += parseFloat(userData.deposit) || 0;
+                    }
+                }
+            });
+
+            if (totalDeposit < amount - 0.01) {
+                return showError(`বর্তমান মোট ডিপোজিট (${totalDeposit.toFixed(2)}) থেকে বেশি (${amount.toFixed(2)}) টাকা ফেরত দেওয়া সম্ভব নয়!`);
+            }
+
+            const confirmResult = await confirmAction(
+                `ফেরত নিশ্চিত করুন`,
+                `${memberNames[memberId]} কে ${amount} টাকা ফেরত দেওয়া হবে।\nবর্তমান মোট ডিপোজিট: ${totalDeposit.toFixed(2)} টাকা\nফেরতের পর নতুন ডিপোজিট হবে: ${(totalDeposit - amount).toFixed(2)} টাকা`,
+                'হ্যাঁ, ফেরত দিন'
+            );
+
+            if (!confirmResult.isConfirmed) return;
+
+            const todayStr = dateKey;
+            const todaySnap = await get(ref(db, `records/${currentSessionMonth}/${todayStr}/${memberId}/deposit`));
+            let todayDep = parseFloat(todaySnap.val()) || 0;
+            const newTodayDep = todayDep - amount;
+
+            const updates = {};
+            updates[`records/${currentSessionMonth}/${todayStr}/${memberId}/deposit`] = newTodayDep;
+
+            const refundRef = ref(db, `records/${currentSessionMonth}/refundHistory`);
+            const newKey = push(refundRef).key;
+            updates[`records/${currentSessionMonth}/refundHistory/${newKey}`] = {
+                date: dateKey,
+                memberId: memberId,
+                memberName: memberNames[memberId],
+                amount: amount
+            };
+
+            await update(ref(db), updates);
+            showSuccess(`${memberNames[memberId]} কে ${amount} টাকা ফেরত দেওয়া হয়েছে!`);
+            syncLedger();
+
+        } catch (error) {
+            showError("ফেরত দিতে সমস্যা: " + error.message);
+        }
+    };
+
+    // ===== পেইড ফাংশন =====
+    window.payDues = (memberId, amount) => {
+        if (!isManager) return showError("শুধু ম্যানেজার পারেন!");
+        if (!amount || amount <= 0) return showWarning("বকেয়া নেই!");
+        
+        confirmAction(`পেমেন্ট নিশ্চিত করুন`, `${memberNames[memberId]} এর ${amount} টাকা বকেয়া পরিশোধ হবে।`, 'হ্যাঁ, পেমেন্ট করুন').then((result) => {
+            if (result.isConfirmed) {
+                const todayStr = dateKey;
+                get(ref(db, `records/${currentSessionMonth}/${todayStr}/${memberId}/deposit`)).then(snap => {
+                    const currentDep = parseFloat(snap.val()) || 0;
+                    const newDep = currentDep + amount;
+                    update(ref(db, `records/${currentSessionMonth}/${todayStr}/${memberId}`), { deposit: newDep }).then(() => {
+                        showSuccess(`${memberNames[memberId]} এর বকেয়া ${amount} টাকা পরিশোধ হয়েছে!`);
+                        syncLedger();
+                    }).catch(err => showError("আপডেট করতে সমস্যা: " + err.message));
+                });
+            }
+        });
+    };
+
+    // ===== লেজার রেন্ডার (সবার শেষে ফরম্যাট করা) =====
+    function renderLedgerTable(data, targetElementId, showActions = false) {
+        const tbody = document.getElementById(targetElementId);
+        if (!tbody) return;
+
         const bazaar = parseFloat(data.totalBazaarCost) || 0;
         const rice = parseFloat(data.totalRiceCost) || 0;
         const fixed = parseFloat(data.totalFixedCost) || 0;
         const mealCost = bazaar + rice;
+
         let own = {}, guest = {}, deposit = {};
         members.forEach(m => { own[m]=0; guest[m]=0; deposit[m]=0; });
+
         Object.keys(data).forEach(day => {
             if(day.includes('-') && day.length>8) {
                 members.forEach(m => {
@@ -1095,6 +1221,7 @@
                 });
             }
         });
+
         let billed = {}, totalBilled = 0;
         members.forEach(m => {
             let actual = own[m];
@@ -1107,23 +1234,48 @@
             billed[m] = total;
             totalBilled += total;
         });
+
         const rate = totalBilled > 0 ? mealCost / totalBilled : 0;
         const fixedShare = members.length ? fixed / members.length : 0;
-        let ledgerHtml = '';
+
+        let html = '';
         members.forEach(m => {
             const actualTotal = own[m] + guest[m];
             const billTotal = billed[m];
             const cost = billTotal * rate;
             const totalCost = cost + fixedShare;
             const bal = deposit[m] - totalCost;
-            ledgerHtml += `<tr><td><strong>${memberNames[m]}</strong>${memberExceptions[m]?'<br><small>[ছাড়]</small>':''}</td>
+
+            let actionHtml = '';
+            if (showActions && isManager) {
+                if (bal < -0.01) {
+                    actionHtml = `<button class="action-btn pay" onclick="payDues('${m}', ${Math.abs(bal).toFixed(2)})">পেইড</button>`;
+                } else if (bal > 0.01) {
+                    actionHtml = `<button class="action-btn refund" onclick="refundMoney('${m}', ${bal.toFixed(2)})">ফেরত</button>`;
+                } else {
+                    actionHtml = `<span style="color:var(--success); font-size:12px;">✅ সমান</span>`;
+                }
+            }
+
+            html += `<tr>
+                <td><strong>${memberNames[m]}</strong>${memberExceptions[m]?'<br><small>[ছাড়]</small>':''}</td>
                 <td>${actualTotal.toFixed(1)}<br><small>বিল: ${billTotal.toFixed(1)}</small></td>
-                <td>৳ ${cost.toFixed(1)}</td>
-                <td>৳ ${fixedShare.toFixed(1)}</td>
-                <td>৳ ${deposit[m]}</td>
-                <td style="color:${bal>=0?'green':'red'}">${bal.toFixed(1)}</td></tr>`;
+                <td>৳ ${cost.toFixed(2)}</td>
+                <td>৳ ${fixedShare.toFixed(2)}</td>
+                <td>৳ ${deposit[m].toFixed(2)}</td>
+                <td style="color:${bal>=0?'green':'red'}; font-weight:bold;">${bal.toFixed(2)}</td>
+                <td>${actionHtml}</td>
+            </tr>`;
         });
-        document.getElementById('ledgerTableBodyFiltered').innerHTML = ledgerHtml || '<tr><td colspan="6">কোনো ডাটা নেই</td></tr>';
+        tbody.innerHTML = html || '<tr><td colspan="7">কোনো ডাটা নেই</td></tr>';
+    }
+
+    // ===== লেজার মাস ফিল্টার =====
+    window.renderLedgerForMonth = async (month) => {
+        if (!month) return;
+        const snap = await get(ref(db, `records/${month}`));
+        const data = snap.val() || {};
+        renderLedgerTable(data, 'ledgerTableBodyFiltered', true);
     };
 
     function populateLedgerMonths() {
@@ -1184,7 +1336,7 @@
         }
     };
 
-    // ===== বাকি ফাংশন =====
+    // ===== বাকি ফাংশন (অপরিবর্তিত) =====
     window.loadTargetDateMeals = () => {
         if(isManager) return;
         const selectedDate = document.getElementById('mealScheduleDate').value;
@@ -1428,39 +1580,19 @@
             const perMemberFixedShare = members.length > 0 ? (fixedBazaar / members.length) : 0;
 
             document.getElementById('topMeals').innerText = totalBilledMealsAll.toFixed(1) + " টি";
-            document.getElementById('topFixedCost').innerText = "৳ " + fixedBazaar;
+            document.getElementById('topFixedCost').innerText = "৳ " + fixedBazaar.toFixed(2);
             document.getElementById('liveRate').innerText = rate.toFixed(2);
-            document.getElementById('liveTotalCost').innerText = mealOnlyExpenses + fixedBazaar;
+            document.getElementById('liveTotalCost').innerText = (mealOnlyExpenses + fixedBazaar).toFixed(2);
             document.getElementById('topTodayTotal').innerText = (tb + tl + tr).toFixed(1) + " টি";
             document.getElementById('t-b').innerText = tb.toFixed(1);
             document.getElementById('t-l').innerText = tl.toFixed(1);
             document.getElementById('t-r').innerText = tr.toFixed(1);
 
-            let ledgerHtml = "";
-            let totalAllDeposit = 0;
-            
-            members.forEach(m => {
-                let actualTotal = mOwnMeals[m] + mGuest[m];
-                let billedTotal = mBilledMeals[m];
-                const mealCost = billedTotal * rate;
-                const finalTotalCost = mealCost + perMemberFixedShare;
-                const bal = mDeposit[m] - finalTotalCost;
-                totalAllDeposit += mDeposit[m];
-                
-                let displayMeals = actualTotal === billedTotal ? `<b>${actualTotal.toFixed(1)}</b>` : `${actualTotal.toFixed(1)}<br><small style="color:var(--danger); font-weight:bold">(বিল: ${billedTotal.toFixed(1)})</small>`;
-                
-                ledgerHtml += `<tr>
-                    <td><strong>${memberNames[m]}</strong>${memberExceptions[m] ? '<br><small style="color:var(--success)">[ছাড়প্রাপ্ত]</small>' : ''}</td>
-                    <td>${displayMeals}</td>
-                    <td>৳ ${mealCost.toFixed(1)}</td>
-                    <td style="color:#a855f7; font-weight:bold">৳ ${perMemberFixedShare.toFixed(1)}</td>
-                    <td>৳ ${mDeposit[m]}</td>
-                    <td style="color:${bal >= 0 ? '#10b981' : '#ef4444'}"><b>${bal.toFixed(1)}</b></td>
-                </tr>`;
-            });
-            document.getElementById('ledgerTableBody').innerHTML = ledgerHtml;
-            
-            let histBazHtml = "", histRiceHtml = "", histFixedHtml = "";
+            // হোম পেজে লেজার
+            renderLedgerTable(data, 'ledgerTableBody', true);
+
+            // হিস্টোরি
+            let histBazHtml = "", histRiceHtml = "", histFixedHtml = "", histRefundHtml = "";
             let totalDueAmount = 0;
 
             if (data.bazaarHistory) {
@@ -1492,15 +1624,26 @@
                     }
                 });
             }
+
+            if (data.refundHistory) {
+                Object.entries(data.refundHistory).sort((a, b) => new Date(b[1].date) - new Date(a[1].date)).forEach(([rKey, r]) => {
+                    const formattedDate = r.date.split('-').reverse().join('/');
+                    histRefundHtml += `<tr><td>${formattedDate}</td><td>${r.memberName}</td><td style="color:var(--warning); font-weight:bold;">৳ ${r.amount}</td></tr>`;
+                });
+            }
+
             document.getElementById('histBazaar').innerHTML = histBazHtml || "<tr><td colspan='3' style='text-align:center; color:gray;'>কোনো এন্ট্রি নেই</td></tr>";
             document.getElementById('histRice').innerHTML = histRiceHtml || "<tr><td colspan='3' style='text-align:center; color:gray;'>কোনো এন্ট্রি নেই</td></tr>";
             document.getElementById('histFixed').innerHTML = histFixedHtml || "<tr><td colspan='3' style='text-align:center; color:gray;'>কোনো এন্ট্রি নেই</td></tr>";
+            document.getElementById('histRefund').innerHTML = histRefundHtml || "<tr><td colspan='3' style='text-align:center; color:gray;'>কোনো রিফান্ড নেই</td></tr>";
 
-            const managerCash = totalAllDeposit - ((mealOnlyExpenses + fixedBazaar) - totalDueAmount);
-            document.getElementById('liveCash').innerText = managerCash.toFixed(1);
+            let totalDepositAll = 0;
+            members.forEach(m => { totalDepositAll += mDeposit[m]; });
+            const managerCash = totalDepositAll - (mealOnlyExpenses + fixedBazaar - totalDueAmount);
+            document.getElementById('liveCash').innerText = managerCash.toFixed(2);
 
             if (isManager) {
-                document.getElementById('topBalance').innerText = "৳ " + managerCash.toFixed(1);
+                document.getElementById('topBalance').innerText = "৳ " + managerCash.toFixed(2);
             } else {
                 let myActual = mOwnMeals[currentUser] + mGuest[currentUser];
                 let myBilled = mBilledMeals[currentUser];
@@ -1508,7 +1651,7 @@
                 const myBal = mDeposit[currentUser] - myFinalTotalCost;
                 
                 document.getElementById('myTotalMeals').innerHTML = myActual === myBilled ? `${myActual.toFixed(1)} টি` : `${myActual.toFixed(1)} টি <br><span style="font-size:14px; color:var(--primary); font-weight:bold;">বিল হবে: ${myBilled.toFixed(1)}</span>`;
-                document.getElementById('topBalance').innerText = "৳ " + myBal.toFixed(1);
+                document.getElementById('topBalance').innerText = "৳ " + myBal.toFixed(2);
                 document.getElementById('balanceCard').className = `stat-card ${myBal >= 0 ? 'green' : 'red'}`;
                 loadTargetDateMeals();
             }

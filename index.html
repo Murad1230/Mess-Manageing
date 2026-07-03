@@ -13,7 +13,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     
     <style>
-        /* আপনার আগের CSS ঠিক থাকবে, আমি শুধু নিশ্চিত করছি */
         :root {
             --primary: #4f46e5;
             --secondary: #6366f1;
@@ -35,16 +34,15 @@
             margin: 0;
             color: var(--text-main);
             padding-bottom: 30px;
+            transition: background var(--transition), color var(--transition);
         }
 
         .container { width: 95%; max-width: 1100px; margin: 20px auto; box-sizing: border-box; }
+
         .login-card { max-width: 400px; margin: 80px auto; background: var(--card-bg); padding: 35px; border-radius: var(--radius); box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
         .login-card h2 { font-size: 22px; margin-bottom: 30px; color: var(--primary); font-weight: 600; }
-        .header { display: flex; justify-content: space-between; align-items: center; background: var(--primary); padding: 15px 25px; border-radius: var(--radius); color: white; margin-bottom: 20px; box-shadow: var(--shadow); flex-wrap: wrap; gap: 10px; }
-        .header-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-        .header select { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 5px 10px; border-radius: 6px; font-size: 14px; cursor: pointer; }
-        .header select option { color: #1e293b; background: white; }
+
+        .header { display: flex; justify-content: space-between; align-items: center; background: var(--primary); padding: 15px 25px; border-radius: var(--radius); color: white; margin-bottom: 20px; box-shadow: var(--shadow); }
         .logout-btn { background: rgba(255,255,255,0.2); border: none; padding: 8px 15px; border-radius: 8px; color: white; cursor: pointer; font-weight: bold; }
 
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 25px; }
@@ -80,13 +78,12 @@
             .stat-info h2 { font-size: 18px; }
             .content-card { padding: 15px; border-radius: 12px; margin-bottom: 15px; }
             .sheet-table th, .sheet-table td { font-size: 10px; padding: 4px 2px; }
-            .header { flex-direction: column; align-items: stretch; }
-            .header-left, .header-right { width: 100%; justify-content: center; }
         }
 
         .content-card { background: var(--card-bg); padding: 25px; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 20px; }
         .content-card h3 { font-weight: 600; margin-top: 0; }
 
+        /* টগল সুইচ */
         .switch-container { display: flex; align-items: center; gap: 12px; }
         .switch { position: relative; display: inline-block; width: 52px; height: 28px; flex-shrink: 0; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -95,6 +92,7 @@
         input:checked + .slider { background-color: var(--success); }
         input:checked + .slider:before { transform: translateX(24px); }
         input:disabled + .slider { opacity: 0.5; cursor: not-allowed; }
+        .switch-label { font-weight: 500; font-size: 14px; }
 
         .meal-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: #f8fafc; margin-bottom: 8px; border-radius: 10px; border: 1px solid #e2e8f0; }
         .meal-row span { font-weight: 600; font-size: 15px; }
@@ -119,6 +117,7 @@
 
         .hidden { display: none !important; }
 
+        /* অ্যাকর্ডিয়ন */
         .accordion-header {
             background: #f8fafc; padding: 16px 20px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all var(--transition); font-weight: 600; font-size: 16px;
         }
@@ -134,6 +133,7 @@
             max-height: 800px; padding: 20px;
         }
 
+        /* শিট টেবিল */
         .sheet-table { width: 100%; border-collapse: collapse; border: 1px solid #cbd5e1; font-size: 12px; }
         .sheet-table th, .sheet-table td { border: 1px solid #cbd5e1; padding: 6px 4px; text-align: center; }
         .sheet-table th { background-color: #f1f5f9; font-weight: 600; position: sticky; top: 0; z-index: 10; }
@@ -152,6 +152,7 @@
         .duty-btn.delete { background: var(--danger); color: white; }
         .duty-btn.delete:hover { background: #dc2626; }
 
+        /* টোস্ট */
         .toast-container {
             position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; max-width: 380px; width: 100%;
         }
@@ -181,21 +182,6 @@
         .rule-box { background: #f8fafc; border: 1px solid #cbd5e1; padding: 15px; border-radius: 10px; margin-bottom: 10px; }
         .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: center; margin-top: 8px; }
 
-        .action-btn {
-            border: none;
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 12px;
-            transition: var(--transition);
-            color: white;
-        }
-        .action-btn:hover { transform: scale(1.05); opacity: 0.9; }
-        .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .action-btn.pay { background: var(--success); }
-        .action-btn.refund { background: var(--warning); color: #1e293b; }
-
         @media (max-width: 768px) {
             .backup-actions { flex-direction: column; }
             .ledger-filter { flex-direction: column; align-items: stretch; }
@@ -205,6 +191,7 @@
 </head>
 <body>
 
+<!-- টোস্ট কন্টেইনার -->
 <div class="toast-container" id="toastContainer"></div>
 
 <div class="container">
@@ -215,9 +202,7 @@
             <label style="font-weight: 500;">ইউজার সিলেক্ট করুন</label>
             <select id="loginUser"></select><br><br>
             <label style="font-weight: 500;">পিন কোড</label>
-            <input type="password" id="userPin" placeholder="পিন টাইপ করুন..." maxlength="4" style="text-align: center; letter-spacing: 5px; font-family: monospace; font-size: 18px;"><br><br>
-            <label style="font-weight: 500;">📅 মাস নির্বাচন করুন</label>
-            <select id="loginMonth"></select>
+            <input type="password" id="userPin" placeholder="পিন টাইপ করুন..." maxlength="4" style="text-align: center; letter-spacing: 5px; font-family: monospace; font-size: 18px;">
         </div>
         <button class="btn-save" id="loginBtn">লগইন করুন</button>
     </div>
@@ -225,13 +210,8 @@
     <!-- Main Dashboard -->
     <div id="mainDashboard" class="hidden">
         <div class="header">
-            <div class="header-left">
-                <h2 id="welcomeText" style="margin:0;"><i class="fas fa-user-circle"></i> লোডিং...</h2>
-            </div>
-            <div class="header-right">
-                <select id="headerMonthSelect" onchange="changeSessionMonth(this.value)" style="background:rgba(255,255,255,0.2); border:1px solid rgba(255,255,255,0.3); color:white; padding:5px 10px; border-radius:6px; font-size:14px; cursor:pointer;"></select>
-                <button class="logout-btn" onclick="location.reload()"><i class="fas fa-sign-out-alt"></i> লগআউট</button>
-            </div>
+            <h2 id="welcomeText"><i class="fas fa-user-circle"></i> লোডিং...</h2>
+            <button class="logout-btn" onclick="location.reload()"><i class="fas fa-sign-out-alt"></i> লগআউট</button>
         </div>
 
         <div class="stats-grid">
@@ -239,7 +219,7 @@
                 <div class="stat-icon"><i class="fas fa-wallet"></i></div>
                 <div class="stat-info">
                     <h4 id="balanceCardTitle">আমার ফাইনাল ব্যালেন্স</h4>
-                    <h2 id="topBalance">৳ ০.০০</h2>
+                    <h2 id="topBalance">৳ ০.০</h2>
                 </div>
             </div>
             <div class="stat-card blue" id="myMealsCard">
@@ -260,7 +240,7 @@
                 <div class="stat-icon"><i class="fas fa-home"></i></div>
                 <div class="stat-info">
                     <h4>ফিক্সড খরচ</h4>
-                    <h2 id="topFixedCost">৳ ০.০০</h2>
+                    <h2 id="topFixedCost">৳ ০</h2>
                 </div>
             </div>
             <div class="stat-card green" style="grid-column: 1 / -1;">
@@ -279,14 +259,14 @@
 
         <!-- TABS -->
         <div class="tabs" id="mainTabs">
-            <div class="tab active" onclick="switchTab('dashboard', event)"><i class="fas fa-home"></i> <span class="tab-label">হোম</span></div>
-            <div class="tab" onclick="switchTab('sheet', event)"><i class="fas fa-table"></i> <span class="tab-label">শিট</span></div>
-            <div class="tab" onclick="switchTab('menu', event)"><i class="fas fa-utensils"></i> <span class="tab-label">মেনু</span></div>
-            <div class="tab" onclick="switchTab('dutylist', event)"><i class="fas fa-calendar-alt"></i> <span class="tab-label">ডিউটি</span></div>
-            <div class="tab" onclick="switchTab('ledger', event)"><i class="fas fa-chart-bar"></i> <span class="tab-label">লেজার</span></div>
-            <div class="tab" onclick="switchTab('history', event)"><i class="fas fa-history"></i> <span class="tab-label">ইতিহাস</span></div>
-            <div id="managerTabBtn" class="tab hidden" onclick="switchTab('manager', event)"><i class="fas fa-tasks"></i> <span class="tab-label">ম্যানেজ</span></div>
-            <div id="settingsTabBtn" class="tab hidden" onclick="switchTab('settings', event)"><i class="fas fa-cog"></i> <span class="tab-label">সেটিং</span></div>
+            <div class="tab active" onclick="switchTab('dashboard')"><i class="fas fa-home"></i> <span class="tab-label">হোম</span></div>
+            <div class="tab" onclick="switchTab('sheet')"><i class="fas fa-table"></i> <span class="tab-label">শিট</span></div>
+            <div class="tab" onclick="switchTab('menu')"><i class="fas fa-utensils"></i> <span class="tab-label">মেনু</span></div>
+            <div class="tab" onclick="switchTab('dutylist')"><i class="fas fa-calendar-alt"></i> <span class="tab-label">ডিউটি</span></div>
+            <div class="tab" onclick="switchTab('ledger')"><i class="fas fa-chart-bar"></i> <span class="tab-label">লেজার</span></div>
+            <div class="tab" onclick="switchTab('history')"><i class="fas fa-history"></i> <span class="tab-label">ইতিহাস</span></div>
+            <div id="managerTabBtn" class="tab hidden" onclick="switchTab('manager')"><i class="fas fa-tasks"></i> <span class="tab-label">ম্যানেজ</span></div>
+            <div id="settingsTabBtn" class="tab hidden" onclick="switchTab('settings')"><i class="fas fa-cog"></i> <span class="tab-label">সেটিং</span></div>
         </div>
 
         <!-- HOME DASHBOARD -->
@@ -363,14 +343,14 @@
                 </div>
                 <div class="table-container">
                     <table>
-                        <thead><tr><th>নাম</th><th>মোট মিল<br><small>(প্রকৃত/বিল)</small></th><th>মিল খরচ</th><th>ফিক্সড খরচ</th><th>মোট জমা</th><th>ব্যালেন্স</th><th style="min-width:100px;">অ্যাকশন</th></tr></thead>
+                        <thead><tr><th>নাম</th><th>মোট মিল<br><small>(প্রকৃত/বিল)</small></th><th>মিল খরচ</th><th>ফিক্সড খরচ</th><th>মোট জমা</th><th>অবস্থা</th></tr></thead>
                         <tbody id="ledgerTableBody"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- SHEET TAB -->
+        <!-- SHET TAB -->
         <div id="sec-sheet" class="hidden">
             <div class="content-card">
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:15px;">
@@ -436,7 +416,7 @@
                 </div>
                 <div class="table-container">
                     <table>
-                        <thead><tr><th>নাম</th><th>মোট মিল<br><small>(প্রকৃত/বিল)</small></th><th>মিল খরচ</th><th>ফিক্সড খরচ</th><th>মোট জমা</th><th>ব্যালেন্স</th><th>অ্যাকশন</th></tr></thead>
+                        <thead><tr><th>নাম</th><th>মোট মিল<br><small>(প্রকৃত/বিল)</small></th><th>মিল খরচ</th><th>ফিক্সড খরচ</th><th>মোট জমা</th><th>ব্যালেন্স</th></tr></thead>
                         <tbody id="ledgerTableBodyFiltered"></tbody>
                     </table>
                 </div>
@@ -448,7 +428,6 @@
             <div class="content-card"><h3 style="color:var(--success);"><i class="fas fa-shopping-cart"></i> বাজার ইতিহাস</h3><div class="table-container"><table><thead><tr><th>তারিখ</th><th>বাজারী</th><th>টাকা</th></tr></thead><tbody id="histBazaar"></tbody></table></div></div>
             <div class="content-card"><h3 style="color:#b45309;"><i class="fas fa-seedling"></i> চালের ইতিহাস (Due/Paid)</h3><div class="table-container"><table><thead><tr><th>তারিখ</th><th>বিবরণ</th><th>টাকা</th></tr></thead><tbody id="histRice"></tbody></table></div></div>
             <div class="content-card"><h3 style="color:#6b21a8;"><i class="fas fa-home"></i> ফিক্সড খরচ ইতিহাস (Due/Paid)</h3><div class="table-container"><table><thead><tr><th>তারিখ</th><th>বিবরণ</th><th>টাকা</th></tr></thead><tbody id="histFixed"></tbody></table></div></div>
-            <div class="content-card"><h3 style="color:var(--warning);"><i class="fas fa-undo-alt"></i> ফেরত / রিফান্ড ইতিহাস</h3><div class="table-container"><table><thead><tr><th>তারিখ</th><th>মেম্বার</th><th>পরিমাণ</th></tr></thead><tbody id="histRefund"></tbody></table></div></div>
         </div>
 
         <!-- MANAGER TAB -->
@@ -613,8 +592,8 @@
         <!-- FOOTER -->
         <div class="content-card" style="background:var(--primary); color:white; display:flex; justify-content:space-around; text-align:center; margin-bottom:30px;">
             <div><small>মিল রেট</small><br><strong id="liveRate">০.০০</strong></div>
-            <div><small>মোট খরচ</small><br><strong id="liveTotalCost">০.০০</strong></div>
-            <div><small>ম্যানেজার ক্যাশ</small><br><strong id="liveCash">০.০০</strong></div>
+            <div><small>মোট খরচ</small><br><strong id="liveTotalCost">০</strong></div>
+            <div><small>ম্যানেজার ক্যাশ</small><br><strong id="liveCash">০</strong></div>
         </div>
     </div>
 </div>
@@ -624,10 +603,10 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 
     const firebaseConfig = {
-        apiKey: "AIzaSyBedhJXBSoxLvdweMlRcZ30Vt3dUPYpw20",
-        authDomain: "mess-new.firebaseapp.com",
-        databaseURL: "https://mess-new-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "mess-new"
+        apiKey: "AIzaSyDPBx-20Ps0tGq0lHTGeRaS5Ah6tNd17pQ",
+        authDomain: "murad-5f082.firebaseapp.com",
+        databaseURL: "https://murad-5f082-default-rtdb.firebaseio.com",
+        projectId: "murad-5f082"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -643,46 +622,23 @@
     let isManager = false;
     let monthRawData = {};
     let globalDeposits = {};
-    let currentSessionMonth = "";
 
     const today = new Date();
-    const defaultMonth = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}`;
     const dateKey = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-    const monthNames = ["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"];
-
+    const monthKey = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}`;
+    
     document.getElementById('mealScheduleDate').value = dateKey;
     const tomorrow = new Date(today); 
     tomorrow.setDate(tomorrow.getDate() + 1); 
     document.getElementById('dutyDate').value = tomorrow.toISOString().split('T')[0];
     
     if(document.getElementById('sheetMonthSelector')) {
-        document.getElementById('sheetMonthSelector').value = defaultMonth;
+        document.getElementById('sheetMonthSelector').value = monthKey;
     }
 
-    function populateMonthSelector(selectElement, selectedValue) {
-        if (!selectElement) return;
-        const currentYear = today.getFullYear();
-        const currentMonth = today.getMonth() + 1;
-        let html = '';
-        for (let i = 0; i < 13; i++) {
-            let year = currentYear;
-            let month = currentMonth - i;
-            if (month <= 0) {
-                month += 12;
-                year--;
-            }
-            const val = `${year}-${String(month).padStart(2, '0')}`;
-            const label = `${monthNames[month-1]} ${year}`;
-            const selected = (val === selectedValue) ? 'selected' : '';
-            html += `<option value="${val}" ${selected}>${label}</option>`;
-        }
-        selectElement.innerHTML = html;
-    }
+    const monthNames = ["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"];
 
-    const loginMonthSelect = document.getElementById('loginMonth');
-    populateMonthSelector(loginMonthSelect, defaultMonth);
-    const headerMonthSelect = document.getElementById('headerMonthSelect');
-
+    // ===== টোস্ট সিস্টেম =====
     function showToast(message, type = 'success', duration = 3000) {
         const container = document.getElementById('toastContainer');
         const toast = document.createElement('div');
@@ -716,89 +672,105 @@
         });
     }
 
-    // ========== অ্যাকর্ডিয়ন ফাংশন ==========
-    window.toggleAccordion = function(sectionId) {
-        const targetSection = document.getElementById(sectionId);
-        if (!targetSection) return;
+    // ===== টগল সুইচ =====
+    window.toggleMealSwitch = (type) => {
+        const selectedDate = document.getElementById('mealScheduleDate').value;
+        if(!selectedDate) { showWarning("তারিখ নির্বাচন করুন!"); return; }
+        if(isMealLocked(type, selectedDate)) { showError("সময় পার হয়ে গেছে!"); return; }
+        
+        const checkbox = document.getElementById('sw-' + type);
+        const newState = checkbox.checked ? "ON" : "OFF";
+        const statusEl = document.getElementById('status-' + type);
+        statusEl.textContent = newState;
+        statusEl.style.color = newState === "ON" ? 'var(--success)' : 'var(--danger)';
+        
+        const parts = selectedDate.split('-'); 
+        const year = parseInt(parts[0]); 
+        const month = parseInt(parts[1]) - 1; 
+        const startDay = parseInt(parts[2]);
+        const lastDay = new Date(year, month + 1, 0).getDate(); 
+        let updates = {};
+        for(let d = startDay; d <= lastDay; d++) {
+            const dStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+            updates[`records/${dStr.substring(0, 7)}/${dStr}/${currentUser}/${type}`] = newState;
+        }
+        update(ref(db), updates).then(() => {
+            showToast(`মিল ${newState === "ON" ? "অন" : "অফ"} হয়েছে`, 'success');
+        }).catch(() => {
+            checkbox.checked = !checkbox.checked;
+            statusEl.textContent = checkbox.checked ? "ON" : "OFF";
+            statusEl.style.color = checkbox.checked ? 'var(--success)' : 'var(--danger)';
+            showError("আপডেট করতে সমস্যা হয়েছে!");
+        });
+    };
+
+    // ===== ভিউ মিল ডিটেইলস =====
+    window.viewMealDetails = (mealType, label) => {
+        const todayData = monthRawData[dateKey] || {};
+        let activeMembers = [];
+        members.forEach(m => {
+            const u = todayData[m] || {}; 
+            let details = [];
+            if (u[mealType] === "ON") details.push("নিজস্ব");
+            const gCount = parseFloat(u[`guest_${mealType}`]) || 0;
+            if (gCount > 0) details.push(`গেস্ট: ${gCount} জন`);
+            if (details.length > 0) {
+                activeMembers.push(`<li style="margin-bottom:8px; border-bottom:1px solid #f1f5f9; padding-bottom:5px;"><b>${memberNames[m]}</b> <span style="color:var(--primary); font-size:12px;">(${details.join(' + ')})</span></li>`);
+            }
+        });
+        if(activeMembers.length === 0) activeMembers.push("<li>কারো মিল চালু নেই</li>");
+        Swal.fire({ 
+            title: `আজ ${label} যাদের মিল আছে`, 
+            html: `<ul style="text-align:left; font-size:15px; max-height:250px; overflow-y:auto; padding-left:20px; list-style-type:circle;">${activeMembers.join('')}</ul>`, 
+            confirmButtonText: 'ঠিক আছে', 
+            confirmButtonColor: '#4f46e5' 
+        });
+    }
+
+    // ===== অ্যাকর্ডিয়ন =====
+    window.toggleAccordion = (sectionId) => {
+        const targetSection = document.getElementById(sectionId); 
+        const targetContent = targetSection.querySelector('.accordion-content'); 
         const isActive = targetSection.classList.contains('active');
-        document.querySelectorAll('.accordion-section').forEach(sec => {
-            sec.classList.remove('active');
-            const content = sec.querySelector('.accordion-content');
-            if (content) {
-                content.style.maxHeight = '0';
-                content.style.padding = '0 20px';
+        document.querySelectorAll('.accordion-section').forEach(sec => { 
+            sec.classList.remove('active'); 
+            if(sec.querySelector('.accordion-content')) {
+                sec.querySelector('.accordion-content').style.maxHeight = '0';
+                sec.querySelector('.accordion-content').style.padding = '0 20px';
             }
         });
-        if (!isActive) {
-            targetSection.classList.add('active');
-            const content = targetSection.querySelector('.accordion-content');
-            if (content) {
-                content.style.maxHeight = '800px';
-                content.style.padding = '20px';
-            }
+        if (!isActive) { 
+            targetSection.classList.add('active'); 
+            targetContent.style.maxHeight = '800px';
+            targetContent.style.padding = '20px';
         }
-    };
+    }
 
-    window.toggleMemberAccordion = function(memId) {
-        const content = document.getElementById('mem-content-' + memId);
-        const icon = document.getElementById('mem-icon-' + memId);
-        if (!content || !icon) return;
-        document.querySelectorAll('.mem-accordion-content').forEach(el => {
-            if (el.id !== 'mem-content-' + memId) {
-                el.style.display = 'none';
-                const otherIcon = document.getElementById('mem-icon-' + el.id.replace('mem-content-', ''));
-                if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
-            }
-        });
-        const isHidden = content.style.display === 'none' || content.style.display === '';
-        if (isHidden) {
-            content.style.display = 'block';
-            icon.style.transform = 'rotate(180deg)';
-        } else {
-            content.style.display = 'none';
-            icon.style.transform = 'rotate(0deg)';
-        }
-    };
-
-    // ===== মাস পরিবর্তন =====
-    window.changeSessionMonth = (newMonth) => {
-        if (!newMonth) return;
-        currentSessionMonth = newMonth;
-        if (headerMonthSelect) headerMonthSelect.value = newMonth;
-        syncLedger();
-        if (document.getElementById('sec-sheet') && !document.getElementById('sec-sheet').classList.contains('hidden')) {
-            renderSheet();
-        }
-        showToast(`মাস পরিবর্তন: ${newMonth}`, 'success');
-    };
+    window.toggleMemberAccordion = (memId) => {
+        const contentEl = document.getElementById('mem-content-' + memId); 
+        const iconEl = document.getElementById('mem-icon-' + memId); 
+        const isHidden = contentEl.style.display === 'none' || contentEl.style.display === '';
+        document.querySelectorAll('.mem-accordion-content').forEach(el => el.style.display = 'none'); 
+        document.querySelectorAll('.mem-toggle-icon').forEach(el => el.style.transform = 'rotate(0deg)');
+        if(isHidden) { contentEl.style.display = 'block'; iconEl.style.transform = 'rotate(180deg)'; }
+    }
 
     // ===== লগইন =====
     document.getElementById('userPin').addEventListener('keypress', (e) => { if(e.key === 'Enter') login(); });
     document.getElementById('loginBtn').onclick = login;
 
     function login() {
-        const user = document.getElementById('loginUser').value;
+        const user = document.getElementById('loginUser').value; 
         const pin = document.getElementById('userPin').value;
-        const selectedMonth = document.getElementById('loginMonth').value;
-        if (!selectedMonth) return showError("মাস নির্বাচন করুন!");
-
         get(ref(db, `records/managerPin`)).then(snap => {
             const masterPin = snap.val() || "0000";
-            if (pin === masterPin) {
-                isManager = true;
-                currentUser = "";
-                currentSessionMonth = selectedMonth;
-                showDashboard();
-            } else {
-                get(ref(db, `records/memberPins/${user}`)).then(mSnap => {
-                    const savedPin = mSnap.val() || "1234";
-                    if (pin === savedPin) {
-                        currentUser = user;
-                        isManager = false;
-                        currentSessionMonth = selectedMonth;
-                        showDashboard();
-                    } else showError("ভুল পিন দিয়েছেন!");
-                });
+            if (pin === masterPin) { isManager = true; showDashboard(); } 
+            else { 
+                get(ref(db, `records/memberPins/${user}`)).then(mSnap => { 
+                    const savedPin = mSnap.val() || "1234"; 
+                    if (pin === savedPin) { currentUser = user; isManager = false; showDashboard(); } 
+                    else showError("ভুল পিন দিয়েছেন!"); 
+                }); 
             }
         });
     }
@@ -806,19 +778,16 @@
     function showDashboard() {
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('mainDashboard').classList.remove('hidden');
-        populateMonthSelector(headerMonthSelect, currentSessionMonth);
-        headerMonthSelect.value = currentSessionMonth;
-
         if (isManager) {
             document.getElementById('managerTabBtn').classList.remove('hidden');
             document.getElementById('settingsTabBtn').classList.remove('hidden');
-            document.getElementById('welcomeText').innerHTML = `<i class="fas fa-user-shield"></i> মেস ম্যানেজার প্যানেল (${currentSessionMonth})`;
+            document.getElementById('welcomeText').innerHTML = `<i class="fas fa-user-shield"></i> মেস ম্যানেজার প্যানেল`;
             document.getElementById('myMealsCard').style.display = 'none';
-            document.getElementById('memberPinChangeBox').classList.add('hidden');
+            document.getElementById('memberPinChangeBox').classList.add('hidden'); 
             document.getElementById('balanceCardTitle').innerText = "ম্যানেজার ক্যাশ (ইন-হ্যান্ড)";
             document.getElementById('balanceCard').classList.add('green');
         } else {
-            document.getElementById('welcomeText').innerHTML = `<i class="fas fa-user"></i> ${memberNames[currentUser]} (${currentSessionMonth})`;
+            document.getElementById('welcomeText').innerHTML = `<i class="fas fa-user"></i> ${memberNames[currentUser]}`;
             document.getElementById('myMealsCard').style.display = 'flex';
             document.getElementById('memberPinChangeBox').classList.remove('hidden');
             document.getElementById('balanceCardTitle').innerText = "আমার ফাইনাল ব্যালেন্স";
@@ -827,35 +796,25 @@
     }
 
     // ===== সুইচ ট্যাব =====
-    window.switchTab = (tabId, event) => {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        if (event && event.currentTarget) {
-            event.currentTarget.classList.add('active');
-        } else {
-            const tabs = document.querySelectorAll('.tab');
-            tabs.forEach(t => {
-                if (t.textContent.trim().includes(tabId) || t.dataset.tab === tabId) {
-                    t.classList.add('active');
-                }
-            });
-        }
-        ['sec-dashboard', 'sec-sheet', 'sec-menu', 'sec-dutylist', 'sec-ledger', 'sec-history', 'sec-manager', 'sec-settings'].forEach(id => {
-            if(document.getElementById(id)) document.getElementById(id).classList.add('hidden');
+    window.switchTab = (tabId) => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); 
+        event.currentTarget.classList.add('active');
+        ['sec-dashboard', 'sec-sheet', 'sec-menu', 'sec-dutylist', 'sec-ledger', 'sec-history', 'sec-manager', 'sec-settings'].forEach(id => { 
+            if(document.getElementById(id)) document.getElementById(id).classList.add('hidden'); 
         });
-        const target = document.getElementById('sec-' + tabId);
-        if (target) target.classList.remove('hidden');
-        if (tabId === 'sheet') renderSheet();
+        document.getElementById('sec-' + tabId).classList.remove('hidden');
+        if (tabId === 'sheet') renderSheet(); 
         if (tabId === 'dutylist') renderBazaarDutyList();
         if (tabId === 'ledger') {
             populateLedgerMonths();
         }
-        window.scrollTo(0,0);
+        window.scrollTo(0,0); 
     }
 
     // ===== টগল এন্ট্রি ফিল্ড =====
     window.toggleEntryFields = () => {
-        const type = document.getElementById('entryType').value;
-        document.querySelectorAll('.entry-fields').forEach(d => d.classList.add('hidden'));
+        const type = document.getElementById('entryType').value; 
+        document.querySelectorAll('.entry-fields').forEach(d => d.classList.add('hidden')); 
         document.getElementById('div-' + type).classList.remove('hidden');
     }
 
@@ -863,39 +822,39 @@
     function renderChart(baz, ric, fix) {
         const ctx = document.getElementById('expenseChart').getContext('2d');
         if (window.expensePieChart) window.expensePieChart.destroy();
-        window.expensePieChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['তরকারি বাজার', 'চালের খরচ', 'ফিক্সড খরচ'],
-                datasets: [{ data: [baz, ric, fix], backgroundColor: ['#10b981', '#f59e0b', '#a855f7'], borderWidth: 2 }]
-            },
-            options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+        window.expensePieChart = new Chart(ctx, { 
+            type: 'doughnut', 
+            data: { 
+                labels: ['তরকারি বাজার', 'চালের খরচ', 'ফিক্সড খরচ'], 
+                datasets: [{ data: [baz, ric, fix], backgroundColor: ['#10b981', '#f59e0b', '#a855f7'], borderWidth: 2 }] 
+            }, 
+            options: { responsive: true, plugins: { legend: { position: 'bottom' } } } 
         });
     }
 
     // ===== PDF ডাউনলোড =====
     window.downloadPDF = () => {
-        document.getElementById('pdfTitle').style.display = 'block';
-        document.getElementById('pdfDate').innerText = `মাসের হিসাব: ${currentSessionMonth}`;
+        document.getElementById('pdfTitle').style.display = 'block'; 
+        document.getElementById('pdfDate').innerText = `মাসের হিসাব: ${monthKey}`; 
         document.getElementById('pdfDate').style.display = 'block';
-        const element = document.getElementById('ledgerPrintArea');
-        const tblContainer = element.querySelector('.table-container');
+        const element = document.getElementById('ledgerPrintArea'); 
+        const tblContainer = element.querySelector('.table-container'); 
         const originalOverflow = tblContainer ? tblContainer.style.overflowX : '';
         if (tblContainer) tblContainer.style.overflowX = 'visible';
         window.scrollTo(0, 0);
-        const opt = {
-            margin: 0.3,
-            filename: `Mess-Ledger-${currentSessionMonth}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-            jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
+        const opt = { 
+            margin: 0.3, 
+            filename: `Mess-Ledger-${monthKey}.pdf`, 
+            image: { type: 'jpeg', quality: 0.98 }, 
+            html2canvas: { scale: 2, useCORS: true, scrollY: 0 }, 
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' } 
         };
-        setTimeout(() => {
-            html2pdf().set(opt).from(element).save().then(() => {
-                document.getElementById('pdfTitle').style.display = 'none';
-                document.getElementById('pdfDate').style.display = 'none';
-                if (tblContainer) tblContainer.style.overflowX = originalOverflow;
-            });
+        setTimeout(() => { 
+            html2pdf().set(opt).from(element).save().then(() => { 
+                document.getElementById('pdfTitle').style.display = 'none'; 
+                document.getElementById('pdfDate').style.display = 'none'; 
+                if (tblContainer) tblContainer.style.overflowX = originalOverflow; 
+            }); 
         }, 100);
     }
 
@@ -923,23 +882,23 @@
         const wb = XLSX.utils.book_new();
         const ws = XLSX.utils.aoa_to_sheet(wsData);
         XLSX.utils.book_append_sheet(wb, ws, "মিল শিট");
-        const fileName = `মিল_শিট_${currentSessionMonth}.xlsx`;
+        const fileName = `মিল_শিট_${monthKey}.xlsx`;
         XLSX.writeFile(wb, fileName);
         showSuccess("Excel ফাইল ডাউনলোড শুরু হয়েছে!");
     }
 
     // ===== শিট রেন্ডার =====
     async function renderSheet() {
-        const selectedMonth = document.getElementById('sheetMonthSelector').value || currentSessionMonth;
+        const selectedMonth = document.getElementById('sheetMonthSelector').value; 
         if (!selectedMonth) return;
-        const snap = await get(ref(db, `records/${selectedMonth}`));
+        const snap = await get(ref(db, `records/${selectedMonth}`)); 
         const data = snap.val() || {};
-        const year = selectedMonth.split('-')[0];
-        const month = selectedMonth.split('-')[1];
+        const year = selectedMonth.split('-')[0]; 
+        const month = selectedMonth.split('-')[1]; 
         const lastDate = new Date(year, month, 0).getDate();
-        const allDays = [];
-        for (let d = 1; d <= lastDate; d++) {
-            allDays.push(`${year}-${month}-${String(d).padStart(2,'0')}`);
+        const allDays = []; 
+        for (let d = 1; d <= lastDate; d++) { 
+            allDays.push(`${year}-${month}-${String(d).padStart(2,'0')}`); 
         }
         let headerHtml = '<th>নাম</th>';
         allDays.forEach(day => { headerHtml += `<th>${day.split('-')[2]}</th>`; });
@@ -949,23 +908,23 @@
         let bodyHtml = '';
         members.forEach(m => {
             bodyHtml += `<tr><td style="font-weight:bold; cursor:pointer;" onclick="highlightRow(this)">${memberNames[m]}</td>`;
-            let totalRowMeals = 0;
+            let totalRowMeals = 0; 
             let totalRowGuest = 0;
             allDays.forEach(day => {
-                const u = data[day]?.[m] || {};
+                const u = data[day]?.[m] || {}; 
                 let mainMeal = 0;
-                if (u.breakfast === "ON") mainMeal += 0.5;
-                if (u.lunch === "ON") mainMeal += 1.0;
+                if (u.breakfast === "ON") mainMeal += 0.5; 
+                if (u.lunch === "ON") mainMeal += 1.0; 
                 if (u.dinner === "ON") mainMeal += 1.0;
                 let guestMeal = (parseFloat(u.guest_breakfast)||0)*0.5 + (parseFloat(u.guest_lunch)||0) + (parseFloat(u.guest_dinner)||0);
                 totalRowMeals += (mainMeal + guestMeal);
                 totalRowGuest += guestMeal;
-                let display = mainMeal.toFixed(1);
+                let display = mainMeal.toFixed(1); 
                 if (guestMeal > 0) { display += `<span style="color: red; font-weight: bold;"> + ${guestMeal.toFixed(1)}</span>`; }
-                let cls = "day-future";
-                const todayDate = new Date(dateKey);
+                let cls = "day-future"; 
+                const todayDate = new Date(dateKey); 
                 const cellDate = new Date(day);
-                if (cellDate < todayDate) cls = "day-past";
+                if (cellDate < todayDate) cls = "day-past"; 
                 else if (cellDate.toDateString() === todayDate.toDateString()) cls = "day-today";
                 bodyHtml += `<td class="${cls} ${isManager ? 'editable-cell' : ''}" onclick="${isManager ? `editSheetCell('${m}','${day}')` : ''}">${display}</td>`;
             });
@@ -976,15 +935,15 @@
         document.getElementById('sheetBody').innerHTML = bodyHtml;
     }
 
-    window.highlightRow = (cell) => {
-        const row = cell.parentElement;
-        const table = row.parentElement;
-        Array.from(table.querySelectorAll('tr')).forEach(r => r.classList.remove('highlight-row'));
-        row.classList.add('highlight-row');
+    window.highlightRow = (cell) => { 
+        const row = cell.parentElement; 
+        const table = row.parentElement; 
+        Array.from(table.querySelectorAll('tr')).forEach(r => r.classList.remove('highlight-row')); 
+        row.classList.add('highlight-row'); 
     };
 
     window.editSheetCell = async (memberId, date) => {
-        if (!isManager) return;
+        if (!isManager) return; 
         const cur = monthRawData[date]?.[memberId] || {};
         const { value: form } = await Swal.fire({
             title: `${memberNames[memberId]} - ${date}`,
@@ -998,21 +957,21 @@
                     <label>👥 গেস্ট রাত (সংখ্যা): <input type="number" id="gd" value="${cur.guest_dinner||0}"></label>
                 </div>
             `,
-            showCancelButton: true,
+            showCancelButton: true, 
             confirmButtonText: 'আপডেট',
-            preConfirm: () => ({
-                breakfast: document.getElementById('eb').value,
-                lunch: document.getElementById('el').value,
-                dinner: document.getElementById('ed').value,
-                guest_breakfast: parseInt(document.getElementById('gb').value)||0,
-                guest_lunch: parseInt(document.getElementById('gl').value)||0,
-                guest_dinner: parseInt(document.getElementById('gd').value)||0
+            preConfirm: () => ({ 
+                breakfast: document.getElementById('eb').value, 
+                lunch: document.getElementById('el').value, 
+                dinner: document.getElementById('ed').value, 
+                guest_breakfast: parseInt(document.getElementById('gb').value)||0, 
+                guest_lunch: parseInt(document.getElementById('gl').value)||0, 
+                guest_dinner: parseInt(document.getElementById('gd').value)||0 
             })
         });
-        if (form) {
-            await update(ref(db, `records/${date.substring(0,7)}/${date}/${memberId}`), form);
-            showSuccess("মিল ও গেস্ট আপডেট হয়েছে");
-            renderSheet();
+        if (form) { 
+            await update(ref(db, `records/${date.substring(0,7)}/${date}/${memberId}`), form); 
+            showSuccess("মিল ও গেস্ট আপডেট হয়েছে"); 
+            renderSheet(); 
         }
     };
 
@@ -1092,7 +1051,7 @@
             }).then(result => {
                 if (result.isConfirmed && result.value) {
                     const amount = result.value;
-                    const historyRef = ref(db, `records/${currentSessionMonth}/bazaarHistory`);
+                    const historyRef = ref(db, `records/${monthKey}/bazaarHistory`);
                     const newKey = push(historyRef).key;
                     const historyEntry = {
                         date: dateKey,
@@ -1103,10 +1062,10 @@
                         status: 'paid'
                     };
                     const updates = {};
-                    updates[`records/${currentSessionMonth}/bazaarHistory/${newKey}`] = historyEntry;
-                    get(ref(db, `records/${currentSessionMonth}/totalBazaarCost`)).then(snap => {
+                    updates[`records/${monthKey}/bazaarHistory/${newKey}`] = historyEntry;
+                    get(ref(db, `records/${monthKey}/totalBazaarCost`)).then(snap => {
                         const oldCost = parseFloat(snap.val()) || 0;
-                        updates[`records/${currentSessionMonth}/totalBazaarCost`] = oldCost + amount;
+                        updates[`records/${monthKey}/totalBazaarCost`] = oldCost + amount;
                         updates[`records/bazaarDuty/${date}`] = null;
                         update(ref(db), updates).then(() => {
                             showSuccess(`বাজার ${amount} টাকা সেভ হয়েছে! ডিউটি সম্পন্ন হয়েছে।`);
@@ -1118,96 +1077,17 @@
         });
     }
 
-    // ===== নতুন রিফান্ড ফাংশন (ডেটাবেজ থেকে সরাসরি ডিপোজিট ক্যালকুলেট) =====
-    window.refundMoney = async (memberId, amount) => {
-        if (!isManager) return showError("শুধু ম্যানেজার পারেন!");
-        if (!amount || amount <= 0) return showWarning("ফেরত দেওয়ার মতো টাকা নেই!");
-
-        try {
-            const monthKey = currentSessionMonth || defaultMonth;
-            const snapshot = await get(ref(db, `records/${monthKey}`));
-            const data = snapshot.val() || {};
-            let totalDeposit = 0;
-            Object.keys(data).forEach(day => {
-                if (day.includes('-') && day.length > 8) {
-                    const userData = data[day]?.[memberId];
-                    if (userData) {
-                        totalDeposit += parseFloat(userData.deposit) || 0;
-                    }
-                }
-            });
-
-            if (totalDeposit < amount - 0.01) {
-                return showError(`বর্তমান মোট ডিপোজিট (${totalDeposit.toFixed(2)}) থেকে বেশি (${amount.toFixed(2)}) টাকা ফেরত দেওয়া সম্ভব নয়!`);
-            }
-
-            const confirmResult = await confirmAction(
-                `ফেরত নিশ্চিত করুন`,
-                `${memberNames[memberId]} কে ${amount} টাকা ফেরত দেওয়া হবে।\nবর্তমান মোট ডিপোজিট: ${totalDeposit.toFixed(2)} টাকা\nফেরতের পর নতুন ডিপোজিট হবে: ${(totalDeposit - amount).toFixed(2)} টাকা`,
-                'হ্যাঁ, ফেরত দিন'
-            );
-
-            if (!confirmResult.isConfirmed) return;
-
-            const todayStr = dateKey;
-            const todaySnap = await get(ref(db, `records/${currentSessionMonth}/${todayStr}/${memberId}/deposit`));
-            let todayDep = parseFloat(todaySnap.val()) || 0;
-            const newTodayDep = todayDep - amount;
-
-            const updates = {};
-            updates[`records/${currentSessionMonth}/${todayStr}/${memberId}/deposit`] = newTodayDep;
-
-            const refundRef = ref(db, `records/${currentSessionMonth}/refundHistory`);
-            const newKey = push(refundRef).key;
-            updates[`records/${currentSessionMonth}/refundHistory/${newKey}`] = {
-                date: dateKey,
-                memberId: memberId,
-                memberName: memberNames[memberId],
-                amount: amount
-            };
-
-            await update(ref(db), updates);
-            showSuccess(`${memberNames[memberId]} কে ${amount} টাকা ফেরত দেওয়া হয়েছে!`);
-            syncLedger();
-
-        } catch (error) {
-            showError("ফেরত দিতে সমস্যা: " + error.message);
-        }
-    };
-
-    // ===== পেইড ফাংশন =====
-    window.payDues = (memberId, amount) => {
-        if (!isManager) return showError("শুধু ম্যানেজার পারেন!");
-        if (!amount || amount <= 0) return showWarning("বকেয়া নেই!");
-        
-        confirmAction(`পেমেন্ট নিশ্চিত করুন`, `${memberNames[memberId]} এর ${amount} টাকা বকেয়া পরিশোধ হবে।`, 'হ্যাঁ, পেমেন্ট করুন').then((result) => {
-            if (result.isConfirmed) {
-                const todayStr = dateKey;
-                get(ref(db, `records/${currentSessionMonth}/${todayStr}/${memberId}/deposit`)).then(snap => {
-                    const currentDep = parseFloat(snap.val()) || 0;
-                    const newDep = currentDep + amount;
-                    update(ref(db, `records/${currentSessionMonth}/${todayStr}/${memberId}`), { deposit: newDep }).then(() => {
-                        showSuccess(`${memberNames[memberId]} এর বকেয়া ${amount} টাকা পরিশোধ হয়েছে!`);
-                        syncLedger();
-                    }).catch(err => showError("আপডেট করতে সমস্যা: " + err.message));
-                });
-            }
-        });
-    };
-
-    // ===== লেজার রেন্ডার (সবার শেষে ফরম্যাট করা) =====
-    function renderLedgerTable(data, targetElementId, showActions = false) {
-        const tbody = document.getElementById(targetElementId);
-        if (!tbody) return;
-
+    // ===== লেজার মাস ফিল্টার =====
+    window.renderLedgerForMonth = async (month) => {
+        if (!month) return;
+        const snap = await get(ref(db, `records/${month}`));
+        const data = snap.val() || {};
         const bazaar = parseFloat(data.totalBazaarCost) || 0;
         const rice = parseFloat(data.totalRiceCost) || 0;
         const fixed = parseFloat(data.totalFixedCost) || 0;
         const mealCost = bazaar + rice;
-
         let own = {}, guest = {}, deposit = {};
         members.forEach(m => { own[m]=0; guest[m]=0; deposit[m]=0; });
-
         Object.keys(data).forEach(day => {
             if(day.includes('-') && day.length>8) {
                 members.forEach(m => {
@@ -1221,7 +1101,6 @@
                 });
             }
         });
-
         let billed = {}, totalBilled = 0;
         members.forEach(m => {
             let actual = own[m];
@@ -1234,48 +1113,23 @@
             billed[m] = total;
             totalBilled += total;
         });
-
         const rate = totalBilled > 0 ? mealCost / totalBilled : 0;
         const fixedShare = members.length ? fixed / members.length : 0;
-
-        let html = '';
+        let ledgerHtml = '';
         members.forEach(m => {
             const actualTotal = own[m] + guest[m];
             const billTotal = billed[m];
             const cost = billTotal * rate;
             const totalCost = cost + fixedShare;
             const bal = deposit[m] - totalCost;
-
-            let actionHtml = '';
-            if (showActions && isManager) {
-                if (bal < -0.01) {
-                    actionHtml = `<button class="action-btn pay" onclick="payDues('${m}', ${Math.abs(bal).toFixed(2)})">পেইড</button>`;
-                } else if (bal > 0.01) {
-                    actionHtml = `<button class="action-btn refund" onclick="refundMoney('${m}', ${bal.toFixed(2)})">ফেরত</button>`;
-                } else {
-                    actionHtml = `<span style="color:var(--success); font-size:12px;">✅ সমান</span>`;
-                }
-            }
-
-            html += `<tr>
-                <td><strong>${memberNames[m]}</strong>${memberExceptions[m]?'<br><small>[ছাড়]</small>':''}</td>
+            ledgerHtml += `<tr><td><strong>${memberNames[m]}</strong>${memberExceptions[m]?'<br><small>[ছাড়]</small>':''}</td>
                 <td>${actualTotal.toFixed(1)}<br><small>বিল: ${billTotal.toFixed(1)}</small></td>
-                <td>৳ ${cost.toFixed(2)}</td>
-                <td>৳ ${fixedShare.toFixed(2)}</td>
-                <td>৳ ${deposit[m].toFixed(2)}</td>
-                <td style="color:${bal>=0?'green':'red'}; font-weight:bold;">${bal.toFixed(2)}</td>
-                <td>${actionHtml}</td>
-            </tr>`;
+                <td>৳ ${cost.toFixed(1)}</td>
+                <td>৳ ${fixedShare.toFixed(1)}</td>
+                <td>৳ ${deposit[m]}</td>
+                <td style="color:${bal>=0?'green':'red'}">${bal.toFixed(1)}</td></tr>`;
         });
-        tbody.innerHTML = html || '<tr><td colspan="7">কোনো ডাটা নেই</td></tr>';
-    }
-
-    // ===== লেজার মাস ফিল্টার =====
-    window.renderLedgerForMonth = async (month) => {
-        if (!month) return;
-        const snap = await get(ref(db, `records/${month}`));
-        const data = snap.val() || {};
-        renderLedgerTable(data, 'ledgerTableBodyFiltered', true);
+        document.getElementById('ledgerTableBodyFiltered').innerHTML = ledgerHtml || '<tr><td colspan="6">কোনো ডাটা নেই</td></tr>';
     };
 
     function populateLedgerMonths() {
@@ -1287,7 +1141,7 @@
             for (let m = (y === currentYear ? currentMonth : 12); m >= 1; m--) {
                 const val = `${y}-${String(m).padStart(2,'0')}`;
                 const label = `${monthNames[m-1]} ${y}`;
-                html += `<option value="${val}" ${val === currentSessionMonth ? 'selected' : ''}>${label}</option>`;
+                html += `<option value="${val}" ${val === monthKey ? 'selected' : ''}>${label}</option>`;
             }
         }
         select.innerHTML = html;
@@ -1303,7 +1157,7 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `mess_backup_${currentSessionMonth}.json`;
+            a.download = `mess_backup_${monthKey}.json`;
             a.click();
             URL.revokeObjectURL(url);
             showToast("ব্যাকআপ সফলভাবে ডাউনলোড হয়েছে!", 'success');
@@ -1336,15 +1190,15 @@
         }
     };
 
-    // ===== বাকি ফাংশন (অপরিবর্তিত) =====
+    // ===== বাকি ফাংশন =====
     window.loadTargetDateMeals = () => {
         if(isManager) return;
-        const selectedDate = document.getElementById('mealScheduleDate').value;
+        const selectedDate = document.getElementById('mealScheduleDate').value; 
         if(!selectedDate) return;
         const targetMonthKey = selectedDate.substring(0, 7);
         get(ref(db, `records/${targetMonthKey}/${selectedDate}/${currentUser}`)).then(snap => {
             const tData = snap.val() || {};
-            ['breakfast', 'lunch', 'dinner'].forEach(type => {
+            ['breakfast', 'lunch', 'dinner'].forEach(type => { 
                 const state = tData[type] || "OFF";
                 const checkbox = document.getElementById('sw-' + type);
                 const statusEl = document.getElementById('status-' + type);
@@ -1359,8 +1213,8 @@
     }
 
     window.saveCustomLockTimes = () => {
-        const bTime = document.getElementById('lockTimeBreakfast').value;
-        const lTime = document.getElementById('lockTimeLunch').value;
+        const bTime = document.getElementById('lockTimeBreakfast').value; 
+        const lTime = document.getElementById('lockTimeLunch').value; 
         const dTime = document.getElementById('lockTimeDinner').value;
         set(ref(db, `records/customLockTimes`), { breakfast: bTime, lunch: lTime, dinner: dTime }).then(() => {
             showSuccess("টাইম-লক আপডেট হয়েছে!");
@@ -1368,30 +1222,30 @@
     }
 
     function isMealLocked(mealType, targetDateStr) {
-        const now = new Date();
+        const now = new Date(); 
         const targetDate = new Date(targetDateStr);
-        const todayNoon = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const todayNoon = new Date(now.getFullYear(), now.getMonth(), now.getDate()); 
         const targetNoon = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
         if(targetNoon < todayNoon) return true;
         if(targetNoon > todayNoon && mealType !== 'breakfast') return false;
-        if(mealType === 'breakfast') {
-            const [bHour, bMin] = customLockTimes.breakfast.split(':').map(Number);
-            const prevDayDeadline = new Date(targetDate);
-            prevDayDeadline.setDate(prevDayDeadline.getDate() - 1);
-            prevDayDeadline.setHours(bHour, bMin, 0, 0);
-            return now >= prevDayDeadline;
+        if(mealType === 'breakfast') { 
+            const [bHour, bMin] = customLockTimes.breakfast.split(':').map(Number); 
+            const prevDayDeadline = new Date(targetDate); 
+            prevDayDeadline.setDate(prevDayDeadline.getDate() - 1); 
+            prevDayDeadline.setHours(bHour, bMin, 0, 0); 
+            return now >= prevDayDeadline; 
         }
-        if(mealType === 'lunch') {
-            const [lHour, lMin] = customLockTimes.lunch.split(':').map(Number);
-            const lunchDeadline = new Date(targetDate);
-            lunchDeadline.setHours(lHour, lMin, 0, 0);
-            return now >= lunchDeadline;
+        if(mealType === 'lunch') { 
+            const [lHour, lMin] = customLockTimes.lunch.split(':').map(Number); 
+            const lunchDeadline = new Date(targetDate); 
+            lunchDeadline.setHours(lHour, lMin, 0, 0); 
+            return now >= lunchDeadline; 
         }
-        if(mealType === 'dinner') {
-            const [dHour, dMin] = customLockTimes.dinner.split(':').map(Number);
-            const dinnerDeadline = new Date(targetDate);
-            dinnerDeadline.setHours(dHour, dMin, 0, 0);
-            return now >= dinnerDeadline;
+        if(mealType === 'dinner') { 
+            const [dHour, dMin] = customLockTimes.dinner.split(':').map(Number); 
+            const dinnerDeadline = new Date(targetDate); 
+            dinnerDeadline.setHours(dHour, dMin, 0, 0); 
+            return now >= dinnerDeadline; 
         }
         return false;
     }
@@ -1399,48 +1253,48 @@
     window.updateNoticeAndMenu = () => {
         const noticeVal = document.getElementById('mgrNotice').value;
         const mData = {
-            day1Date: document.getElementById('menuDay1Date').value,
-            day1B: document.getElementById('menuDay1B').value,
-            day1L: document.getElementById('menuDay1L').value,
+            day1Date: document.getElementById('menuDay1Date').value, 
+            day1B: document.getElementById('menuDay1B').value, 
+            day1L: document.getElementById('menuDay1L').value, 
             day1D: document.getElementById('menuDay1D').value,
-            day2Date: document.getElementById('menuDay2Date').value,
-            day2B: document.getElementById('menuDay2B').value,
-            day2L: document.getElementById('menuDay2L').value,
+            day2Date: document.getElementById('menuDay2Date').value, 
+            day2B: document.getElementById('menuDay2B').value, 
+            day2L: document.getElementById('menuDay2L').value, 
             day2D: document.getElementById('menuDay2D').value,
-            day3Date: document.getElementById('menuDay3Date').value,
-            day3B: document.getElementById('menuDay3B').value,
-            day3L: document.getElementById('menuDay3L').value,
+            day3Date: document.getElementById('menuDay3Date').value, 
+            day3B: document.getElementById('menuDay3B').value, 
+            day3L: document.getElementById('menuDay3L').value, 
             day3D: document.getElementById('menuDay3D').value
         };
-        set(ref(db, `records/${currentSessionMonth}/noticeBoard`), noticeVal);
+        set(ref(db, `records/${monthKey}/noticeBoard`), noticeVal);
         set(ref(db, `records/threeDayMenuRoutine`), mData).then(() => showSuccess("নোটিশ ও মেনু সেভ হয়েছে!"));
     }
 
     function renderDynamicFoodMenu(menu) {
-        if(!menu || !menu.day1Date) {
-            document.getElementById('liveFoodMenuContainer').innerHTML = `<p style="color:gray; font-size:14px;">কোনো মিল মেনু রুটিন সেভ করা নেই।</p>`;
-            return;
+        if(!menu || !menu.day1Date) { 
+            document.getElementById('liveFoodMenuContainer').innerHTML = `<p style="color:gray; font-size:14px;">কোনো মিল মেনু রুটিন সেভ করা নেই。</p>`; 
+            return; 
         }
-        const now = new Date();
+        const now = new Date(); 
         let html = "";
         for(let i=1; i<=3; i++) {
-            const dDateStr = menu[`day${i}Date`];
+            const dDateStr = menu[`day${i}Date`]; 
             if(!dDateStr) continue;
-            const tDate = new Date(dDateStr);
+            const tDate = new Date(dDateStr); 
             const formattedDate = dDateStr.split('-').reverse().join('/');
-            const todayNoon = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const todayNoon = new Date(now.getFullYear(), now.getMonth(), now.getDate()); 
             const targetNoon = new Date(tDate.getFullYear(), tDate.getMonth(), tDate.getDate());
             if (targetNoon < todayNoon) continue;
             let bClass = "", lClass = "", dClass = "";
             if (targetNoon.getTime() === todayNoon.getTime()) {
-                const [bHour, bMin] = customLockTimes.breakfast.split(':').map(Number);
-                const [lHour, lMin] = customLockTimes.lunch.split(':').map(Number);
+                const [bHour, bMin] = customLockTimes.breakfast.split(':').map(Number); 
+                const [lHour, lMin] = customLockTimes.lunch.split(':').map(Number); 
                 const [dHour, dMin] = customLockTimes.dinner.split(':').map(Number);
-                const bDeadline = new Date(todayNoon); bDeadline.setHours(lHour, 0, 0, 0);
-                const lDeadline = new Date(todayNoon); lDeadline.setHours(dHour, 0, 0, 0);
+                const bDeadline = new Date(todayNoon); bDeadline.setHours(lHour, 0, 0, 0); 
+                const lDeadline = new Date(todayNoon); lDeadline.setHours(dHour, 0, 0, 0); 
                 const dDeadline = new Date(todayNoon); dDeadline.setHours(22, 0, 0, 0);
-                if(now >= bDeadline) bClass = "expired";
-                if(now >= lDeadline) lClass = "expired";
+                if(now >= bDeadline) bClass = "expired"; 
+                if(now >= lDeadline) lClass = "expired"; 
                 if(now >= dDeadline) dClass = "expired";
             }
             html += `
@@ -1456,52 +1310,52 @@
 
     // ===== রিয়েল-টাইম সিঙ্ক =====
     function startRealtimeSync() {
-        onValue(ref(db, `records/memberConfig`), (snap) => {
-            memberNames = snap.val() || {};
-            members = Object.keys(memberNames);
-            updateDropdowns();
-            renderSettingsList();
+        onValue(ref(db, `records/memberConfig`), (snap) => { 
+            memberNames = snap.val() || {}; 
+            members = Object.keys(memberNames); 
+            updateDropdowns(); 
+            renderSettingsList(); 
         });
         onValue(ref(db, `records/memberExceptions`), snap => { memberExceptions = snap.val() || {}; renderSettingsList(); });
-        onValue(ref(db, `records/memberPins`), snap => { memberPins = snap.val() || {}; renderSettingsList(); });
-        onValue(ref(db, `records/customLockTimes`), snap => {
-            if(snap.val()) {
-                customLockTimes = snap.val();
-                document.getElementById('lbl-lock-b').innerText = customLockTimes.breakfast;
-                document.getElementById('lbl-lock-l').innerText = customLockTimes.lunch;
-                document.getElementById('lbl-lock-d').innerText = customLockTimes.dinner;
-                if(isManager) {
-                    document.getElementById('lockTimeBreakfast').value = customLockTimes.breakfast;
-                    document.getElementById('lockTimeLunch').value = customLockTimes.lunch;
-                    document.getElementById('lockTimeDinner').value = customLockTimes.dinner;
-                }
-            }
+        onValue(ref(db, `records/memberPins`), snap => { memberPins = snap.val() || {}; renderSettingsList(); }); 
+        onValue(ref(db, `records/customLockTimes`), snap => { 
+            if(snap.val()) { 
+                customLockTimes = snap.val(); 
+                document.getElementById('lbl-lock-b').innerText = customLockTimes.breakfast; 
+                document.getElementById('lbl-lock-l').innerText = customLockTimes.lunch; 
+                document.getElementById('lbl-lock-d').innerText = customLockTimes.dinner; 
+                if(isManager) { 
+                    document.getElementById('lockTimeBreakfast').value = customLockTimes.breakfast; 
+                    document.getElementById('lockTimeLunch').value = customLockTimes.lunch; 
+                    document.getElementById('lockTimeDinner').value = customLockTimes.dinner; 
+                } 
+            } 
         });
         onValue(ref(db, `records/threeDayMenuRoutine`), snap => { renderDynamicFoodMenu(snap.val()); });
-        onValue(ref(db, `records/${currentSessionMonth}/messRules`), snap => {
-            if (snap.val()) messRules = snap.val();
-            if (isManager) {
-                document.getElementById('ruleT1').value = messRules.t1;
-                document.getElementById('ruleP1').value = messRules.p1;
-                document.getElementById('ruleT2').value = messRules.t2;
-                document.getElementById('ruleP2').value = messRules.p2;
-            }
+        onValue(ref(db, `records/${monthKey}/messRules`), snap => { 
+            if (snap.val()) messRules = snap.val(); 
+            if (isManager) { 
+                document.getElementById('ruleT1').value = messRules.t1; 
+                document.getElementById('ruleP1').value = messRules.p1; 
+                document.getElementById('ruleT2').value = messRules.t2; 
+                document.getElementById('ruleP2').value = messRules.p2; 
+            } 
         });
-        onValue(ref(db, `records/${currentSessionMonth}/noticeBoard`), snap => {
-            const notice = snap.val() || "কোনো নোটিশ নেই।";
-            document.getElementById('noticeText').innerText = notice;
-            if(isManager) document.getElementById('mgrNotice').value = notice;
+        onValue(ref(db, `records/${monthKey}/noticeBoard`), snap => { 
+            const notice = snap.val() || "কোনো নোটিশ নেই।"; 
+            document.getElementById('noticeText').innerText = notice; 
+            if(isManager) document.getElementById('mgrNotice').value = notice; 
         });
-        onValue(ref(db, `records/bazaarDuty/${dateKey}`), (snap) => {
-            const duty = snap.val();
-            if (duty && duty.s1) {
-                let txt = memberNames[duty.s1] || '';
-                if (duty.s2) txt += ` এবং ${memberNames[duty.s2] || ''}`;
-                document.getElementById('dutyText').innerText = txt;
-                document.getElementById('dutyDisplayBox').style.display = 'flex';
-            } else {
-                document.getElementById('dutyDisplayBox').style.display = 'none';
-            }
+        onValue(ref(db, `records/bazaarDuty/${dateKey}`), (snap) => { 
+            const duty = snap.val(); 
+            if (duty && duty.s1) { 
+                let txt = memberNames[duty.s1] || ''; 
+                if (duty.s2) txt += ` এবং ${memberNames[duty.s2] || ''}`; 
+                document.getElementById('dutyText').innerText = txt; 
+                document.getElementById('dutyDisplayBox').style.display = 'flex'; 
+            } else { 
+                document.getElementById('dutyDisplayBox').style.display = 'none'; 
+            } 
         });
         onValue(ref(db, 'records/bazaarDuty'), () => {
             if (document.getElementById('sec-dutylist') && !document.getElementById('sec-dutylist').classList.contains('hidden')) {
@@ -1513,46 +1367,45 @@
 
     // ===== সিঙ্ক লেজার =====
     function syncLedger() {
-        const monthKey = currentSessionMonth || defaultMonth;
         onValue(ref(db, `records/${monthKey}`), (snap) => {
-            const data = snap.val() || {};
-            monthRawData = data;
+            const data = snap.val() || {}; 
+            monthRawData = data; 
             
-            let regBazaar = parseFloat(data.totalBazaarCost) || 0;
-            let riceBazaar = parseFloat(data.totalRiceCost) || 0;
-            let fixedBazaar = parseFloat(data.totalFixedCost) || 0;
+            let regBazaar = parseFloat(data.totalBazaarCost) || 0; 
+            let riceBazaar = parseFloat(data.totalRiceCost) || 0; 
+            let fixedBazaar = parseFloat(data.totalFixedCost) || 0; 
             let mealOnlyExpenses = regBazaar + riceBazaar;
             
-            renderChart(regBazaar, riceBazaar, fixedBazaar);
+            renderChart(regBazaar, riceBazaar, fixedBazaar); 
             
-            let mOwnMeals = {}, mGuest = {}, mDeposit = {};
+            let mOwnMeals = {}, mGuest = {}, mDeposit = {}; 
             members.forEach(m => { mOwnMeals[m] = 0; mGuest[m] = 0; mDeposit[m] = 0; });
             let tb = 0, tl = 0, tr = 0;
 
             Object.keys(data).forEach(day => {
-                if (day.length > 8 && day.includes('-')) {
+                if (day.length > 8 && day.includes('-')) { 
                     members.forEach(m => {
-                        const userDay = data[day][m] || {};
+                        const userDay = data[day][m] || {}; 
                         mDeposit[m] += parseFloat(userDay.deposit) || 0;
                         if (day <= dateKey) {
                             let ownDayMeals = 0;
-                            if (userDay.breakfast === "ON") ownDayMeals += 0.5;
-                            if (userDay.lunch === "ON") ownDayMeals += 1.0;
+                            if (userDay.breakfast === "ON") ownDayMeals += 0.5; 
+                            if (userDay.lunch === "ON") ownDayMeals += 1.0; 
                             if (userDay.dinner === "ON") ownDayMeals += 1.0;
                             mOwnMeals[m] += ownDayMeals;
                             
-                            let guestBreakfast = parseFloat(userDay.guest_breakfast) || 0;
-                            let guestLunch = parseFloat(userDay.guest_lunch) || 0;
+                            let guestBreakfast = parseFloat(userDay.guest_breakfast) || 0; 
+                            let guestLunch = parseFloat(userDay.guest_lunch) || 0; 
                             let guestDinner = parseFloat(userDay.guest_dinner) || 0;
                             let totalDayGuestMeals = (guestBreakfast * 0.5) + (guestLunch * 1.0) + (guestDinner * 1.0);
-                            mGuest[m] += totalDayGuestMeals;
+                            mGuest[m] += totalDayGuestMeals; 
                             
                             if (day === dateKey) {
-                                if (userDay.breakfast === "ON") tb += 0.5;
-                                if (userDay.lunch === "ON") tl += 1.0;
+                                if (userDay.breakfast === "ON") tb += 0.5; 
+                                if (userDay.lunch === "ON") tl += 1.0; 
                                 if (userDay.dinner === "ON") tr += 1.0;
-                                tb += (guestBreakfast * 0.5);
-                                tl += (guestLunch * 1.0);
+                                tb += (guestBreakfast * 0.5); 
+                                tl += (guestLunch * 1.0); 
                                 tr += (guestDinner * 1.0);
                             }
                         }
@@ -1560,47 +1413,67 @@
                 }
             });
 
-            let totalBilledMealsAll = 0;
-            let mBilledMeals = {};
+            let totalBilledMealsAll = 0; 
+            let mBilledMeals = {}; 
             
             members.forEach(m => {
-                globalDeposits[m] = mDeposit[m];
-                let actualOwn = mOwnMeals[m];
+                globalDeposits[m] = mDeposit[m]; 
+                let actualOwn = mOwnMeals[m]; 
                 let billedOwn = actualOwn;
-                if (!memberExceptions[m]) {
-                    if (actualOwn < messRules.t1) billedOwn = messRules.p1;
-                    else if (actualOwn < messRules.t2) billedOwn = messRules.p2;
+                if (!memberExceptions[m]) { 
+                    if (actualOwn < messRules.t1) billedOwn = messRules.p1; 
+                    else if (actualOwn < messRules.t2) billedOwn = messRules.p2; 
                 }
-                let totalUserBilled = billedOwn + mGuest[m];
-                mBilledMeals[m] = totalUserBilled;
+                let totalUserBilled = billedOwn + mGuest[m]; 
+                mBilledMeals[m] = totalUserBilled; 
                 totalBilledMealsAll += totalUserBilled;
             });
 
             const rate = totalBilledMealsAll > 0 ? (mealOnlyExpenses / totalBilledMealsAll) : 0;
             const perMemberFixedShare = members.length > 0 ? (fixedBazaar / members.length) : 0;
 
-            document.getElementById('topMeals').innerText = totalBilledMealsAll.toFixed(1) + " টি";
-            document.getElementById('topFixedCost').innerText = "৳ " + fixedBazaar.toFixed(2);
-            document.getElementById('liveRate').innerText = rate.toFixed(2);
-            document.getElementById('liveTotalCost').innerText = (mealOnlyExpenses + fixedBazaar).toFixed(2);
-            document.getElementById('topTodayTotal').innerText = (tb + tl + tr).toFixed(1) + " টি";
-            document.getElementById('t-b').innerText = tb.toFixed(1);
-            document.getElementById('t-l').innerText = tl.toFixed(1);
+            document.getElementById('topMeals').innerText = totalBilledMealsAll.toFixed(1) + " টি"; 
+            document.getElementById('topFixedCost').innerText = "৳ " + fixedBazaar;
+            document.getElementById('liveRate').innerText = rate.toFixed(2); 
+            document.getElementById('liveTotalCost').innerText = mealOnlyExpenses + fixedBazaar;
+            document.getElementById('topTodayTotal').innerText = (tb + tl + tr).toFixed(1) + " টি"; 
+            document.getElementById('t-b').innerText = tb.toFixed(1); 
+            document.getElementById('t-l').innerText = tl.toFixed(1); 
             document.getElementById('t-r').innerText = tr.toFixed(1);
 
-            // হোম পেজে লেজার
-            renderLedgerTable(data, 'ledgerTableBody', true);
-
-            // হিস্টোরি
-            let histBazHtml = "", histRiceHtml = "", histFixedHtml = "", histRefundHtml = "";
-            let totalDueAmount = 0;
+            let ledgerHtml = ""; 
+            let totalAllDeposit = 0;
+            
+            members.forEach(m => {
+                let actualTotal = mOwnMeals[m] + mGuest[m]; 
+                let billedTotal = mBilledMeals[m];
+                const mealCost = billedTotal * rate; 
+                const finalTotalCost = mealCost + perMemberFixedShare; 
+                const bal = mDeposit[m] - finalTotalCost; 
+                totalAllDeposit += mDeposit[m];
+                
+                let displayMeals = actualTotal === billedTotal ? `<b>${actualTotal.toFixed(1)}</b>` : `${actualTotal.toFixed(1)}<br><small style="color:var(--danger); font-weight:bold">(বিল: ${billedTotal.toFixed(1)})</small>`;
+                
+                ledgerHtml += `<tr>
+                    <td><strong>${memberNames[m]}</strong>${memberExceptions[m] ? '<br><small style="color:var(--success)">[ছাড়প্রাপ্ত]</small>' : ''}</td>
+                    <td>${displayMeals}</td>
+                    <td>৳ ${mealCost.toFixed(1)}</td>
+                    <td style="color:#a855f7; font-weight:bold">৳ ${perMemberFixedShare.toFixed(1)}</td>
+                    <td>৳ ${mDeposit[m]}</td>
+                    <td style="color:${bal >= 0 ? '#10b981' : '#ef4444'}"><b>${bal.toFixed(1)}</b></td>
+                </tr>`;
+            });
+            document.getElementById('ledgerTableBody').innerHTML = ledgerHtml; 
+            
+            let histBazHtml = "", histRiceHtml = "", histFixedHtml = "";
+            let totalDueAmount = 0; 
 
             if (data.bazaarHistory) {
                 Object.entries(data.bazaarHistory).sort((a, b) => new Date(b[1].date) - new Date(a[1].date)).forEach(([hKey, h]) => {
                     const formattedDate = h.date.split('-').reverse().join('/');
                     const delBtn = isManager ? `<button onclick="deleteHistory('${hKey}', '${h.type}', ${h.amount}, '${h.status || 'paid'}')" style="background:transparent; border:none; color:var(--danger); cursor:pointer; margin-left:10px;" title="হিসাব ডিলিট করুন"><i class="fas fa-trash-alt"></i></button>` : '';
                     
-                    let badge = '';
+                    let badge = ''; 
                     let paidBtn = '';
                     
                     if (h.status === 'due') {
@@ -1613,45 +1486,34 @@
                         badge = `<span style="background:var(--success); color:#fff; padding:2px 6px; border-radius:4px; font-size:11px; margin-left:5px;">পেইড</span>`;
                     }
 
-                    if (h.type === 'rice') {
-                        histRiceHtml += `<tr><td>${formattedDate}</td><td>${h.details} ${badge}</td><td style="color:#b45309; font-weight:bold;">৳ ${h.amount} ${paidBtn} ${delBtn}</td></tr>`;
-                    } else if (h.type === 'fixed') {
-                        histFixedHtml += `<tr><td>${formattedDate}</td><td>${h.details} ${badge}</td><td style="color:#6b21a8; font-weight:bold;">৳ ${h.amount} ${paidBtn} ${delBtn}</td></tr>`;
-                    } else {
-                        let shoppers = memberNames[h.shopper1] || 'অজানা';
-                        if (h.shopper2) shoppers += ' ও ' + memberNames[h.shopper2];
-                        histBazHtml += `<tr><td>${formattedDate}</td><td>${shoppers}</td><td style="color:#10b981; font-weight:bold;">৳ ${h.amount} ${delBtn}</td></tr>`;
+                    if (h.type === 'rice') { 
+                        histRiceHtml += `<tr><td>${formattedDate}</td><td>${h.details} ${badge}</td><td style="color:#b45309; font-weight:bold;">৳ ${h.amount} ${paidBtn} ${delBtn}</td></tr>`; 
+                    } else if (h.type === 'fixed') { 
+                        histFixedHtml += `<tr><td>${formattedDate}</td><td>${h.details} ${badge}</td><td style="color:#6b21a8; font-weight:bold;">৳ ${h.amount} ${paidBtn} ${delBtn}</td></tr>`; 
+                    } else { 
+                        let shoppers = memberNames[h.shopper1] || 'অজানা'; 
+                        if (h.shopper2) shoppers += ' ও ' + memberNames[h.shopper2]; 
+                        histBazHtml += `<tr><td>${formattedDate}</td><td>${shoppers}</td><td style="color:#10b981; font-weight:bold;">৳ ${h.amount} ${delBtn}</td></tr>`; 
                     }
                 });
             }
-
-            if (data.refundHistory) {
-                Object.entries(data.refundHistory).sort((a, b) => new Date(b[1].date) - new Date(a[1].date)).forEach(([rKey, r]) => {
-                    const formattedDate = r.date.split('-').reverse().join('/');
-                    histRefundHtml += `<tr><td>${formattedDate}</td><td>${r.memberName}</td><td style="color:var(--warning); font-weight:bold;">৳ ${r.amount}</td></tr>`;
-                });
-            }
-
-            document.getElementById('histBazaar').innerHTML = histBazHtml || "<tr><td colspan='3' style='text-align:center; color:gray;'>কোনো এন্ট্রি নেই</td></tr>";
-            document.getElementById('histRice').innerHTML = histRiceHtml || "<tr><td colspan='3' style='text-align:center; color:gray;'>কোনো এন্ট্রি নেই</td></tr>";
+            document.getElementById('histBazaar').innerHTML = histBazHtml || "<tr><td colspan='3' style='text-align:center; color:gray;'>কোনো এন্ট্রি নেই</td></tr>"; 
+            document.getElementById('histRice').innerHTML = histRiceHtml || "<tr><td colspan='3' style='text-align:center; color:gray;'>কোনো এন্ট্রি নেই</td></tr>"; 
             document.getElementById('histFixed').innerHTML = histFixedHtml || "<tr><td colspan='3' style='text-align:center; color:gray;'>কোনো এন্ট্রি নেই</td></tr>";
-            document.getElementById('histRefund').innerHTML = histRefundHtml || "<tr><td colspan='3' style='text-align:center; color:gray;'>কোনো রিফান্ড নেই</td></tr>";
 
-            let totalDepositAll = 0;
-            members.forEach(m => { totalDepositAll += mDeposit[m]; });
-            const managerCash = totalDepositAll - (mealOnlyExpenses + fixedBazaar - totalDueAmount);
-            document.getElementById('liveCash').innerText = managerCash.toFixed(2);
+            const managerCash = totalAllDeposit - ((mealOnlyExpenses + fixedBazaar) - totalDueAmount);
+            document.getElementById('liveCash').innerText = managerCash.toFixed(1);
 
             if (isManager) {
-                document.getElementById('topBalance').innerText = "৳ " + managerCash.toFixed(2);
+                document.getElementById('topBalance').innerText = "৳ " + managerCash.toFixed(1);
             } else {
-                let myActual = mOwnMeals[currentUser] + mGuest[currentUser];
+                let myActual = mOwnMeals[currentUser] + mGuest[currentUser]; 
                 let myBilled = mBilledMeals[currentUser];
-                const myFinalTotalCost = (myBilled * rate) + perMemberFixedShare;
+                const myFinalTotalCost = (myBilled * rate) + perMemberFixedShare; 
                 const myBal = mDeposit[currentUser] - myFinalTotalCost;
                 
                 document.getElementById('myTotalMeals').innerHTML = myActual === myBilled ? `${myActual.toFixed(1)} টি` : `${myActual.toFixed(1)} টি <br><span style="font-size:14px; color:var(--primary); font-weight:bold;">বিল হবে: ${myBilled.toFixed(1)}</span>`;
-                document.getElementById('topBalance').innerText = "৳ " + myBal.toFixed(2);
+                document.getElementById('topBalance').innerText = "৳ " + myBal.toFixed(1); 
                 document.getElementById('balanceCard').className = `stat-card ${myBal >= 0 ? 'green' : 'red'}`;
                 loadTargetDateMeals();
             }
@@ -1661,16 +1523,16 @@
     }
 
     window.markAsPaid = (hKey) => {
-        Swal.fire({
-            title: 'বাকি টাকা পেইড করবেন?',
-            text: 'এই টাকা আপনার বর্তমান ম্যানেজার ক্যাশ থেকে কাটা হবে!',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'হ্যাঁ, পেইড করুন',
-            confirmButtonColor: '#10b981'
+        Swal.fire({ 
+            title: 'বাকি টাকা পেইড করবেন?', 
+            text: 'এই টাকা আপনার বর্তমান ম্যানেজার ক্যাশ থেকে কাটা হবে!', 
+            icon: 'question', 
+            showCancelButton: true, 
+            confirmButtonText: 'হ্যাঁ, পেইড করুন', 
+            confirmButtonColor: '#10b981' 
         }).then(res => {
             if(res.isConfirmed) {
-                update(ref(db, `records/${currentSessionMonth}/bazaarHistory/${hKey}`), { status: 'paid' }).then(() => {
+                update(ref(db, `records/${monthKey}/bazaarHistory/${hKey}`), { status: 'paid' }).then(() => {
                     showSuccess("হিসাবটি পেইড হিসেবে আপডেট হয়েছে!");
                 });
             }
@@ -1680,15 +1542,15 @@
     window.deleteHistory = (hKey, type, amount, status) => {
         confirmAction('হিসাবটি ডিলিট করবেন?', 'এই ডাটা চিরতরে মুছে যাবে!', 'হ্যাঁ, ডিলিট').then(res => {
             if(res.isConfirmed) {
-                let updates = {};
-                updates[`records/${currentSessionMonth}/bazaarHistory/${hKey}`] = null;
+                let updates = {}; 
+                updates[`records/${monthKey}/bazaarHistory/${hKey}`] = null;
                 if (status !== 'due') {
                     if (type === 'rice') {
-                        updates[`records/${currentSessionMonth}/totalRiceCost`] = Math.max(0, (parseFloat(monthRawData.totalRiceCost) || 0) - amount);
+                        updates[`records/${monthKey}/totalRiceCost`] = Math.max(0, (parseFloat(monthRawData.totalRiceCost) || 0) - amount);
                     } else if (type === 'fixed') {
-                        updates[`records/${currentSessionMonth}/totalFixedCost`] = Math.max(0, (parseFloat(monthRawData.totalFixedCost) || 0) - amount);
+                        updates[`records/${monthKey}/totalFixedCost`] = Math.max(0, (parseFloat(monthRawData.totalFixedCost) || 0) - amount);
                     } else {
-                        updates[`records/${currentSessionMonth}/totalBazaarCost`] = Math.max(0, (parseFloat(monthRawData.totalBazaarCost) || 0) - amount);
+                        updates[`records/${monthKey}/totalBazaarCost`] = Math.max(0, (parseFloat(monthRawData.totalBazaarCost) || 0) - amount);
                     }
                 }
                 update(ref(db), updates).then(() => showSuccess("হিসাব মুছে ফেলা হয়েছে!"));
@@ -1696,52 +1558,52 @@
         });
     }
 
-    window.toggleMeal = (type) => {
+    window.toggleMeal = (type) => { 
         const selectedDate = document.getElementById('mealScheduleDate').value;
         if(!selectedDate) return showWarning("তারিখ নির্বাচন করুন!");
         if(isMealLocked(type, selectedDate)) return showError("সময় পার হয়ে গেছে।");
-        const btn = document.getElementById('btn-' + type);
+        const btn = document.getElementById('btn-' + type); 
         const newState = btn.innerText === "ON" ? "OFF" : "ON";
-        const parts = selectedDate.split('-');
-        const year = parseInt(parts[0]);
-        const month = parseInt(parts[1]) - 1;
+        const parts = selectedDate.split('-'); 
+        const year = parseInt(parts[0]); 
+        const month = parseInt(parts[1]) - 1; 
         const startDay = parseInt(parts[2]);
-        const lastDay = new Date(year, month + 1, 0).getDate();
+        const lastDay = new Date(year, month + 1, 0).getDate(); 
         let updates = {};
         for(let d = startDay; d <= lastDay; d++) {
             const dStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
             updates[`records/${dStr.substring(0, 7)}/${dStr}/${currentUser}/${type}`] = newState;
         }
-        update(ref(db), updates).then(() => {
-            btn.innerText = newState;
-            btn.className = `toggle-btn ${newState === "ON" ? "btn-on" : "btn-off"}`;
-            showSuccess("মিল আপডেট হয়েছে!");
+        update(ref(db), updates).then(() => { 
+            btn.innerText = newState; 
+            btn.className = `toggle-btn ${newState === "ON" ? "btn-on" : "btn-off"}`; 
+            showSuccess("মিল আপডেট হয়েছে!"); 
         });
     }
     
     window.saveAdvancedGuest = () => {
-        const selectedDate = document.getElementById('mealScheduleDate').value;
+        const selectedDate = document.getElementById('mealScheduleDate').value; 
         const shortType = document.getElementById('guestTime').value;
         if(isMealLocked(shortType, selectedDate)) return showError("সময় পার হয়ে গেছে।");
-        update(ref(db, `records/${selectedDate.substring(0, 7)}/${selectedDate}/${currentUser}`), {
-            ["guest_" + shortType]: parseInt(document.getElementById('guestCountInput').value) || 0
+        update(ref(db, `records/${selectedDate.substring(0, 7)}/${selectedDate}/${currentUser}`), { 
+            ["guest_" + shortType]: parseInt(document.getElementById('guestCountInput').value) || 0 
         }).then(() => showSuccess("গেস্ট মিল আপডেট হয়েছে!"));
     }
     
     window.saveRules = () => {
-        update(ref(db, `records/${currentSessionMonth}/messRules`), {
-            t1: parseFloat(document.getElementById('ruleT1').value)||0,
-            p1: parseFloat(document.getElementById('ruleP1').value)||0,
-            t2: parseFloat(document.getElementById('ruleT2').value)||0,
-            p2: parseFloat(document.getElementById('ruleP2').value)||0
+        update(ref(db, `records/${monthKey}/messRules`), { 
+            t1: parseFloat(document.getElementById('ruleT1').value)||0, 
+            p1: parseFloat(document.getElementById('ruleP1').value)||0, 
+            t2: parseFloat(document.getElementById('ruleT2').value)||0, 
+            p2: parseFloat(document.getElementById('ruleP2').value)||0 
         }).then(() => showSuccess("নিয়ম সেভ হয়েছে!"));
     }
     
-    window.saveBazaarDuty = () => {
-        const d = document.getElementById('dutyDate').value;
-        const s1 = document.getElementById('dutyMem1').value;
-        const s2 = document.getElementById('dutyMem2').value;
-        if (!d || !s1) return showWarning("তারিখ এবং অন্তত একজন বাজারী সিলেক্ট করুন!");
+    window.saveBazaarDuty = () => { 
+        const d = document.getElementById('dutyDate').value; 
+        const s1 = document.getElementById('dutyMem1').value; 
+        const s2 = document.getElementById('dutyMem2').value; 
+        if (!d || !s1) return showWarning("তারিখ এবং অন্তত একজন বাজারী সিলেক্ট করুন!"); 
         set(ref(db, `records/bazaarDuty/${d}`), { s1, s2 }).then(() => showSuccess("ডিউটি সেট করা হয়েছে!"));
         renderBazaarDutyList();
     }
@@ -1749,164 +1611,164 @@
     window.saveEntry = () => {
         const type = document.getElementById('entryType').value;
         if (type === 'deposit') {
-            const m = document.getElementById('depMember').value;
-            const amt = parseFloat(document.getElementById('depAmount').value);
+            const m = document.getElementById('depMember').value; 
+            const amt = parseFloat(document.getElementById('depAmount').value); 
             if (!amt) return showWarning("জমার পরিমাণ বসান!");
-            get(ref(db, `records/${currentSessionMonth}/${dateKey}/${m}/deposit`)).then(snap => {
-                update(ref(db, `records/${currentSessionMonth}/${dateKey}/${m}`), { deposit: (parseFloat(snap.val())||0) + amt }).then(() => {
-                    document.getElementById('depAmount').value = "";
-                    showSuccess("জমা এন্ট্রি হয়েছে!");
-                });
+            get(ref(db, `records/${monthKey}/${dateKey}/${m}/deposit`)).then(snap => { 
+                update(ref(db, `records/${monthKey}/${dateKey}/${m}`), { deposit: (parseFloat(snap.val())||0) + amt }).then(() => { 
+                    document.getElementById('depAmount').value = ""; 
+                    showSuccess("জমা এন্ট্রি হয়েছে!"); 
+                }); 
             });
         } else if (type === 'bazaar') {
-            const s1 = document.getElementById('shopper1').value;
-            const s2 = document.getElementById('shopper2').value;
-            const amt = parseFloat(document.getElementById('bazAmount').value);
+            const s1 = document.getElementById('shopper1').value; 
+            const s2 = document.getElementById('shopper2').value; 
+            const amt = parseFloat(document.getElementById('bazAmount').value); 
             if (!amt) return showWarning("ডাটা দিন!");
-            let updates = {};
-            updates[`records/${currentSessionMonth}/bazaarHistory/${Date.now()}`] = { date: dateKey, type: 'regular', shopper1: s1, shopper2: s2, amount: amt, status: 'paid' };
-            get(ref(db, `records/${currentSessionMonth}/totalBazaarCost`)).then(snap => {
-                updates[`records/${currentSessionMonth}/totalBazaarCost`] = (parseFloat(snap.val())||0) + amt;
-                update(ref(db), updates).then(() => {
-                    document.getElementById('bazAmount').value = "";
-                    showSuccess("বাজার সেভ হয়েছে!");
-                });
+            let updates = {}; 
+            updates[`records/${monthKey}/bazaarHistory/${Date.now()}`] = { date: dateKey, type: 'regular', shopper1: s1, shopper2: s2, amount: amt, status: 'paid' };
+            get(ref(db, `records/${monthKey}/totalBazaarCost`)).then(snap => { 
+                updates[`records/${monthKey}/totalBazaarCost`] = (parseFloat(snap.val())||0) + amt; 
+                update(ref(db), updates).then(() => { 
+                    document.getElementById('bazAmount').value = ""; 
+                    showSuccess("বাজার সেভ হয়েছে!"); 
+                }); 
             });
         } else if (type === 'rice') {
-            const note = document.getElementById('riceNote').value;
-            const amt = parseFloat(document.getElementById('riceAmount').value);
-            const status = document.getElementById('riceStatus').value;
+            const note = document.getElementById('riceNote').value; 
+            const amt = parseFloat(document.getElementById('riceAmount').value); 
+            const status = document.getElementById('riceStatus').value; 
             if (!amt) return showWarning("ডাটা দিন!");
-            let updates = {};
-            updates[`records/${currentSessionMonth}/bazaarHistory/${Date.now()}`] = { date: dateKey, type: 'rice', details: note, amount: amt, status: status };
-            get(ref(db, `records/${currentSessionMonth}/totalRiceCost`)).then(snap => {
-                updates[`records/${currentSessionMonth}/totalRiceCost`] = (parseFloat(snap.val())||0) + amt;
-                update(ref(db), updates).then(() => {
-                    document.getElementById('riceAmount').value = "";
-                    showSuccess("চালের খরচ সেভ হয়েছে!");
-                });
+            let updates = {}; 
+            updates[`records/${monthKey}/bazaarHistory/${Date.now()}`] = { date: dateKey, type: 'rice', details: note, amount: amt, status: status };
+            get(ref(db, `records/${monthKey}/totalRiceCost`)).then(snap => { 
+                updates[`records/${monthKey}/totalRiceCost`] = (parseFloat(snap.val())||0) + amt; 
+                update(ref(db), updates).then(() => { 
+                    document.getElementById('riceAmount').value = ""; 
+                    showSuccess("চালের খরচ সেভ হয়েছে!"); 
+                }); 
             });
         } else if (type === 'fixed') {
-            const note = document.getElementById('fixedNote').value || "ফিক্সড খরচ";
-            const amt = parseFloat(document.getElementById('fixedAmount').value);
-            const status = document.getElementById('fixedStatus').value;
+            const note = document.getElementById('fixedNote').value || "ফিক্সড খরচ"; 
+            const amt = parseFloat(document.getElementById('fixedAmount').value); 
+            const status = document.getElementById('fixedStatus').value; 
             if (!amt) return showWarning("ডাটা দিন!");
-            let updates = {};
-            updates[`records/${currentSessionMonth}/bazaarHistory/${Date.now()}`] = { date: dateKey, type: 'fixed', details: note, amount: amt, status: status };
-            get(ref(db, `records/${currentSessionMonth}/totalFixedCost`)).then(snap => {
-                updates[`records/${currentSessionMonth}/totalFixedCost`] = (parseFloat(snap.val())||0) + amt;
-                update(ref(db), updates).then(() => {
-                    document.getElementById('fixedAmount').value = "";
-                    showSuccess("ফিক্সড খরচ সেভ হয়েছে!");
-                });
+            let updates = {}; 
+            updates[`records/${monthKey}/bazaarHistory/${Date.now()}`] = { date: dateKey, type: 'fixed', details: note, amount: amt, status: status };
+            get(ref(db, `records/${monthKey}/totalFixedCost`)).then(snap => { 
+                updates[`records/${monthKey}/totalFixedCost`] = (parseFloat(snap.val())||0) + amt; 
+                update(ref(db), updates).then(() => { 
+                    document.getElementById('fixedAmount').value = ""; 
+                    showSuccess("ফিক্সড খরচ সেভ হয়েছে!"); 
+                }); 
             });
         }
     }
     
-    window.toggleSuperEdit = () => {
-        const type = document.getElementById('superEditType').value;
-        document.querySelectorAll('.super-edit-fields').forEach(el => el.classList.add('hidden'));
-        if (type) {
-            document.getElementById('se-' + type.split('-')[1]).classList.remove('hidden');
-            if (type === 'edit-deposit') loadCurrentDeposit();
-        }
+    window.toggleSuperEdit = () => { 
+        const type = document.getElementById('superEditType').value; 
+        document.querySelectorAll('.super-edit-fields').forEach(el => el.classList.add('hidden')); 
+        if (type) { 
+            document.getElementById('se-' + type.split('-')[1]).classList.remove('hidden'); 
+            if (type === 'edit-deposit') loadCurrentDeposit(); 
+        } 
     }
     
     window.loadCurrentDeposit = () => { document.getElementById('curDep').innerText = globalDeposits[document.getElementById('superEditMem').value] || 0; }
     
-    window.saveSuperCost = () => {
-        let u = {};
-        if (document.getElementById('newBazTot').value) u.totalBazaarCost = parseFloat(document.getElementById('newBazTot').value);
-        if (document.getElementById('newRicTot').value) u.totalRiceCost = parseFloat(document.getElementById('newRicTot').value);
-        if (document.getElementById('newFixTot').value) u.totalFixedCost = parseFloat(document.getElementById('newFixTot').value);
-        if (Object.keys(u).length > 0) { update(ref(db, `records/${currentSessionMonth}`), u).then(() => { showSuccess("খরচ আপডেট হয়েছে!"); toggleSuperEdit(); }); }
+    window.saveSuperCost = () => { 
+        let u = {}; 
+        if (document.getElementById('newBazTot').value) u.totalBazaarCost = parseFloat(document.getElementById('newBazTot').value); 
+        if (document.getElementById('newRicTot').value) u.totalRiceCost = parseFloat(document.getElementById('newRicTot').value); 
+        if (document.getElementById('newFixTot').value) u.totalFixedCost = parseFloat(document.getElementById('newFixTot').value); 
+        if (Object.keys(u).length > 0) { update(ref(db, `records/${monthKey}`), u).then(() => { showSuccess("খরচ আপডেট হয়েছে!"); toggleSuperEdit(); }); }
     }
     
-    window.saveSuperDeposit = () => {
-        const m = document.getElementById('superEditMem').value;
-        const n = parseFloat(document.getElementById('newDepTot').value);
-        if (isNaN(n)) return showWarning("পরিমাণ বসান!");
-        const d = n - (globalDeposits[m] || 0);
-        if (d !== 0) { get(ref(db, `records/${currentSessionMonth}/${dateKey}/${m}/deposit`)).then(snap => { update(ref(db, `records/${currentSessionMonth}/${dateKey}/${m}`), { deposit: (parseFloat(snap.val())||0) + d }).then(() => { showSuccess("জমা আপডেট হয়েছে!"); setTimeout(loadCurrentDeposit, 500); }); }); }
+    window.saveSuperDeposit = () => { 
+        const m = document.getElementById('superEditMem').value; 
+        const n = parseFloat(document.getElementById('newDepTot').value); 
+        if (isNaN(n)) return showWarning("পরিমাণ বসান!"); 
+        const d = n - (globalDeposits[m] || 0); 
+        if (d !== 0) { get(ref(db, `records/${monthKey}/${dateKey}/${m}/deposit`)).then(snap => { update(ref(db, `records/${monthKey}/${dateKey}/${m}`), { deposit: (parseFloat(snap.val())||0) + d }).then(() => { showSuccess("জমা আপডেট হয়েছে!"); setTimeout(loadCurrentDeposit, 500); }); }); }
         else showWarning("নতুন জমা বর্তমান জমার সমান!");
     }
     
-    window.loadPastMeal = () => {
-        const dt = document.getElementById('superEditDate').value;
-        if (!dt) return showWarning("তারিখ নির্বাচন করুন!");
-        get(ref(db, `records/${dt.substring(0, 7)}/${dt}/${document.getElementById('superEditMealMem').value}`)).then(snap => {
-            const data = snap.val() || {};
-            document.getElementById('se-brk').value = data.breakfast || "OFF";
-            document.getElementById('se-lun').value = data.lunch || "OFF";
-            document.getElementById('se-din').value = data.dinner || "OFF";
-            document.getElementById('se-g-brk').value = data.guest_breakfast || 0;
-            document.getElementById('se-g-lun').value = data.guest_lunch || 0;
-            document.getElementById('se-g-din').value = data.guest_dinner || 0;
-            document.getElementById('pastMealData').classList.remove('hidden');
-        });
+    window.loadPastMeal = () => { 
+        const dt = document.getElementById('superEditDate').value; 
+        if (!dt) return showWarning("তারিখ নির্বাচন করুন!"); 
+        get(ref(db, `records/${dt.substring(0, 7)}/${dt}/${document.getElementById('superEditMealMem').value}`)).then(snap => { 
+            const data = snap.val() || {}; 
+            document.getElementById('se-brk').value = data.breakfast || "OFF"; 
+            document.getElementById('se-lun').value = data.lunch || "OFF"; 
+            document.getElementById('se-din').value = data.dinner || "OFF"; 
+            document.getElementById('se-g-brk').value = data.guest_breakfast || 0; 
+            document.getElementById('se-g-lun').value = data.guest_lunch || 0; 
+            document.getElementById('se-g-din').value = data.guest_dinner || 0; 
+            document.getElementById('pastMealData').classList.remove('hidden'); 
+        }); 
     }
     
-    window.saveSuperMeal = () => {
-        const dt = document.getElementById('superEditDate').value;
-        update(ref(db, `records/${dt.substring(0, 7)}/${dt}/${document.getElementById('superEditMealMem').value}`), {
-            breakfast: document.getElementById('se-brk').value,
-            lunch: document.getElementById('se-lun').value,
-            dinner: document.getElementById('se-din').value,
-            guest_breakfast: parseInt(document.getElementById('se-g-brk').value)||0,
-            guest_lunch: parseInt(document.getElementById('se-g-lun').value)||0,
-            guest_dinner: parseInt(document.getElementById('se-g-din').value)||0
-        }).then(() => {
-            showSuccess("ডাটা আপডেট হয়েছে!");
-            document.getElementById('pastMealData').classList.add('hidden');
-        });
+    window.saveSuperMeal = () => { 
+        const dt = document.getElementById('superEditDate').value; 
+        update(ref(db, `records/${dt.substring(0, 7)}/${dt}/${document.getElementById('superEditMealMem').value}`), { 
+            breakfast: document.getElementById('se-brk').value, 
+            lunch: document.getElementById('se-lun').value, 
+            dinner: document.getElementById('se-din').value, 
+            guest_breakfast: parseInt(document.getElementById('se-g-brk').value)||0, 
+            guest_lunch: parseInt(document.getElementById('se-g-lun').value)||0, 
+            guest_dinner: parseInt(document.getElementById('se-g-din').value)||0 
+        }).then(() => { 
+            showSuccess("ডাটা আপডেট হয়েছে!"); 
+            document.getElementById('pastMealData').classList.add('hidden'); 
+        }); 
     }
     
     window.resetMonthlyData = () => {
         confirmAction('আপনি কি নিশ্চিত?', 'এই মাসের সমস্ত হিসাব মুছে যাবে!', 'হ্যাঁ, মুছে ফেলুন!').then((result) => {
             if (result.isConfirmed) {
-                remove(ref(db, `records/${currentSessionMonth}`)).then(() => {
-                    Swal.fire('রিসেট সম্পন্ন!', '', 'success');
-                    document.getElementById('superEditType').value = "";
-                    toggleSuperEdit();
+                remove(ref(db, `records/${monthKey}`)).then(() => { 
+                    Swal.fire('রিসেট সম্পন্ন!', '', 'success'); 
+                    document.getElementById('superEditType').value = ""; 
+                    toggleSuperEdit(); 
                 }).catch(e => showError(e.message));
             }
         });
     }
 
-    window.addNewMember = () => {
-        const n = document.getElementById('newMemName').value;
+    window.addNewMember = () => { 
+        const n = document.getElementById('newMemName').value; 
         if (n) {
-            set(ref(db, `records/memberConfig`), { ...memberNames, ["Member"+(Date.now())]: n }).then(() => {
-                showSuccess("নতুন মেম্বার যুক্ত হয়েছে!");
-                document.getElementById('newMemName').value = "";
+            set(ref(db, `records/memberConfig`), { ...memberNames, ["Member"+(Date.now())]: n }).then(() => { 
+                showSuccess("নতুন মেম্বার যুক্ত হয়েছে!"); 
+                document.getElementById('newMemName').value = ""; 
             });
         }
     }
 
     window.deleteMember = (mId, mName) => {
         confirmAction(`${mName}-কে রিমুভ করবেন?`, 'লিস্ট থেকে মুছে যাবে!', 'হ্যাঁ, রিমুভ').then((result) => {
-            if (result.isConfirmed) {
-                let updates = {};
-                updates[`records/memberConfig/${mId}`] = null;
-                updates[`records/memberExceptions/${mId}`] = null;
-                updates[`records/memberPins/${mId}`] = null;
+            if (result.isConfirmed) { 
+                let updates = {}; 
+                updates[`records/memberConfig/${mId}`] = null; 
+                updates[`records/memberExceptions/${mId}`] = null; 
+                updates[`records/memberPins/${mId}`] = null; 
                 update(ref(db), updates).then(() => showSuccess("রিমুভ করা হয়েছে!"));
                 renderSettingsList();
             }
         });
     }
     
-    function updateDropdowns() {
-        let html = members.map(m => `<option value="${m}">${memberNames[m]}</option>`).join('');
-        ['loginUser', 'depMember', 'shopper1', 'superEditMem', 'superEditMealMem', 'dutyMem1'].forEach(id => {
-            if (document.getElementById(id)) document.getElementById(id).innerHTML = html;
-        });
-        if (document.getElementById('shopper2')) document.getElementById('shopper2').innerHTML = `<option value="">-- কেউ না --</option>` + html;
-        if (document.getElementById('dutyMem2')) document.getElementById('dutyMem2').innerHTML = `<option value="">-- কেউ না --</option>` + html;
+    function updateDropdowns() { 
+        let html = members.map(m => `<option value="${m}">${memberNames[m]}</option>`).join(''); 
+        ['loginUser', 'depMember', 'shopper1', 'superEditMem', 'superEditMealMem', 'dutyMem1'].forEach(id => { 
+            if (document.getElementById(id)) document.getElementById(id).innerHTML = html; 
+        }); 
+        if (document.getElementById('shopper2')) document.getElementById('shopper2').innerHTML = `<option value="">-- কেউ না --</option>` + html; 
+        if (document.getElementById('dutyMem2')) document.getElementById('dutyMem2').innerHTML = `<option value="">-- কেউ না --</option>` + html; 
     }
     
-    function renderSettingsList() {
-        if (!document.getElementById('editMemList')) return;
+    function renderSettingsList() { 
+        if (!document.getElementById('editMemList')) return; 
         document.getElementById('editMemList').innerHTML = members.map(m => `
             <div class="mem-accordion-section" style="margin-bottom:10px;">
                 <div class="mem-accordion-header" onclick="toggleMemberAccordion('${m}')" style="background:#f8fafc; padding:12px 15px; border:1px solid #e2e8f0; border-radius:10px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-weight:600;">
@@ -1928,38 +1790,38 @@
                     </div>
                 </div>
             </div>
-        `).join('');
+        `).join(''); 
     }
     
-    window.saveMemberEdits = () => {
-        let c = {}, e = {}, p = {};
-        members.forEach(m => {
-            c[m] = document.getElementById('edit-' + m).value;
-            e[m] = document.getElementById('exempt-' + m).checked;
-            p[m] = document.getElementById('pin-' + m).value || "1234";
-        });
-        update(ref(db, `records`), { 'memberConfig': c, 'memberExceptions': e, 'memberPins': p }).then(() => showSuccess("সেটিংস সেভ হয়েছে!"));
+    window.saveMemberEdits = () => { 
+        let c = {}, e = {}, p = {}; 
+        members.forEach(m => { 
+            c[m] = document.getElementById('edit-' + m).value; 
+            e[m] = document.getElementById('exempt-' + m).checked; 
+            p[m] = document.getElementById('pin-' + m).value || "1234"; 
+        }); 
+        update(ref(db, `records`), { 'memberConfig': c, 'memberExceptions': e, 'memberPins': p }).then(() => showSuccess("সেটিংস সেভ হয়েছে!")); 
     }
     
-    function checkTimeLock() {
-        const selectedDate = document.getElementById('mealScheduleDate').value;
+    function checkTimeLock() { 
+        const selectedDate = document.getElementById('mealScheduleDate').value; 
         if(!selectedDate || isManager) return;
-        document.getElementById("sw-breakfast").disabled = isMealLocked('breakfast', selectedDate);
-        document.getElementById("sw-lunch").disabled = isMealLocked('lunch', selectedDate);
-        document.getElementById("sw-dinner").disabled = isMealLocked('dinner', selectedDate);
+        document.getElementById("sw-breakfast").disabled = isMealLocked('breakfast', selectedDate); 
+        document.getElementById("sw-lunch").disabled = isMealLocked('lunch', selectedDate); 
+        document.getElementById("sw-dinner").disabled = isMealLocked('dinner', selectedDate); 
     }
     
     setInterval(checkTimeLock, 60000);
     
-    if(document.getElementById('sheetMonthSelector')) {
-        document.getElementById('sheetMonthSelector').addEventListener('change', () => renderSheet());
+    if(document.getElementById('sheetMonthSelector')) { 
+        document.getElementById('sheetMonthSelector').addEventListener('change', () => renderSheet()); 
     }
     
-    get(ref(db, `records/memberConfig`)).then(snap => {
-        const data = snap.val() || { "Member1": "অ্যাডমিন" };
-        memberNames = data;
-        members = Object.keys(data);
-        updateDropdowns();
+    get(ref(db, `records/memberConfig`)).then(snap => { 
+        const data = snap.val() || { "Member1": "অ্যাডমিন" }; 
+        memberNames = data; 
+        members = Object.keys(data); 
+        updateDropdowns(); 
         populateLedgerMonths();
     });
 </script>
